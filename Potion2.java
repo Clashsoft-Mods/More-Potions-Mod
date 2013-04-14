@@ -22,7 +22,7 @@ public class Potion2 extends Potion {
 	@SideOnly(Side.CLIENT)
 	public int getStatusIconIndex()
 	{
-		ClashsoftMisc.bindTexture(Minecraft.getMinecraft().renderEngine, ClientProxy.customEffects);
+		Minecraft.getMinecraft().renderEngine.bindTexture(ClientProxy.customEffects);
 		return super.getStatusIconIndex();
 	}
 	

@@ -23,7 +23,7 @@ public class SlotBrewingStandIngredient2 extends Slot
     {
         if (par1ItemStack != null)
         {
-        	if (Item.itemsList[par1ItemStack.itemID].isPotionIngredient() || Brewing.getBrewingFromIngredient(par1ItemStack) != null)
+        	if (Item.itemsList[par1ItemStack.itemID].isPotionIngredient() || Brewing.isPotionIngredient(par1ItemStack))
         	{
         		return true;
         	}

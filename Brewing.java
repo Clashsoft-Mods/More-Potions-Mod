@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionHealth;
 
 /**
  * Class that stores all data that the new potion need and all new potion types
@@ -33,6 +32,10 @@ public class Brewing
 	public static List<BrewingBase> baseBrewings = new LinkedList<BrewingBase>();
 	/** List that stores all brewings with effects **/
 	public static List<Brewing> effectBrewings = new LinkedList<Brewing>();
+	
+	/** List that stores ingredient handlers. **/
+	public static List<IIngredientHandler> ingredientHandlers = new LinkedList<IIngredientHandler>();
+	
 	/** Version identifier for NBTs. **/
 	public static String NBTVersion = "1.0.1";
 
@@ -105,7 +108,7 @@ public class Brewing
 	public static Brewing waterWalking = new Brewing(new PotionEffect(MorePotionsMod.waterWalking.id, 20*120, 0), 0, 240*20, awkward);
 	public static Brewing waterBreathing = new Brewing(new PotionEffect(Potion.waterBreathing.id, 20*180, 0), 2, 20*360, waterWalking, new ItemStack(Item.bone), awkward);
 	public static Brewing coldness = new Brewing(new PotionEffect(MorePotionsMod.coldness.id, 20*180, 0), 1, 20*360, new ItemStack(Item.snowball), awkward);
-	public static Brewing invisibility = new Brewing(new PotionEffect(Potion.invisibility.id, 20*180, 0), 0, 720*20, (Brewing)null, (BrewingBase)getBaseBrewing(thin));
+	public static Brewing invisibility = new Brewing(new PotionEffect(Potion.invisibility.id, 20*180, 0), 0, 720*20, (Brewing)null, getBaseBrewing(thin));
 	public static Brewing blindness = new Brewing(new PotionEffect(Potion.blindness.id, 20*90, 0), 0, 20*240, new ItemStack(Item.dyePowder, 1, 0), getBaseBrewing(thin));
 	public static Brewing nightVision = new Brewing(new PotionEffect(Potion.nightVision.id, 20*180, 0), 0, 20*300, invisibility, new ItemStack(Item.goldenCarrot), getBaseBrewing(thin));
 	public static Brewing poison = new Brewing(new PotionEffect(Potion.poison.id, 20*45, 0), 2, 20*60, new ItemStack(Item.spiderEye), getBaseBrewing(acrid));
@@ -415,6 +418,7 @@ public class Brewing
 	 * @return First Brewing read from ItemStack NBT
 	 * @deprecated Use ItemPotion2.getEffects instead to get all Brewings from the ItemStack NBT
 	 */
+	@Deprecated
 	public static Brewing getBrewingFromItemStack(ItemStack par1ItemStack)
 	{
 		if (par1ItemStack != null && par1ItemStack.hasTagCompound())
@@ -428,9 +432,69 @@ public class Brewing
 		}
 		return awkward;
 	}
-
+	
+	/**
+	 * Checks if the ingredient has any effect on a potion
+	 * @param ingredient
+	 * @return
+	 */
+	public static boolean isPotionIngredient(ItemStack ingredient)
+	{
+		if (getHandlerForIngredient(ingredient) != null)
+		{
+			return true;
+		}
+		return getBrewingFromIngredient(ingredient) != null || (getHandlerForIngredient(ingredient) != null);
+	}
+	
+	/**
+	 * Finds the first registered IngredientHandler that can handle the ingredient
+	 * @param ingredient
+	 * @return
+	 */
+	public static IIngredientHandler getHandlerForIngredient(ItemStack ingredient)
+	{
+		for (IIngredientHandler handler : ingredientHandlers)
+		{
+			if (handler.canHandleIngredient(ingredient))
+			{
+				return handler;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Checks if the ingredient needs an IngredientHandler to be applied to a potion
+	 * @param ingredient
+	 * @return
+	 */
+	public static boolean isSpecialIngredient(ItemStack ingredient)
+	{
+		return getHandlerForIngredient(ingredient) != null;
+	}
+	
+	/**
+	 * Applys an ingredient to a potion
+	 * @param ingredient Ingredient
+	 * @param potion Potion
+	 * @return Potion with applied ingredients
+	 */
+	public static ItemStack applyIngredient(ItemStack ingredient, ItemStack potion)
+	{
+		if (getBrewingFromIngredient(ingredient) != null) //The ingredient is a normal ingredient or a base ingredient
+		{
+			return getBrewingFromIngredient(ingredient).addBrewingToItemStack(potion);
+		}
+		else //The ingredient is a special one that must NOT only add a Brewing NBT to the ItemStack NBT
+		{
+			return getHandlerForIngredient(ingredient).applyIngredient(ingredient, potion);
+		}
+	}
+	
 	/**
 	 * Returns a brewing that is brewed with the itemstack. it doesn't check for the amount.
+	 * Ignores Special Ingredient Handlers
 	 * @param par1
 	 * @return Brewing that is brewed with the ItemStack
 	 */
@@ -448,7 +512,10 @@ public class Brewing
 					}
 				}
 			}
-			return BrewingBase.getBrewingBaseFromIngredient(par1);
+			if (BrewingBase.getBrewingBaseFromIngredient(par1) != null)
+			{
+				return Brewing.getBrewingFromIngredient(par1);
+			}
 		}
 		return null;
 	}
@@ -492,26 +559,6 @@ public class Brewing
 		{
 			nbt.setCompoundTag("Opposite", opposite.createNBT());
 		}
-		// Dont save unneccessary data
-//		if (ingredient != null)
-//		{
-//			if (ingredient.itemID > 0)
-//			{
-//				nbt.setInteger("IngredientID", ingredient.itemID);
-//			}
-//			if (ingredient.stackSize > 0)
-//			{
-//				nbt.setInteger("IngredientAmount", ingredient.stackSize);
-//			}
-//			if (ingredient.getItemDamage() != 0)
-//			{
-//				nbt.setInteger("IngredientDamage", ingredient.getItemDamage());
-//			}
-//		}
-//		if (isRandom == true)
-//		{
-//			nbt.setBoolean("Random", isRandom);
-//		}
 		return nbt;
 	}
 

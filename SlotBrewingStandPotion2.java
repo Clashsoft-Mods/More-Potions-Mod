@@ -50,6 +50,6 @@ class SlotBrewingStandPotion2 extends Slot
      */
     public static boolean canHoldPotion(ItemStack par0ItemStack)
     {
-        return par0ItemStack != null && (par0ItemStack.itemID == Item.potion.itemID || par0ItemStack.itemID == Item.glassBottle.itemID);
+        return par0ItemStack != null && par0ItemStack.itemID == Item.potion.itemID;
     }
 }

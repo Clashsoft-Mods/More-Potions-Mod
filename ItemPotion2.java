@@ -568,4 +568,27 @@ public class ItemPotion2 extends Item
 		Brewing b = Brewing.getBrewingFromItemStack(par1ItemStack);
 		return b != null ? (b.getEffect() != null && b.getEffect().getPotionID() > 0 ? Potion.potionTypes[b.getEffect().getPotionID()].isInstant() : false) : false;
 	}
+	
+	@Override
+	public Entity createEntity(World world, Entity entity, ItemStack itemstack)
+	{
+		if (entity instanceof EntityPlayer && isSplash(itemstack.getItemDamage()))
+		{
+			if (!((EntityPlayer)entity).capabilities.isCreativeMode)
+			{
+				--itemstack.stackSize;
+			}
+
+			world.playSoundAtEntity(((EntityPlayer)entity), "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+			Entity e = new EntityPotion2(world, ((EntityPlayer)entity), itemstack);
+
+			if (!world.isRemote)
+			{
+				world.spawnEntityInWorld(e);
+			}
+
+			return e;
+		}
+		return null;
+	}
 }

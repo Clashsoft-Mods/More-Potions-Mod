@@ -1,7 +1,5 @@
 package clashsoft.mods.morepotions;
 
-import clashsoft.clashsoftapi.ClashsoftMisc;
-
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -24,6 +22,7 @@ import net.minecraft.potion.*;
 import net.minecraft.src.ModLoader;
 import net.minecraft.block.*;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
 
 @Mod(modid = "MorePotionsMod", name = "MorePotionsMod", version = "1.5")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
@@ -34,7 +33,7 @@ public class MorePotionsMod
 
 	@SidedProxy(clientSide = "clashsoft.mods.morepotions.ClientProxy", serverSide = "clashsoft.mods.morepotions.CommonProxy")
 	public static CommonProxy proxy;
-	
+
 	public static boolean multiPotions = false;
 	public static boolean advancedPotionInfo = false;
 	public static boolean animatedPotionLiquid = true;
@@ -46,7 +45,7 @@ public class MorePotionsMod
 	public static int Cauldron2_ID = 13;
 	public static int SP2_ID = EntityRegistry.findGlobalUniqueEntityId();
 	public static int PT_ID = CreativeTabs.getNextID();
-	
+
 	public static Potion fire = new Potion2("potion.fire", true, 0xFFE500, false, 2, 2);
 	public static Potion effectRemove = new Potion2("potion.effectRemove", false, 0xFFFFFF, false, 3, 2);
 	public static Potion waterWalking = new Potion2("potion.waterWalking", false, 0x124EFE, false, 4, 2);
@@ -64,23 +63,24 @@ public class MorePotionsMod
 	{
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
-		
+
 		BrewingStand2_ID = config.get("TileEntityIDs", "BrewingStand2TEID", 11).getInt();
 		Mixer_ID = config.get("TileEntityIDs", "MixerTEID", 12).getInt();
 		Cauldron2_ID = config.get("TileEntityIDs", "Cauldron2TEID", 13).getInt();
-		
+
 		multiPotions = config.get("Potions", "MultiPotions", false, "If true, potions with 2 different effects are shown in the creative inventory.").getBoolean(false);
 		advancedPotionInfo = config.get("Potions", "AdvancedPotionInfo", false).getBoolean(false);
 		animatedPotionLiquid = config.get("Potions", "AnimatedPotionLiquid", true).getBoolean(true);
 		showAllBaseBrewings = config.get("Potions", "ShowAllBaseBrewings", false, "If true, all base potions are shown in creative inventory.").getBoolean(false);
 		defaultAwkwardBrewing = config.get("Potions", "DefaultAwkwardBrewing", false, "If true, all potions can be brewed with an awkward potion.").getBoolean(false);
-		
+
 		config.save();
 	}
 	@Init
 	public void load(FMLInitializationEvent event)
 	{	
 		Brewing.registerBrewings();
+		BrewingAPI.registerIngredientHandler(new MorePotionsModIngredientHandler());
 
 		GameRegistry.registerTileEntity(TileEntityBrewingStand2.class, "BrewingStand2");
 		GameRegistry.registerTileEntity(TileEntityMixer.class, "Mixxer");
@@ -93,7 +93,7 @@ public class MorePotionsMod
 		brewingStand2 = (new BlockBrewingStand2(Block.brewingStand.blockID)).setHardness(0.5F).setLightValue(0.125F).setUnlocalizedName("brewingStand");
 		Block.blocksList[Block.cauldron.blockID] = null;
 		cauldron2 = (new BlockCauldron2(Block.cauldron.blockID)).setHardness(2.0F).setUnlocalizedName("cauldron");;
-		
+
 		mixxer = (new BlockMixer(190)).setUnlocalizedName("mixxer").setCreativeTab(CreativeTabs.tabBrewing);
 		ModLoader.registerBlock(brewingStand2);
 		ModLoader.registerBlock(mixxer);
@@ -101,13 +101,13 @@ public class MorePotionsMod
 
 		Item.itemsList[Item.brewingStand.itemID] = null;
 		brewingStand2Item = (new ItemReed(123, brewingStand2)).setUnlocalizedName("brewingStand").setCreativeTab(CreativeTabs.tabBrewing);
-		
+
 		Item.itemsList[Item.cauldron.itemID] = null;
 		brewingStand2Item = (new ItemReed(124, cauldron2)).setUnlocalizedName("cauldron").setCreativeTab(CreativeTabs.tabBrewing);
 
 		Item.itemsList[Item.potion.itemID - 256] = null;
 		potion2 = (ItemPotion2)(new ItemPotion2(117)).setUnlocalizedName("potion");
-		
+
 		Item.itemsList[Item.glassBottle.itemID - 256] = null;
 		glassBottle2 = (ItemGlassBottle2) (new ItemGlassBottle2(118)).setUnlocalizedName("glassBottle");
 
@@ -119,7 +119,7 @@ public class MorePotionsMod
 		NetworkRegistry.instance().registerGuiHandler(INSTANCE, proxy);
 		proxy.registerRenderInformation();
 		proxy.registerRenderers();
-		
+
 		ModLoader.addDispenserBehavior(potion2, new DispenserBehaviorPotion());
 	}
 
@@ -147,21 +147,21 @@ public class MorePotionsMod
 		LanguageRegistry.instance().addStringLocalization("potion.fire", "Fire");
 		LanguageRegistry.instance().addStringLocalization("potion.fire", "de_DE", "Feuer");
 		LanguageRegistry.instance().addStringLocalization("potion.fire", "es_ES", "Fuego");
-		
+
 		LanguageRegistry.instance().addStringLocalization("potion.effectRemove.postfix", "Potion of Effect Removing");
 		LanguageRegistry.instance().addStringLocalization("potion.effectRemove.postfix", "de_DE", "Trank der Effektentfernung");
 		LanguageRegistry.instance().addStringLocalization("potion.effectRemove.postfix", "es_ES", "Poci\u00F3n de no effectos");
 		LanguageRegistry.instance().addStringLocalization("potion.effectRemove", "Effect Removing");
 		LanguageRegistry.instance().addStringLocalization("potion.effectRemove", "de_DE", "Effektentfernung");
 		LanguageRegistry.instance().addStringLocalization("potion.effectRemove", "es_ES", "Eliminaci\u00F3n de los effectos");
-		
+
 		LanguageRegistry.instance().addStringLocalization("potion.waterWalking.postfix", "Potion of Water Walking");
 		LanguageRegistry.instance().addStringLocalization("potion.waterWalking.postfix", "de_DE", "Trank des \u00dcberwasserlaufens");
 		LanguageRegistry.instance().addStringLocalization("potion.waterWalking.postfix", "es_ES", "Poci\u00F3n de irse sobre el agua");
 		LanguageRegistry.instance().addStringLocalization("potion.waterWalking", "Water Walking");
 		LanguageRegistry.instance().addStringLocalization("potion.waterWalking", "de_DE", "\u00dcberwasserlaufen");
 		LanguageRegistry.instance().addStringLocalization("potion.waterWalking", "es_ES", "Ir sobre el agua");
-		
+
 		LanguageRegistry.instance().addStringLocalization("potion.coldness.postfix", "Potion of Coldness");
 		LanguageRegistry.instance().addStringLocalization("potion.coldness.postfix", "de_DE", "Trank der K\u00e4lte");
 		LanguageRegistry.instance().addStringLocalization("potion.coldness.postfix", "es_ES", "Poci\u00F3n de la frialdad");
@@ -184,7 +184,7 @@ public class MorePotionsMod
 		LanguageRegistry.instance().addStringLocalization("potion.and", "and");
 		LanguageRegistry.instance().addStringLocalization("potion.and", "de_DE", "und");
 		LanguageRegistry.instance().addStringLocalization("potion.and", "es_ES", "y");
-		
+
 		LanguageRegistry.instance().addStringLocalization("potion.highestamplifier", "Highest Amplifier");
 		LanguageRegistry.instance().addStringLocalization("potion.highestamplifier", "de_DE", "Gr\u00f6\u00dftes Level");
 		LanguageRegistry.instance().addStringLocalization("potion.highestamplifier", "es_ES", "Alto Nivel");
@@ -200,12 +200,11 @@ public class MorePotionsMod
 		LanguageRegistry.instance().addStringLocalization("potion.value", "Value");
 		LanguageRegistry.instance().addStringLocalization("potion.value", "de_DE", "Wert");
 		LanguageRegistry.instance().addStringLocalization("potion.value", "es_ES", "Valor");
-		
+
 		LanguageRegistry.instance().addStringLocalization("potion.alleffects.postfix", "Potion of all Effects");
 		LanguageRegistry.instance().addStringLocalization("potion.alleffects.postfix", "de_DE", "Trank aller Effekte");
 		LanguageRegistry.instance().addStringLocalization("potion.alleffects.postfix", "es_ES", "Poci\u00F3n de todos los efectos");
 	}
-
 
 	public class MorePotionsModEventHooks
 	{
@@ -263,6 +262,36 @@ public class MorePotionsMod
 					event.entityLiving.worldObj.setBlock(x, y, z, Block.snow.blockID);
 				}
 			}
+		}
+	}
+	
+	public class MorePotionsModIngredientHandler implements IIngredientHandler
+	{
+		@Override
+		public boolean canHandleIngredient(ItemStack ingredient)
+		{
+			return ingredient.itemID == Block.pistonBase.blockID;
+		}
+		
+		@Override
+		public boolean canApplyIngredient(ItemStack ingredient, ItemStack potion)
+		{
+			if (ingredient != null && ingredient.itemID == Block.pistonBase.blockID && potion.getItemDamage() != 12)
+			{
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public ItemStack applyIngredient(ItemStack ingredient, ItemStack potion)
+		{
+			if (ingredient.itemID == Block.pistonBase.blockID)
+			{
+				potion.setItemDamage(12);
+				potion.addEnchantment(Enchantment.infinity, 27);
+			}
+			return potion;
 		}
 	}
 }
