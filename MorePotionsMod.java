@@ -23,6 +23,7 @@ import net.minecraft.src.ModLoader;
 import net.minecraft.block.*;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.EntityLiving;
 
 @Mod(modid = "MorePotionsMod", name = "MorePotionsMod", version = "1.5.2")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
@@ -71,10 +72,7 @@ public class MorePotionsMod
 		BrewingStand2_ID = config.get("TileEntityIDs", "BrewingStand2TEID", 11).getInt();
 		Mixer_ID = config.get("TileEntityIDs", "MixerTEID", 12).getInt();
 		Cauldron2_ID = config.get("TileEntityIDs", "Cauldron2TEID", 13).getInt();
-<<<<<<< HEAD
-=======
 		UnbrewingStand_ID =config.get("TileEntityIDs", "UnbrewingStandTEID", 14).getInt();
->>>>>>> Update to 1.5.2
 
 		multiPotions = config.get("Potions", "MultiPotions", false, "If true, potions with 2 different effects are shown in the creative inventory.").getBoolean(false);
 		advancedPotionInfo = config.get("Potions", "AdvancedPotionInfo", false).getBoolean(false);
@@ -94,24 +92,25 @@ public class MorePotionsMod
 		GameRegistry.registerTileEntity(TileEntityMixer.class, "Mixxer");
 		GameRegistry.registerTileEntity(TileEntityCauldron.class, "Cauldron2");
 		GameRegistry.registerTileEntity(TileEntityUnbrewingStand.class, "UnbrewingStand");
-		MinecraftForge.EVENT_BUS.register(new MorePotionsModEventHooks());
+		MinecraftForge.EVENT_BUS.register(new BrewingAPI());
+		BrewingAPI.registerEffectHandler(new MorePotionsModEffectHandler());
 		EntityRegistry.registerGlobalEntityID(EntityPotion2.class, "SplashPotion2", MorePotionsMod.SP2_ID);
 		EntityRegistry.registerModEntity(EntityPotion2.class, "SplashPotion2", MorePotionsMod.SP2_ID, this, 100, 20, true);
 
 		Block.blocksList[Block.brewingStand.blockID] = null;
 		brewingStand2 = (new BlockBrewingStand2(Block.brewingStand.blockID)).setHardness(0.5F).setLightValue(0.125F).setUnlocalizedName("brewingStand");
-<<<<<<< HEAD
+
 		Block.blocksList[Block.cauldron.blockID] = null;
 		cauldron2 = (new BlockCauldron2(Block.cauldron.blockID)).setHardness(2.0F).setUnlocalizedName("cauldron");;
 
 		mixxer = (new BlockMixer(190)).setUnlocalizedName("mixxer").setCreativeTab(CreativeTabs.tabBrewing);
-=======
+
 		//Block.blocksList[Block.cauldron.blockID] = null;
 		//cauldron2 = (new BlockCauldron2(Block.cauldron.blockID)).setHardness(2.0F).setUnlocalizedName("cauldron");;
 
 		mixxer = (new BlockMixer(190)).setUnlocalizedName("mixer").setCreativeTab(CreativeTabs.tabBrewing);
 		unbrewingStand = (new BlockUnbrewingStand(191)).setUnlocalizedName("unbrewingstand").setCreativeTab(null);
->>>>>>> Update to 1.5.2
+
 		ModLoader.registerBlock(brewingStand2);
 		ModLoader.registerBlock(mixxer);
 		//ModLoader.registerBlock(cauldron2);
@@ -121,13 +120,13 @@ public class MorePotionsMod
 		Item.itemsList[Item.brewingStand.itemID] = null;
 		brewingStand2Item = (new ItemReed(123, brewingStand2)).setUnlocalizedName("brewingStand").setCreativeTab(CreativeTabs.tabBrewing);
 
-<<<<<<< HEAD
+
 		Item.itemsList[Item.cauldron.itemID] = null;
 		brewingStand2Item = (new ItemReed(124, cauldron2)).setUnlocalizedName("cauldron").setCreativeTab(CreativeTabs.tabBrewing);
-=======
+
 		//Item.itemsList[Item.cauldron.itemID] = null;
 		//brewingStand2Item = (new ItemReed(124, cauldron2)).setUnlocalizedName("cauldron").setCreativeTab(CreativeTabs.tabBrewing);
->>>>>>> Update to 1.5.2
+
 
 		Item.itemsList[Item.potion.itemID - 256] = null;
 		potion2 = (ItemPotion2)(new ItemPotion2(117)).setUnlocalizedName("potion");
@@ -161,7 +160,7 @@ public class MorePotionsMod
 		LanguageRegistry.instance().addStringLocalization("tile.mixer.name", "Mixer");
 		LanguageRegistry.instance().addStringLocalization("tile.mixer.name", "de_DE", "Mischer");
 		LanguageRegistry.instance().addStringLocalization("tile.mixer.name", "es_ES", "Mezclador");
-		
+
 		LanguageRegistry.instance().addStringLocalization("tile.unbrewingstand.name", "Unbrewing Stand");
 		LanguageRegistry.instance().addStringLocalization("tile.unbrewingstand.name", "de_DE", "Entbrau-Maschine");
 
@@ -230,112 +229,84 @@ public class MorePotionsMod
 		LanguageRegistry.instance().addStringLocalization("potion.alleffects.postfix", "es_ES", "Poci\u00F3n de todos los efectos");
 	}
 
-	public class MorePotionsModEventHooks
+	public class MorePotionsModEffectHandler implements IPotionEffectHandler
 	{
 		@ForgeSubscribe
-		public void onEntityUpdate(LivingUpdateEvent event)
+		public void onPotionUpdate(EntityLiving living, PotionEffect effect)
 		{
-			if (event.entityLiving.isPotionActive(MorePotionsMod.fire))
+			if (effect.getPotionID() == (MorePotionsMod.fire.id))
 			{
-				event.entityLiving.setFire(4);
+				living.setFire(4);
 			}
-			if (event.entityLiving.isPotionActive(MorePotionsMod.effectRemove))
+			if (effect.getPotionID() == (MorePotionsMod.effectRemove.id))
 			{
 				for (int i = 0; i < Potion.potionTypes.length; i++)
 				{
 					if (i != MorePotionsMod.effectRemove.id)
 					{
-						event.entityLiving.removePotionEffect(i);
+						living.removePotionEffect(i);
 					}
 				}
 			}
-			if (event.entityLiving.isPotionActive(MorePotionsMod.waterWalking))
+			if (effect.getPotionID() == (MorePotionsMod.waterWalking.id))
 			{
-				if (event.entityLiving.isPotionActive(MorePotionsMod.waterWalking))
+				int x = (int) Math.floor(living.posX);
+				int y = (int) (living.posY - living.getYOffset());
+				int z = (int) Math.floor(living.posZ);
+				if (living.worldObj.getBlockId(x, y - 1, z) == 9 && living.worldObj.getBlockId(x, y, z) == 0)
 				{
-					int x = (int) Math.floor(event.entityLiving.posX);
-					int y = (int) (event.entityLiving.posY - event.entityLiving.getYOffset());
-					int z = (int) Math.floor(event.entityLiving.posZ);
-					if (event.entityLiving.worldObj.getBlockId(x, y - 1, z) == 9 && event.entityLiving.worldObj.getBlockId(x, y, z) == 0)
+					if (living.motionY < 0 && living.boundingBox.minY < y)
 					{
-						if (event.entityLiving.motionY < 0 && event.entityLiving.boundingBox.minY < y)
+						living.motionY = 0;
+						living.fallDistance = 0;
+						living.onGround = true;
+						if (living.isSneaking())
 						{
-							event.entityLiving.motionY = 0;
-							event.entityLiving.fallDistance = 0;
-							event.entityLiving.onGround = true;
-							if (event.entityLiving.isSneaking())
-							{
-								event.entityLiving.motionY -= 0.1F;
-							}
+							living.motionY -= 0.1F;
 						}
 					}
 				}
 			}
-			if (event.entityLiving.isPotionActive(MorePotionsMod.coldness.id))
+			if (effect.getPotionID() == (MorePotionsMod.coldness.id))
 			{
-				int x = (int) Math.floor(event.entityLiving.posX);
-				int y = (int) (event.entityLiving.posY - event.entityLiving.getYOffset());
-				int z = (int) Math.floor(event.entityLiving.posZ);
-				int id = event.entityLiving.worldObj.getBlockId(x, y - 1, z);
+				int x = (int) Math.floor(living.posX);
+				int y = (int) (living.posY - living.getYOffset());
+				int z = (int) Math.floor(living.posZ);
+				int id = living.worldObj.getBlockId(x, y - 1, z);
 				if (id == Block.waterMoving.blockID || id == Block.waterStill.blockID)
 				{
-					event.entityLiving.worldObj.setBlock(x, y - 1, z, Block.ice.blockID);
+					living.worldObj.setBlock(x, y - 1, z, Block.ice.blockID);
 				}
-				if (event.entityLiving.getActivePotionEffect(MorePotionsMod.coldness).getAmplifier() > 0 && Block.blocksList[id] != null && Block.blocksList[id].isBlockSolidOnSide(event.entityLiving.worldObj, x, y - 1, z, ForgeDirection.UP) && event.entityLiving.worldObj.getBlockId(x, y, z) == 0)
+				if (living.getActivePotionEffect(MorePotionsMod.coldness).getAmplifier() > 0 && Block.blocksList[id] != null && Block.blocksList[id].isBlockSolidOnSide(living.worldObj, x, y - 1, z, ForgeDirection.UP) && living.worldObj.getBlockId(x, y, z) == 0)
 				{
-					event.entityLiving.worldObj.setBlock(x, y, z, Block.snow.blockID);
+					living.worldObj.setBlock(x, y, z, Block.snow.blockID);
 				}
 			}
-			if (event.entityLiving.isPotionActive(MorePotionsMod.ironSkin.id))
+			if (effect.getPotionID() == (MorePotionsMod.ironSkin.id))
 			{
-				event.entityLiving.fireResistance = 10;
-				event.entityLiving.addPotionEffect(new PotionEffect(Potion.resistance.id, 1, 0));
+				living.fireResistance = 10;
+				living.addPotionEffect(new PotionEffect(Potion.resistance.id, 1, 0));
 			}
-			if (event.entityLiving.isPotionActive(MorePotionsMod.obsidianSkin.id))
+			if (effect.getPotionID() == (MorePotionsMod.obsidianSkin.id))
 			{
-				
+
 			}
 		}
+		
+		public boolean canHandle(PotionEffect effect)
+		{
+			return true;
+		}
 	}
-	
+
 	public class MorePotionsModIngredientHandler implements IIngredientHandler
 	{
 		@Override
 		public boolean canHandleIngredient(ItemStack ingredient)
 		{
 			return ingredient.itemID == Block.pistonBase.blockID;
-		}
-		
-		@Override
-		public boolean canApplyIngredient(ItemStack ingredient, ItemStack potion)
-		{
-			if (ingredient != null && ingredient.itemID == Block.pistonBase.blockID && potion.getItemDamage() != 12)
-			{
-				return true;
-			}
-			return false;
 		}
 
-		@Override
-		public ItemStack applyIngredient(ItemStack ingredient, ItemStack potion)
-		{
-			if (ingredient.itemID == Block.pistonBase.blockID)
-			{
-				potion.setItemDamage(12);
-				potion.addEnchantment(Enchantment.infinity, 27);
-			}
-			return potion;
-		}
-	}
-	
-	public class MorePotionsModIngredientHandler implements IIngredientHandler
-	{
-		@Override
-		public boolean canHandleIngredient(ItemStack ingredient)
-		{
-			return ingredient.itemID == Block.pistonBase.blockID;
-		}
-		
 		@Override
 		public boolean canApplyIngredient(ItemStack ingredient, ItemStack potion)
 		{

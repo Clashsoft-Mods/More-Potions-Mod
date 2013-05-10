@@ -12,11 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-<<<<<<< HEAD
-=======
 import net.minecraft.src.ModLoader;
 import net.minecraftforge.oredict.OreDictionary;
->>>>>>> Update to 1.5.2
 
 /**
  * Class that stores all data that the new potion need and all new potion types
