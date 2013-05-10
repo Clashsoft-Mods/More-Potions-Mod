@@ -23,7 +23,7 @@ public class BrewingAPI
 		Brewing.ingredientHandlers.add(par1iIngredientHandler);
 	}
 	
-	public static void registerPotionEffectHandler(IPotionEffectHandler par1iPotionEffectHandler)
+	public static void registerEffectHandler(IPotionEffectHandler par1iPotionEffectHandler)
 	{
 		if (!effectHandlers.contains(par1iPotionEffectHandler))
 		{
@@ -32,15 +32,15 @@ public class BrewingAPI
 	}
 	
 	@ForgeSubscribe
-	public void onLivingUpdate(LivingUpdateEvent event)
+	public void onEntityUpdate(LivingUpdateEvent event)
 	{
 		for (IPotionEffectHandler handler : effectHandlers)
 		{
 			for (Object effect : event.entityLiving.getActivePotionEffects())
 			{
-				if (handler.canHandle((PotionEffect) effect))
+				if (handler.canHandle((PotionEffect)effect))
 				{
-					handler.onPotionUpdate(event.entityLiving, (PotionEffect) effect);
+					handler.onPotionUpdate(event.entityLiving, (PotionEffect)effect);
 				}
 			}
 		}

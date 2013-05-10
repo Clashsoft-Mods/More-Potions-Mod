@@ -31,16 +31,16 @@ public class BlockUnbrewingStand extends BlockContainer
 	@Override
     public Icon getIcon(int par1, int par2)
     {
-    	return par1 == 0 ? top : par1 == 1 ? top : side;
+    	return par1 == 0 ? bottom : par1 == 1 ? top : side;
     }
     
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.top = par1IconRegister.registerIcon("destroy_3");
-        this.bottom = par1IconRegister.registerIcon("destroy_6");
-        this.side = par1IconRegister.registerIcon("destroy_9");
+        this.top = par1IconRegister.registerIcon("dispenser_front_vertical");
+        this.bottom = par1IconRegister.registerIcon("furnace_top");
+        this.side = par1IconRegister.registerIcon("repeater");
     }
 
 	@Override
