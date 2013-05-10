@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class BrewingBase extends Brewing
 {
@@ -30,6 +31,10 @@ public class BrewingBase extends Brewing
 		{
 			for (BrewingBase b : baseBrewings2)
 			{
+				if (OreDictionary.itemMatches(b.getIngredient(), par1ItemStack, true))
+				{
+					return b;
+				}
 				if (b.getIngredient().getItem() == par1ItemStack.getItem() && b.getIngredient().getItemDamage() == par1ItemStack.getItemDamage())
 				{
 					return b;

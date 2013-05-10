@@ -60,7 +60,7 @@ public class BlockMixer extends BlockContainer
     }
     
     @Override
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
     	return par1 == 0 ? top : par1 == 1 ? top : side;
     }
@@ -139,7 +139,7 @@ public class BlockMixer extends BlockContainer
     {
         TileEntity var7 = par1World.getBlockTileEntity(par2, par3, par4);
 
-        if (var7 instanceof TileEntityBrewingStand)
+        if (var7 instanceof TileEntityMixer)
         {
             TileEntityMixer var8 = (TileEntityMixer)var7;
 
@@ -191,6 +191,6 @@ public class BlockMixer extends BlockContainer
 	@Override
     public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
-        return Container.func_94526_b((IInventory)par1World.getBlockTileEntity(par2, par3, par4));
+        return Container.calcRedstoneFromInventory((IInventory)par1World.getBlockTileEntity(par2, par3, par4));
     }
 }

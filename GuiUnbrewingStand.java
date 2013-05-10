@@ -3,24 +3,22 @@ package clashsoft.mods.morepotions;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerBrewingStand;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class GuiMixer extends GuiContainer
+public class GuiUnbrewingStand extends GuiContainer
 {
-    private TileEntityMixer mixxer;
+    private TileEntityUnbrewingStand unbrewingStand;
 
-    public GuiMixer(InventoryPlayer par1InventoryPlayer, TileEntityMixer par2TileEntityMixxer)
+    public GuiUnbrewingStand(InventoryPlayer par1InventoryPlayer, TileEntityUnbrewingStand par2TileEntityUnbrewingStand)
     {
-        super(new ContainerMixer(par1InventoryPlayer, par2TileEntityMixxer));
-        this.mixxer = par2TileEntityMixxer;
-        par2TileEntityMixxer.player = par1InventoryPlayer.player;
+        super(new ContainerUnbrewingStand(par1InventoryPlayer, par2TileEntityUnbrewingStand));
+        this.unbrewingStand = par2TileEntityUnbrewingStand;
+        unbrewingStand.thePlayer = par1InventoryPlayer.player;
     }
 
     /**
@@ -28,7 +26,8 @@ public class GuiMixer extends GuiContainer
      */
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(StatCollector.translateToLocal("tile.mixer.name"), 60, 6, 4210752);
+    	String s = this.unbrewingStand.isInvNameLocalized() ? this.unbrewingStand.getInvName() : StatCollector.translateToLocal(this.unbrewingStand.getInvName());
+        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
         this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
@@ -38,20 +37,19 @@ public class GuiMixer extends GuiContainer
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture("/MorePotionsMod/gui/mixxer_gui.png");
+        this.mc.renderEngine.bindTexture("/MorePotionsMod/gui/extractor_gui.png");
         int var5 = (this.width - this.xSize) / 2;
         int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
-        int var7 = this.mixxer.getMixTime();
+        int var7 = this.unbrewingStand.getBrewTime();
 
         if (var7 > 0)
         {
-            int var8 = (int)(28.0F * (1.0F - (float)var7 / mixxer.maxMixTime));
+            int var8 = (int)(28.0F * (1.0F - (float)var7 / unbrewingStand.getMaxBrewTime()));
 
             if (var8 > 0)
             {
-                this.drawTexturedModalRect(var5 + 97, var6 + 41, 176, 0, 9, var8);
-                this.drawTexturedModalRect(var5 + 68, var6 + 41, 176, 0, 9, var8);
+                this.drawTexturedModalRect(var5 + 97, var6 + 16, 176, 0, 9, var8);
             }
 
             int var9 = var7 / 2 % 7;
@@ -82,7 +80,7 @@ public class GuiMixer extends GuiContainer
 
             if (var8 > 0)
             {
-                this.drawTexturedModalRect(var5 + 65, var6 + 50 - var8, 185, 29 - var8, 12, var8);
+                this.drawTexturedModalRect(var5 + 65, var6 + 14 + 29 - var8, 185, 29 - var8, 12, var8);
             }
         }
     }

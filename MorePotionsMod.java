@@ -24,7 +24,7 @@ import net.minecraft.block.*;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 
-@Mod(modid = "MorePotionsMod", name = "MorePotionsMod", version = "1.5")
+@Mod(modid = "MorePotionsMod", name = "MorePotionsMod", version = "1.5.2")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class MorePotionsMod
 {
@@ -43,6 +43,7 @@ public class MorePotionsMod
 	public static int BrewingStand2_ID = 11;
 	public static int Mixer_ID = 12;
 	public static int Cauldron2_ID = 13;
+	public static int UnbrewingStand_ID = 14;
 	public static int SP2_ID = EntityRegistry.findGlobalUniqueEntityId();
 	public static int PT_ID = CreativeTabs.getNextID();
 
@@ -50,10 +51,13 @@ public class MorePotionsMod
 	public static Potion effectRemove = new Potion2("potion.effectRemove", false, 0xFFFFFF, false, 3, 2);
 	public static Potion waterWalking = new Potion2("potion.waterWalking", false, 0x124EFE, false, 4, 2);
 	public static Potion coldness = new Potion2("potion.coldness", false, 0x00DDFF, false, 5, 2);
+	public static Potion ironSkin = new Potion2("potion.ironSkin", false, 0xCCCCCC, false, 6, 2);
+	public static Potion obsidianSkin = new Potion2("potion.obsidianSkin", false, 0xFFEEFF, false, 7, 2);
 
 	public static Block brewingStand2;
 	public static Block mixxer;
 	public static Block cauldron2;
+	public static Block unbrewingStand;
 	public static Item brewingStand2Item;
 	public static ItemPotion2 potion2;
 	public static ItemGlassBottle2 glassBottle2;
@@ -67,6 +71,10 @@ public class MorePotionsMod
 		BrewingStand2_ID = config.get("TileEntityIDs", "BrewingStand2TEID", 11).getInt();
 		Mixer_ID = config.get("TileEntityIDs", "MixerTEID", 12).getInt();
 		Cauldron2_ID = config.get("TileEntityIDs", "Cauldron2TEID", 13).getInt();
+<<<<<<< HEAD
+=======
+		UnbrewingStand_ID =config.get("TileEntityIDs", "UnbrewingStandTEID", 14).getInt();
+>>>>>>> Update to 1.5.2
 
 		multiPotions = config.get("Potions", "MultiPotions", false, "If true, potions with 2 different effects are shown in the creative inventory.").getBoolean(false);
 		advancedPotionInfo = config.get("Potions", "AdvancedPotionInfo", false).getBoolean(false);
@@ -85,25 +93,41 @@ public class MorePotionsMod
 		GameRegistry.registerTileEntity(TileEntityBrewingStand2.class, "BrewingStand2");
 		GameRegistry.registerTileEntity(TileEntityMixer.class, "Mixxer");
 		GameRegistry.registerTileEntity(TileEntityCauldron.class, "Cauldron2");
+		GameRegistry.registerTileEntity(TileEntityUnbrewingStand.class, "UnbrewingStand");
 		MinecraftForge.EVENT_BUS.register(new MorePotionsModEventHooks());
 		EntityRegistry.registerGlobalEntityID(EntityPotion2.class, "SplashPotion2", MorePotionsMod.SP2_ID);
 		EntityRegistry.registerModEntity(EntityPotion2.class, "SplashPotion2", MorePotionsMod.SP2_ID, this, 100, 20, true);
 
 		Block.blocksList[Block.brewingStand.blockID] = null;
 		brewingStand2 = (new BlockBrewingStand2(Block.brewingStand.blockID)).setHardness(0.5F).setLightValue(0.125F).setUnlocalizedName("brewingStand");
+<<<<<<< HEAD
 		Block.blocksList[Block.cauldron.blockID] = null;
 		cauldron2 = (new BlockCauldron2(Block.cauldron.blockID)).setHardness(2.0F).setUnlocalizedName("cauldron");;
 
 		mixxer = (new BlockMixer(190)).setUnlocalizedName("mixxer").setCreativeTab(CreativeTabs.tabBrewing);
+=======
+		//Block.blocksList[Block.cauldron.blockID] = null;
+		//cauldron2 = (new BlockCauldron2(Block.cauldron.blockID)).setHardness(2.0F).setUnlocalizedName("cauldron");;
+
+		mixxer = (new BlockMixer(190)).setUnlocalizedName("mixer").setCreativeTab(CreativeTabs.tabBrewing);
+		unbrewingStand = (new BlockUnbrewingStand(191)).setUnlocalizedName("unbrewingstand").setCreativeTab(null);
+>>>>>>> Update to 1.5.2
 		ModLoader.registerBlock(brewingStand2);
 		ModLoader.registerBlock(mixxer);
+		//ModLoader.registerBlock(cauldron2);
+		ModLoader.registerBlock(unbrewingStand);
 		ModLoader.addRecipe(new ItemStack(mixxer), new Object[] {"gSg", "g g", "SiS", 'g', Block.thinGlass, 'S', Block.stone, 'i', Item.ingotIron});
 
 		Item.itemsList[Item.brewingStand.itemID] = null;
 		brewingStand2Item = (new ItemReed(123, brewingStand2)).setUnlocalizedName("brewingStand").setCreativeTab(CreativeTabs.tabBrewing);
 
+<<<<<<< HEAD
 		Item.itemsList[Item.cauldron.itemID] = null;
 		brewingStand2Item = (new ItemReed(124, cauldron2)).setUnlocalizedName("cauldron").setCreativeTab(CreativeTabs.tabBrewing);
+=======
+		//Item.itemsList[Item.cauldron.itemID] = null;
+		//brewingStand2Item = (new ItemReed(124, cauldron2)).setUnlocalizedName("cauldron").setCreativeTab(CreativeTabs.tabBrewing);
+>>>>>>> Update to 1.5.2
 
 		Item.itemsList[Item.potion.itemID - 256] = null;
 		potion2 = (ItemPotion2)(new ItemPotion2(117)).setUnlocalizedName("potion");
@@ -134,12 +158,12 @@ public class MorePotionsMod
 		LanguageRegistry.instance().addStringLocalization("potion.potency.8", "IX");
 		LanguageRegistry.instance().addStringLocalization("potion.potency.9", "X");
 
-		LanguageRegistry.instance().addStringLocalization("container.mixxer", "Mixer");
-		LanguageRegistry.instance().addStringLocalization("container.mixxer", "de_DE", "Mischer");
-		LanguageRegistry.instance().addStringLocalization("container.mixxer", "es_ES", "Mezclador");
-		LanguageRegistry.instance().addStringLocalization("tile.mixxer.name", "Mixer");
-		LanguageRegistry.instance().addStringLocalization("tile.mixxer.name", "de_DE", "Mischer");
-		LanguageRegistry.instance().addStringLocalization("tile.mixxer.name", "es_ES", "Mezclador");
+		LanguageRegistry.instance().addStringLocalization("tile.mixer.name", "Mixer");
+		LanguageRegistry.instance().addStringLocalization("tile.mixer.name", "de_DE", "Mischer");
+		LanguageRegistry.instance().addStringLocalization("tile.mixer.name", "es_ES", "Mezclador");
+		
+		LanguageRegistry.instance().addStringLocalization("tile.unbrewingstand.name", "Unbrewing Stand");
+		LanguageRegistry.instance().addStringLocalization("tile.unbrewingstand.name", "de_DE", "Entbrau-Maschine");
 
 		LanguageRegistry.instance().addStringLocalization("potion.fire.postfix", "Potion of Fire");
 		LanguageRegistry.instance().addStringLocalization("potion.fire.postfix", "de_DE", "Trank des Feuers");
@@ -262,6 +286,45 @@ public class MorePotionsMod
 					event.entityLiving.worldObj.setBlock(x, y, z, Block.snow.blockID);
 				}
 			}
+			if (event.entityLiving.isPotionActive(MorePotionsMod.ironSkin.id))
+			{
+				event.entityLiving.fireResistance = 10;
+				event.entityLiving.addPotionEffect(new PotionEffect(Potion.resistance.id, 1, 0));
+			}
+			if (event.entityLiving.isPotionActive(MorePotionsMod.obsidianSkin.id))
+			{
+				
+			}
+		}
+	}
+	
+	public class MorePotionsModIngredientHandler implements IIngredientHandler
+	{
+		@Override
+		public boolean canHandleIngredient(ItemStack ingredient)
+		{
+			return ingredient.itemID == Block.pistonBase.blockID;
+		}
+		
+		@Override
+		public boolean canApplyIngredient(ItemStack ingredient, ItemStack potion)
+		{
+			if (ingredient != null && ingredient.itemID == Block.pistonBase.blockID && potion.getItemDamage() != 12)
+			{
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public ItemStack applyIngredient(ItemStack ingredient, ItemStack potion)
+		{
+			if (ingredient.itemID == Block.pistonBase.blockID)
+			{
+				potion.setItemDamage(12);
+				potion.addEnchantment(Enchantment.infinity, 27);
+			}
+			return potion;
 		}
 	}
 	

@@ -107,7 +107,7 @@ public class TileEntityBrewingStand2 extends TileEntityBrewingStand implements I
 
 	private void spawnXP()
 	{
-		if (!this.thePlayer.worldObj.isRemote)
+		if (this.thePlayer != null && !this.thePlayer.worldObj.isRemote)
 		{
 			int i = getPotions();
 			float f = 0F;

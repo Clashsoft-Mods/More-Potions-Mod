@@ -1,6 +1,6 @@
 package clashsoft.mods.morepotions;
 
-import clashsoft.clashsoftapi.ClashsoftMisc;
+import clashsoft.clashsoftapi.CSUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
@@ -31,7 +31,7 @@ public class Potion2 extends Potion {
 		return instant;
 	}
 	
-	private static int getNextFreeID()
+	public static int getNextFreeID()
 	{
 		int id = 32;
 		for (int i = 0; i < potionTypes.length; i++)

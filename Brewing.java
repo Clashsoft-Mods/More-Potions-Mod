@@ -12,6 +12,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+<<<<<<< HEAD
+=======
+import net.minecraft.src.ModLoader;
+import net.minecraftforge.oredict.OreDictionary;
+>>>>>>> Update to 1.5.2
 
 /**
  * Class that stores all data that the new potion need and all new potion types
@@ -104,6 +109,8 @@ public class Brewing
 	public static Brewing confusion = new Brewing(new PotionEffect(Potion.confusion.id, 20*90, 0), 2, 20*180, new ItemStack(Item.poisonousPotato), awkward);
 	public static Brewing regeneration = new Brewing(new PotionEffect(Potion.regeneration.id, 20*45, 0), 2, 20*180, moveSlowdown, new ItemStack(Item.ghastTear), awkward);
 	public static Brewing resistance = new Brewing(new PotionEffect(Potion.resistance.id, 20*180, 0), 3, 20*240, new ItemStack(Item.diamond), getBaseBrewing(thick));
+	public static Brewing ironSkin = new Brewing(new PotionEffect(MorePotionsMod.ironSkin.id, 20*120, 0), 1, 20*240, getBaseBrewing(thick));
+	public static Brewing obsidianSkin = new Brewing(new PotionEffect(MorePotionsMod.obsidianSkin.id, 20*120, 0), 1, 20*240, getBaseBrewing(thick));
 	public static Brewing fireResistance = new Brewing(new PotionEffect(Potion.fireResistance.id, 20*180, 0), 0, 20*360, moveSlowdown, new ItemStack(Item.magmaCream), awkward);
 	public static Brewing waterWalking = new Brewing(new PotionEffect(MorePotionsMod.waterWalking.id, 20*120, 0), 0, 240*20, awkward);
 	public static Brewing waterBreathing = new Brewing(new PotionEffect(Potion.waterBreathing.id, 20*180, 0), 2, 20*360, waterWalking, new ItemStack(Item.bone), awkward);
@@ -116,6 +123,7 @@ public class Brewing
 	public static Brewing wither = new Brewing(new PotionEffect(Potion.wither.id, 450, 0), 1, 20*60, new ItemStack(Item.coal), getBaseBrewing(acrid));
 	public static Brewing fire = new Brewing(new PotionEffect(MorePotionsMod.fire.id, 20*10, 0), 0, 20*20, new ItemStack(Item.fireballCharge), awkward);
 	public static Brewing effectRemove = new Brewing(new PotionEffect(MorePotionsMod.effectRemove.id, 20*45, 0), 0, 20*90, new ItemStack(Item.bucketMilk), awkward);
+	
 	//public static Brewing randomEffect = new Brewing(new PotionEffect(1, 1, 1), 0, 0, new ItemStack(Item.bed)).setIsRandom(true);
 	
 	private static BrewingBase getBaseBrewing(BrewingBase par1BrewingBase)
@@ -191,6 +199,7 @@ public class Brewing
 	{
 		if (this.getEffect() != null)
 		{
+			int fireid = MorePotionsMod.fire.id;
 			switch(this.getEffect().getPotionID())
 			{
 			case 2:
@@ -202,7 +211,10 @@ public class Brewing
 			case 18:
 			case 19:
 			case 20: return true;
-			default: return this != fire ? false : true;
+			}
+			if (this.getEffect().getPotionID() == fireid)
+			{
+				return true;
 			}
 		}
 		return false;
@@ -226,6 +238,18 @@ public class Brewing
 	public BrewingBase getBase() { return base; }
 	public boolean isBase() { return this.getEffect() == null; }
 	public int getLiquidColor() { return this.getEffect() != null && this.getEffect().getPotionID() > 0 ? Potion.potionTypes[effect.getPotionID()].getLiquidColor() : 0x0C0CFF; }
+	
+	public int getDefaultDuration()
+	{
+		for (Brewing b : this.brewingList)
+		{
+			if (b.getEffect() != null && b.getEffect().getPotionID() == this.getEffect().getPotionID())
+			{
+				return b.getEffect().getDuration();
+			}
+		}
+		return this.getEffect().getDuration();
+	}
 
 	public Brewing setEffect(PotionEffect par1) { effect = par1; return this; }
 	public Brewing setMaxAmplifier(int par1) { maxAmplifier = par1; return this; }
@@ -316,6 +340,8 @@ public class Brewing
 		weakness.register();
 		jump.register();
 		resistance.register();
+		ironSkin.register();
+		obsidianSkin.register();
 		fire.register();
 		effectRemove.register();
 	}
@@ -506,6 +532,11 @@ public class Brewing
 			{
 				if (b.getIngredient() != null)
 				{
+					//Include Ore Dictionary
+					if (OreDictionary.itemMatches(b.getIngredient(), par1, true))
+					{
+						return b;
+					}
 					if (b.getIngredient().getItem() == par1.getItem() && b.getIngredient().getItemDamage() == par1.getItemDamage())
 					{
 						return b;

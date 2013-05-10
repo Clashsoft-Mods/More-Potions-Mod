@@ -23,6 +23,10 @@ public class CommonProxy implements IGuiHandler
         {
         	return new GuiMixer(player.inventory, (TileEntityMixer)world.getBlockTileEntity(x, y, z));
         }
+        else if (ID == MorePotionsMod.UnbrewingStand_ID)
+        {
+        	return new GuiUnbrewingStand(player.inventory, (TileEntityUnbrewingStand)world.getBlockTileEntity(x, y, z));
+        }
         return null;
     }
 
@@ -36,8 +40,13 @@ public class CommonProxy implements IGuiHandler
         }
         else if (te != null && te instanceof TileEntityMixer)
         {
-        	TileEntityMixer bs = (TileEntityMixer) te;
-            return new ContainerMixer(player.inventory, bs);
+        	TileEntityMixer m = (TileEntityMixer) te;
+            return new ContainerMixer(player.inventory, m);
+        }
+        else if (te != null && te instanceof TileEntityUnbrewingStand)
+        {
+        	TileEntityUnbrewingStand ubs = (TileEntityUnbrewingStand) te;
+        	return new ContainerUnbrewingStand(player.inventory, ubs);
         }
         else
         {

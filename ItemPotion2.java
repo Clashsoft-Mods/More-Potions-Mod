@@ -7,7 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import clashsoft.clashsoftapi.ClashsoftMisc;
+import clashsoft.clashsoftapi.CSUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -208,7 +209,7 @@ public class ItemPotion2 extends Item
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void updateIcons(IconRegister par1IconRegister)
+	public void registerIcons(IconRegister par1IconRegister)
 	{
 		this.normal = par1IconRegister.registerIcon("potion");
 		this.splash = par1IconRegister.registerIcon("potion_splash");
@@ -251,7 +252,7 @@ public class ItemPotion2 extends Item
 					i1[j] = ((Brewing)effects.get(j)).getLiquidColor();
 				}
 				i /= effects.size() != 0 ? effects.size() : 1;
-				return ClashsoftMisc.combineColors(i1);
+				return CSUtil.combineColors(i1);
 			}
 			else
 			{
@@ -380,14 +381,14 @@ public class ItemPotion2 extends Item
 						{
 							int goodEffects = var5.size() - badEffects;
 							float goodEffectsPercentage = (float)goodEffects / (float)var5.size() * 100;
-							String color = ClashsoftMisc.fontColor("green") + "\u00a7o";
-							par3List.add(ClashsoftMisc.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.goodeffects") + ": " + color + goodEffects + " (" + String.format("%.1f", goodEffectsPercentage) + "%)");
+							String color = CSUtil.fontColor("green") + "\u00a7o";
+							par3List.add(CSUtil.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.goodeffects") + ": " + color + goodEffects + " (" + String.format("%.1f", goodEffectsPercentage) + "%)");
 						}
 						if (badEffects > 1)
 						{
 							float badEffectsPercentage = (float)badEffects / (float)var5.size() * 100;
-							String color = ClashsoftMisc.fontColor("red") + "\u00a7o";
-							par3List.add(ClashsoftMisc.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.negativeEffects") + ": " + color + badEffects + " (" + String.format("%.1f", badEffectsPercentage) + "%)");
+							String color = CSUtil.fontColor("red") + "\u00a7o";
+							par3List.add(CSUtil.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.negativeEffects") + ": " + color + badEffects + " (" + String.format("%.1f", badEffectsPercentage) + "%)");
 						}
 						
 						int maxDuration = 0;
@@ -398,7 +399,7 @@ public class ItemPotion2 extends Item
 								maxDuration = var5.get(i).getEffect().getDuration();
 							}
 						}
-						par3List.add(ClashsoftMisc.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.highestduration") + ": " + ClashsoftMisc.fontColor("darkgray") + "\u00a7o" + Potion.getDurationString(new PotionEffect(0, maxDuration, 0)));
+						par3List.add(CSUtil.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.highestduration") + ": " + CSUtil.fontColor("darkgray") + "\u00a7o" + Potion.getDurationString(new PotionEffect(0, maxDuration, 0)));
 						
 						int averageDuration = 0;
 						for (int i = 0; i < var5.size(); i++)
@@ -409,7 +410,7 @@ public class ItemPotion2 extends Item
 							}
 						}
 						averageDuration /= var5.size();
-						par3List.add(ClashsoftMisc.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.averageduration") + ": " + ClashsoftMisc.fontColor("darkgray") + "\u00a7o" + Potion.getDurationString(new PotionEffect(0, averageDuration, 0)));
+						par3List.add(CSUtil.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.averageduration") + ": " + CSUtil.fontColor("darkgray") + "\u00a7o" + Potion.getDurationString(new PotionEffect(0, averageDuration, 0)));
 						
 						int maxAmplifier = 0;
 						for (int i = 0; i < var5.size(); i++)
@@ -421,7 +422,7 @@ public class ItemPotion2 extends Item
 						}
 						if (maxAmplifier > 0)
 						{
-							par3List.add(ClashsoftMisc.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.highestamplifier") + ": " + ClashsoftMisc.fontColor("darkgray") + "\u00a7o" + StatCollector.translateToLocal("potion.potency." + maxAmplifier));
+							par3List.add(CSUtil.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.highestamplifier") + ": " + CSUtil.fontColor("darkgray") + "\u00a7o" + StatCollector.translateToLocal("potion.potency." + maxAmplifier));
 						}
 						
 						int averageAmplifier = 0;
@@ -436,12 +437,12 @@ public class ItemPotion2 extends Item
 						averageAmplifier -= 1;
 						if (averageAmplifier > 0)
 						{
-							par3List.add(ClashsoftMisc.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.averageamplifier") + ": " + ClashsoftMisc.fontColor("darkgray") + "\u00a7o" + StatCollector.translateToLocal("potion.potency." + averageAmplifier));
+							par3List.add(CSUtil.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.averageamplifier") + ": " + CSUtil.fontColor("darkgray") + "\u00a7o" + StatCollector.translateToLocal("potion.potency." + averageAmplifier));
 						}
 					}
 					if (Brewing.getExperience(par1ItemStack) > 0.3F)
 					{
-						par3List.add(ClashsoftMisc.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.value") + ": " + ClashsoftMisc.fontColor("yellow") + "\u00a7o" + String.format("%.2f", Brewing.getExperience(par1ItemStack) * 100 / 223.9F));
+						par3List.add(CSUtil.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.value") + ": " + CSUtil.fontColor("yellow") + "\u00a7o" + String.format("%.2f", Brewing.getExperience(par1ItemStack) * 100 / 223.9F));
 					}
 				}
 			}
