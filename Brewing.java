@@ -106,8 +106,8 @@ public class Brewing
 	public static Brewing confusion = new Brewing(new PotionEffect(Potion.confusion.id, 20*90, 0), 2, 20*180, new ItemStack(Item.poisonousPotato), awkward);
 	public static Brewing regeneration = new Brewing(new PotionEffect(Potion.regeneration.id, 20*45, 0), 2, 20*180, moveSlowdown, new ItemStack(Item.ghastTear), awkward);
 	public static Brewing resistance = new Brewing(new PotionEffect(Potion.resistance.id, 20*180, 0), 3, 20*240, new ItemStack(Item.diamond), getBaseBrewing(thick));
-	public static Brewing ironSkin = new Brewing(new PotionEffect(MorePotionsMod.ironSkin.id, 20*120, 0), 1, 20*240, getBaseBrewing(thick));
-	public static Brewing obsidianSkin = new Brewing(new PotionEffect(MorePotionsMod.obsidianSkin.id, 20*120, 0), 1, 20*240, getBaseBrewing(thick));
+	public static Brewing ironSkin = new Brewing(new PotionEffect(MorePotionsMod.ironSkin.id, 20*120, 0), 1, 20*240, new ItemStack(MorePotionsMod.dust, 1, 0), getBaseBrewing(thick));
+	public static Brewing obsidianSkin = new Brewing(new PotionEffect(MorePotionsMod.obsidianSkin.id, 20*120, 0), 1, 20*240, new ItemStack(MorePotionsMod.dust, 1, 1), getBaseBrewing(thick));
 	public static Brewing fireResistance = new Brewing(new PotionEffect(Potion.fireResistance.id, 20*180, 0), 0, 20*360, moveSlowdown, new ItemStack(Item.magmaCream), awkward);
 	public static Brewing waterWalking = new Brewing(new PotionEffect(MorePotionsMod.waterWalking.id, 20*120, 0), 0, 240*20, awkward);
 	public static Brewing waterBreathing = new Brewing(new PotionEffect(Potion.waterBreathing.id, 20*180, 0), 2, 20*360, waterWalking, new ItemStack(Item.bone), awkward);

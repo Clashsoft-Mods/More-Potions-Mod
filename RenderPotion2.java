@@ -59,9 +59,9 @@ public class RenderPotion2 extends Render
         GL11.glScalef(0.5F, 0.5F, 0.5F);
         this.loadTexture("/gui/items.png");
         Tessellator tessellator = Tessellator.instance;
-
+        
         int i = ItemPotion2.getColorFromItemStack2(((EntityPotion2)par1Entity).getPotion(), 0);
-        i = ((EntityPotion2)par1Entity).color;
+        //i = ((EntityPotion2)par1Entity).color;
 
         float f2 = (float)(i >> 16 & 255) / 255.0F;
         float f3 = (float)(i >> 8 & 255) / 255.0F;

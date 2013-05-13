@@ -16,7 +16,8 @@ import com.google.common.io.ByteStreams;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 
-public class PacketHandler implements IPacketHandler {
+public class PacketHandler implements IPacketHandler
+{
     @Override
     public void onPacketData(INetworkManager network, Packet250CustomPayload packet, Player player)
     {
@@ -68,11 +69,9 @@ public class PacketHandler implements IPacketHandler {
             }
         }
         catch (IOException e)
-        {
-            // UNPOSSIBLE?
-        }
+        {}
         Packet250CustomPayload pkt = new Packet250CustomPayload();
-        pkt.channel = "IronChest";
+        pkt.channel = "MorePotions";
         pkt.data = bos.toByteArray();
         pkt.length = bos.size();
         pkt.isChunkDataPacket = true;
