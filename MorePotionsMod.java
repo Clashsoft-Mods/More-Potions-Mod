@@ -3,6 +3,8 @@ package clashsoft.mods.morepotions;
 import java.awt.event.KeyEvent;
 import java.util.EnumSet;
 
+import org.lwjgl.input.Keyboard;
+
 import clashsoft.clashsoftapi.CSLang;
 import clashsoft.clashsoftapi.CustomItem;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
@@ -23,19 +25,25 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.EventPriority;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraft.item.*;
 import net.minecraft.potion.*;
 import net.minecraft.src.BaseMod;
 import net.minecraft.src.ModLoader;
+import net.minecraft.util.DamageSource;
 import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 
 @Mod(modid = "MorePotionsMod", name = "MorePotionsMod", version = "1.5.2")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
@@ -58,8 +66,10 @@ public class MorePotionsMod
 	public static int Mixer_ID = 12;
 	public static int Cauldron2_ID = 13;
 	public static int UnbrewingStand_ID = 14;
-	public static int SP2_ID = EntityRegistry.findGlobalUniqueEntityId();
-	public static int PT_ID = CreativeTabs.getNextID();
+	public static int SplashPotion2_ID = EntityRegistry.findGlobalUniqueEntityId();
+	public static int PotionsTab_ID = CreativeTabs.getNextID();
+	
+	public static CreativeTabs potions = new CreativeTabs(PotionsTab_ID, "morepotions");
 
 	public static Potion fire = new Potion2("potion.fire", true, 0xFFE500, false, 2, 2);
 	public static Potion effectRemove = new Potion2("potion.effectRemove", false, 0xFFFFFF, false, 3, 2);
@@ -67,6 +77,7 @@ public class MorePotionsMod
 	public static Potion coldness = new Potion2("potion.coldness", false, 0x00DDFF, false, 5, 2);
 	public static Potion ironSkin = new Potion2("potion.ironSkin", false, 0xD8D8D8, false, 6, 2);
 	public static Potion obsidianSkin = new Potion2("potion.obsidianSkin", false, 0x101023, false, 7, 2);
+	public static Potion doubleJump = new Potion2("potion.doubleJump", false, 0x123456, false, 8, 2);
 
 	public static Block brewingStand2;
 	public static Block mixxer;
@@ -89,7 +100,7 @@ public class MorePotionsMod
 		UnbrewingStand_ID =config.get("TileEntityIDs", "UnbrewingStandTEID", 14).getInt();
 
 		multiPotions = config.get("Potions", "MultiPotions", false, "If true, potions with 2 different effects are shown in the creative inventory.").getBoolean(false);
-		advancedPotionInfo = config.get("Potions", "AdvancedPotionInfo", false).getBoolean(false);
+		advancedPotionInfo = config.get("Potions", "AdvancedPotionInfo", true).getBoolean(true);
 		animatedPotionLiquid = config.get("Potions", "AnimatedPotionLiquid", true).getBoolean(true);
 		showAllBaseBrewings = config.get("Potions", "ShowAllBaseBrewings", false, "If true, all base potions are shown in creative inventory.").getBoolean(false);
 		defaultAwkwardBrewing = config.get("Potions", "DefaultAwkwardBrewing", false, "If true, all potions can be brewed with an awkward potion.").getBoolean(false);
@@ -97,6 +108,7 @@ public class MorePotionsMod
 
 		config.save();
 	}
+	
 	@Init
 	public void load(FMLInitializationEvent event)
 	{
@@ -104,8 +116,8 @@ public class MorePotionsMod
 		GameRegistry.registerTileEntity(TileEntityMixer.class, "Mixxer");
 		GameRegistry.registerTileEntity(TileEntityCauldron.class, "Cauldron2");
 		GameRegistry.registerTileEntity(TileEntityUnbrewingStand.class, "UnbrewingStand");
-		EntityRegistry.registerGlobalEntityID(EntityPotion2.class, "SplashPotion2", MorePotionsMod.SP2_ID);
-		EntityRegistry.registerModEntity(EntityPotion2.class, "SplashPotion2", MorePotionsMod.SP2_ID, this, 100, 20, true);
+		EntityRegistry.registerGlobalEntityID(EntityPotion2.class, "SplashPotion2", MorePotionsMod.SplashPotion2_ID);
+		EntityRegistry.registerModEntity(EntityPotion2.class, "SplashPotion2", MorePotionsMod.SplashPotion2_ID, this, 100, 20, true);
 
 		Block.blocksList[Block.brewingStand.blockID] = null;
 		brewingStand2 = (new BlockBrewingStand2(Block.brewingStand.blockID)).setHardness(0.5F).setLightValue(0.125F).setUnlocalizedName("brewingStand");
@@ -152,6 +164,7 @@ public class MorePotionsMod
 		proxy.registerRenderInformation();
 		proxy.registerRenderers();
 		MinecraftForge.EVENT_BUS.register(new BrewingAPI());
+		MinecraftForge.EVENT_BUS.register(new MorePotionsModEventHandler());
 		BrewingAPI.registerEffectHandler(new MorePotionsModEffectHandler());
 		BrewingAPI.registerIngredientHandler(new MorePotionsModIngredientHandler());
 		Brewing.registerBrewings();
@@ -212,6 +225,11 @@ public class MorePotionsMod
 		CSLang.addTranslation("potion.ironSkin", "Iron Skin");
 		CSLang.addGermanTranslation("potion.ironSkin", "Eisenhaut");
 		
+		CSLang.addTranslation("potion.doubleJump", "Double Jump");
+		CSLang.addGermanTranslation("potion.doubleJump", "Doppelsprung");
+		CSLang.addTranslation("potion.doubleJump.postfix", "Potion of Double Jump");
+		CSLang.addGermanTranslation("potion.doubleJump.postfix", "Trank des Doppelsprungs");
+		
 		CSLang.addTranslation("potion.obsidianSkin.postfix", "Potion of Obsidian Skin");
 		CSLang.addGermanTranslation("potion.obsidianSkin.postfix", "Trank der Obsidianhaut");
 		CSLang.addTranslation("potion.obsidianSkin", "Obsidian Skin");
@@ -256,8 +274,10 @@ public class MorePotionsMod
 		CSLang.addTranslation("potion.alleffects.postfix", "es_ES", "Poci\u00F3n de todos los efectos");
 	}
 
-	public class MorePotionsModEffectHandler implements IPotionEffectHandler
+	public static class MorePotionsModEffectHandler implements IPotionEffectHandler
 	{
+		private static boolean hasJumped = false;
+		
 		@ForgeSubscribe
 		public void onPotionUpdate(EntityLiving living, PotionEffect effect)
 		{
@@ -309,20 +329,58 @@ public class MorePotionsMod
 					living.worldObj.setBlock(x, y, z, Block.snow.blockID);
 				}
 			}
-			if (effect.getPotionID() == (MorePotionsMod.ironSkin.id))
+			if (effect.getPotionID() == MorePotionsMod.doubleJump.id)
 			{
-				living.fireResistance = 10;
-				living.addPotionEffect(new PotionEffect(Potion.resistance.id, 1, 0));
-			}
-			if (effect.getPotionID() == (MorePotionsMod.obsidianSkin.id))
-			{
+				if (living instanceof EntityPlayer)
+				{
+					if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && (living.isJumping || living.isAirBorne) && living.motionY < 0.07 && !hasJumped)  //Waaaaaay more checks than necessary
+					{
+						double motionY = 0.41999998688697815D;
 
+				        if (living.isPotionActive(Potion.jump))
+				        {
+				            motionY += (double)((float)(living.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
+				        }
+						//checks for armour/abilities...
+						living.addVelocity(0, motionY, 0);
+						living.setAir(0);
+						hasJumped = true;
+					}
+					if(living.onGround)
+					{
+						hasJumped = false;
+					}
+				}
 			}
 		}
 		
 		public boolean canHandle(PotionEffect effect)
 		{
 			return true;
+		}
+	}
+	
+	public class MorePotionsModEventHandler
+	{		
+		@ForgeSubscribe(priority = EventPriority.LOW)
+		public void onEntityDamaged(LivingAttackEvent event) 
+		{
+			if (event.entityLiving.isPotionActive(MorePotionsMod.ironSkin) || event.entityLiving.isPotionActive(MorePotionsMod.obsidianSkin));
+			{
+				if (event.source == DamageSource.inFire || event.source == DamageSource.onFire)
+				{
+					event.entityLiving.extinguish();
+					event.setCanceled(true);
+				}
+			}
+			if (event.entityLiving.isPotionActive(MorePotionsMod.obsidianSkin))
+			{
+				if (event.source == DamageSource.lava)
+				{
+					event.entityLiving.extinguish();
+					event.setCanceled(true);
+				}
+			}
 		}
 	}
 

@@ -102,7 +102,8 @@ public class Brewing
 	public static Brewing damageBoost = new Brewing(new PotionEffect(Potion.damageBoost.id, 20*180, 0), 4, 20*300, weakness, new ItemStack(Item.blazePowder), awkward);
 	public static Brewing harm = new Brewing(new PotionEffect(Potion.harm.id, 1, 0), 1, 0, getBaseBrewing(thick));
 	public static Brewing heal = new Brewing(new PotionEffect(Potion.heal.id, 1, 0), 1, 0, harm, new ItemStack(Item.speckledMelon), getBaseBrewing(thick));
-	public static Brewing jump = new Brewing(new PotionEffect(Potion.jump.id, 20*180, 0), 4, 20*300, moveSlowdown, new ItemStack(Item.feather), getBaseBrewing(dashing));
+	public static Brewing jump = new Brewing(new PotionEffect(Potion.jump.id, 20*180, 0), 4, 20*300, getBaseBrewing(dashing));
+	public static Brewing doubleJump = new Brewing(new PotionEffect(MorePotionsMod.doubleJump.id, 20*180, 0), 4, 20*3000, jump, new ItemStack(Item.feather), getBaseBrewing(dashing));
 	public static Brewing confusion = new Brewing(new PotionEffect(Potion.confusion.id, 20*90, 0), 2, 20*180, new ItemStack(Item.poisonousPotato), awkward);
 	public static Brewing regeneration = new Brewing(new PotionEffect(Potion.regeneration.id, 20*45, 0), 2, 20*180, moveSlowdown, new ItemStack(Item.ghastTear), awkward);
 	public static Brewing resistance = new Brewing(new PotionEffect(Potion.resistance.id, 20*180, 0), 3, 20*240, new ItemStack(Item.diamond), getBaseBrewing(thick));
@@ -336,6 +337,7 @@ public class Brewing
 		damageBoost.register();
 		weakness.register();
 		jump.register();
+		doubleJump.register();
 		resistance.register();
 		ironSkin.register();
 		obsidianSkin.register();
