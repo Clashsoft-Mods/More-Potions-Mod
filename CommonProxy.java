@@ -15,15 +15,15 @@ public class CommonProxy implements IGuiHandler
 
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
-        if (ID == MorePotionsMod.BrewingStand2_ID)
+        if (ID == MorePotionsMod.BrewingStand2_TEID)
         {
         	return new GuiBrewingStand2(player.inventory, (TileEntityBrewingStand2)world.getBlockTileEntity(x, y, z));
         }
-        else if (ID == MorePotionsMod.Mixer_ID)
+        else if (ID == MorePotionsMod.Mixer_TEID)
         {
         	return new GuiMixer(player.inventory, (TileEntityMixer)world.getBlockTileEntity(x, y, z));
         }
-        else if (ID == MorePotionsMod.UnbrewingStand_ID)
+        else if (ID == MorePotionsMod.UnbrewingStand_TEID)
         {
         	return new GuiUnbrewingStand(player.inventory, (TileEntityUnbrewingStand)world.getBlockTileEntity(x, y, z));
         }

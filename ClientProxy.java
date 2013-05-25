@@ -21,7 +21,7 @@ public class ClientProxy extends CommonProxy
 	
 	public void registerRenderers()
 	{
-		RenderingRegistry.registerEntityRenderingHandler(EntityPotion2.class, new RenderPotion2(MorePotionsMod.potion2, 154));
+		RenderingRegistry.registerEntityRenderingHandler(EntityPotion2.class, new RenderSnowball(MorePotionsMod.potion2, 154));
 		setCustomRenderers();
 	}
 	

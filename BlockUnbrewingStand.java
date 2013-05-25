@@ -120,7 +120,7 @@ public class BlockUnbrewingStand extends BlockContainer
 
             if (var10 != null)
             {
-                FMLNetworkHandler.openGui(par5EntityPlayer, MorePotionsMod.INSTANCE, MorePotionsMod.UnbrewingStand_ID, par1World, par2, par3, par4);
+                FMLNetworkHandler.openGui(par5EntityPlayer, MorePotionsMod.INSTANCE, MorePotionsMod.UnbrewingStand_TEID, par1World, par2, par3, par4);
             }
 
             return true;

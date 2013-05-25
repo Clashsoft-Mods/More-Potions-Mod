@@ -5,10 +5,13 @@ import java.util.EnumSet;
 
 import org.lwjgl.input.Keyboard;
 
+import clashsoft.clashsoftapi.CSCrafting;
+import clashsoft.clashsoftapi.CSItems;
 import clashsoft.clashsoftapi.CSLang;
 import clashsoft.clashsoftapi.CustomItem;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
+import cpw.mods.fml.common.ICraftingHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -31,6 +34,7 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.*;
 import net.minecraft.potion.*;
 import net.minecraft.src.BaseMod;
@@ -55,6 +59,7 @@ public class MorePotionsMod
 	@SidedProxy(clientSide = "clashsoft.mods.morepotions.ClientProxy", serverSide = "clashsoft.mods.morepotions.CommonProxy")
 	public static CommonProxy proxy;
 
+	//Configurables
 	public static boolean multiPotions = false;
 	public static boolean advancedPotionInfo = false;
 	public static boolean animatedPotionLiquid = true;
@@ -62,11 +67,18 @@ public class MorePotionsMod
 	public static boolean defaultAwkwardBrewing = false;
 	public static int potionStackSize = 1;
 
-	public static int BrewingStand2_ID = 11;
-	public static int Mixer_ID = 12;
-	public static int Cauldron2_ID = 13;
-	public static int UnbrewingStand_ID = 14;
+	public static int BrewingStand2_TEID = 11;
+	public static int Mixer_TEID = 12;
+	public static int Cauldron2_TEID = 13;
+	public static int UnbrewingStand_TEID = 14;
+	
+	public static int Mixer_ID = 190;
+	public static int UnbrewingStand_ID = 191;
+	public static int Dust_ID = 14000;
+	public static int Mortar_ID = 14001;
+	
 	public static int SplashPotion2_ID = EntityRegistry.findGlobalUniqueEntityId();
+	
 	public static int PotionsTab_ID = CreativeTabs.getNextID();
 	
 	public static CreativeTabs potions = new CreativeTabs(PotionsTab_ID, "morepotions");
@@ -77,7 +89,7 @@ public class MorePotionsMod
 	public static Potion coldness = new Potion2("potion.coldness", false, 0x00DDFF, false, 5, 2);
 	public static Potion ironSkin = new Potion2("potion.ironSkin", false, 0xD8D8D8, false, 6, 2);
 	public static Potion obsidianSkin = new Potion2("potion.obsidianSkin", false, 0x101023, false, 7, 2);
-	public static Potion doubleJump = new Potion2("potion.doubleJump", false, 0x123456, false, 8, 2);
+	public static Potion doubleJump = new Potion2("potion.doubleJump", false, 0x123456, false, 0, 0);
 
 	public static Block brewingStand2;
 	public static Block mixxer;
@@ -87,6 +99,15 @@ public class MorePotionsMod
 	public static ItemPotion2 potion2;
 	public static ItemGlassBottle2 glassBottle2;
 	public static Item dust;
+	public static ItemStack dustCoal;
+	public static ItemStack dustIron;
+	public static ItemStack dustGold;
+	public static ItemStack dustObsidian;
+	public static ItemStack dustDiamond;
+	public static ItemStack dustEmerald;
+	public static ItemStack dustQuartz;
+	public static ItemStack dustWither;
+	public static Item mortar;
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
@@ -94,10 +115,15 @@ public class MorePotionsMod
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 
-		BrewingStand2_ID = config.get("TileEntityIDs", "BrewingStand2TEID", 11).getInt();
-		Mixer_ID = config.get("TileEntityIDs", "MixerTEID", 12).getInt();
-		Cauldron2_ID = config.get("TileEntityIDs", "Cauldron2TEID", 13).getInt();
-		UnbrewingStand_ID =config.get("TileEntityIDs", "UnbrewingStandTEID", 14).getInt();
+		BrewingStand2_TEID = config.get("TileEntityIDs", "BrewingStand2TEID", 11).getInt();
+		Mixer_TEID = config.get("TileEntityIDs", "MixerTEID", 12).getInt();
+		Cauldron2_TEID = config.get("TileEntityIDs", "Cauldron2TEID", 13).getInt();
+		UnbrewingStand_TEID = config.get("TileEntityIDs", "UnbrewingStandTEID", 14).getInt();
+		
+		Mixer_ID = config.getBlock("MixerID", 190).getInt();
+		UnbrewingStand_ID = config.getBlock("UnbrewingStandID", 191).getInt();
+		Dust_ID = config.getItem("DustID", 14000).getInt();
+		Mortar_ID = config.getItem("MortarID", 14001).getInt();
 
 		multiPotions = config.get("Potions", "MultiPotions", false, "If true, potions with 2 different effects are shown in the creative inventory.").getBoolean(false);
 		advancedPotionInfo = config.get("Potions", "AdvancedPotionInfo", true).getBoolean(true);
@@ -125,12 +151,12 @@ public class MorePotionsMod
 		Block.blocksList[Block.cauldron.blockID] = null;
 		cauldron2 = (new BlockCauldron2(Block.cauldron.blockID)).setHardness(2.0F).setUnlocalizedName("cauldron");;
 
-		mixxer = (new BlockMixer(190)).setUnlocalizedName("mixxer").setCreativeTab(CreativeTabs.tabBrewing);
+		mixxer = (new BlockMixer(Mixer_ID)).setUnlocalizedName("mixer").setCreativeTab(CreativeTabs.tabBrewing);
 
 		//Block.blocksList[Block.cauldron.blockID] = null;
 		//cauldron2 = (new BlockCauldron2(Block.cauldron.blockID)).setHardness(2.0F).setUnlocalizedName("cauldron");;
 
-		unbrewingStand = (new BlockUnbrewingStand(191)).setUnlocalizedName("unbrewingstand").setCreativeTab(null);
+		unbrewingStand = (new BlockUnbrewingStand(UnbrewingStand_ID)).setUnlocalizedName("unbrewingstand").setCreativeTab(null);
 
 		ModLoader.registerBlock(brewingStand2);
 		ModLoader.registerBlock(mixxer);
@@ -151,9 +177,27 @@ public class MorePotionsMod
 		Item.itemsList[Item.glassBottle.itemID - 256] = null;
 		glassBottle2 = (ItemGlassBottle2) (new ItemGlassBottle2(118)).setUnlocalizedName("glassBottle");
 		
-		dust = new CustomItem(17500, new String[]{"dustIron", "dustObsidian"}, new String[]{"dustIron", "dustObsidian"}).setCreativeTab(CreativeTabs.tabMaterials);
-		OreDictionary.registerOre("dustIron", new ItemStack(dust, 1, 0));
-		OreDictionary.registerOre("dustObsidian", new ItemStack(dust, 1, 1));
+		mortar = new Item(Mortar_ID).setCreativeTab(CreativeTabs.tabTools).setMaxDamage(32).setNoRepair().setMaxStackSize(1).setUnlocalizedName("mortar");
+		ModLoader.addRecipe(new ItemStack(mortar), new Object[]{"SfS", " S ", 'S', Block.stone, 'f', Item.flint});
+		ItemStack mortarStack = new ItemStack(mortar, 1, OreDictionary.WILDCARD_VALUE);
+		
+		dust = new CustomItem(Dust_ID, new String[]{"dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither"}, new String[]{"dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither"}, new String[]{"C2", "Fe", "Au", "C128", "Be3Al2Si6O18", "(SiO2)(Fe2O3)(H2O)", "SiO2", "(C2)(SiO2)(H20)(Ca3(PO4)2)(CaCO3)\n (CaF2)(CaCl2)(Mg3(PO4)2)"}).setCreativeTab(CreativeTabs.tabMaterials);
+		dustCoal = CSCrafting.registerOre("dustCoal", new ItemStack(dust, 1, 0));
+		dustIron = CSCrafting.registerOre("dustIron", new ItemStack(dust, 1, 1));
+		dustGold = CSCrafting.registerOre("dustGold", new ItemStack(dust, 1, 2));
+		dustDiamond = CSCrafting.registerOre("dustDiamond", new ItemStack(dust, 1, 3));
+		dustEmerald = CSCrafting.registerOre("dustEmerald", new ItemStack(dust, 1, 4));
+		dustObsidian = CSCrafting.registerOre("dustObsidian", new ItemStack(dust, 1, 5));
+		dustQuartz = CSCrafting.registerOre("dustQuartz", new ItemStack(dust, 1, 6));
+		dustWither = CSCrafting.registerOre("dustWither", new ItemStack(dust, 1, 7));
+		ModLoader.addShapelessRecipe(dustCoal, new Object[]{Item.coal, mortarStack});
+		ModLoader.addShapelessRecipe(dustIron, new Object[]{Item.ingotIron, mortarStack});
+		ModLoader.addShapelessRecipe(dustGold, new Object[]{Item.ingotGold, mortarStack});
+		ModLoader.addShapelessRecipe(dustDiamond, new Object[]{Item.diamond, mortarStack});
+		ModLoader.addShapelessRecipe(dustEmerald, new Object[]{Item.emerald, mortarStack});
+		ModLoader.addShapelessRecipe(dustObsidian, new Object[]{Block.obsidian, mortarStack});
+		ModLoader.addShapelessRecipe(dustQuartz, new Object[]{Item.netherQuartz, mortarStack});
+		ModLoader.addShapelessRecipe(dustWither, new Object[]{new ItemStack(Item.skull, 1, 1), dustCoal, dustQuartz});
 
 		Item.sugar.setCreativeTab(CreativeTabs.tabBrewing);
 		Item.netherStalkSeeds.setCreativeTab(CreativeTabs.tabBrewing);
@@ -168,110 +212,127 @@ public class MorePotionsMod
 		BrewingAPI.registerEffectHandler(new MorePotionsModEffectHandler());
 		BrewingAPI.registerIngredientHandler(new MorePotionsModIngredientHandler());
 		Brewing.registerBrewings();
+		GameRegistry.registerCraftingHandler(new MorePotionsModCraftingHandler());
 		ModLoader.addDispenserBehavior(potion2, new DispenserBehaviorPotion());
 	}
 
 	private void addLocalizations()
 	{
-		CSLang.addTranslation("itemGroup.morepotions", "Mixed Potions");
+		CSLang.addLocalizationUS("itemGroup.morepotions", "Mixed Potions");
 
-		CSLang.addTranslation("potion.potency.4", "V");
-		CSLang.addTranslation("potion.potency.5", "VI");
-		CSLang.addTranslation("potion.potency.6", "VII");
-		CSLang.addTranslation("potion.potency.7", "VIII");
-		CSLang.addTranslation("potion.potency.8", "IX");
-		CSLang.addTranslation("potion.potency.9", "X");
+		CSLang.addLocalizationUS("potion.potency.4", "V");
+		CSLang.addLocalizationUS("potion.potency.5", "VI");
+		CSLang.addLocalizationUS("potion.potency.6", "VII");
+		CSLang.addLocalizationUS("potion.potency.7", "VIII");
+		CSLang.addLocalizationUS("potion.potency.8", "IX");
+		CSLang.addLocalizationUS("potion.potency.9", "X");
 
-		CSLang.addTranslation("tile.mixer.name", "Mixer");
-		CSLang.addTranslation("tile.mixer.name", "de_DE", "Mischer");
-		CSLang.addTranslation("tile.mixer.name", "es_ES", "Mezclador");
-		CSLang.addTranslation("tile.unbrewingstand.name", "Unbrewing Stand");
-		CSLang.addTranslation("tile.unbrewingstand.name", "de_DE", "Entbrau-Maschine");
-		CSLang.addTranslation("item.obsidianDust.name", "Obsidian Dust");
-		CSLang.addGermanTranslation("item.obsidianDust.name", "Obsidianstaub");
-		CSLang.addTranslation("item.ironDust.name", "Iron Dust");
-		CSLang.addGermanTranslation("item.ironDust.name", "Eisenstaub");
-
-		CSLang.addTranslation("potion.fire.postfix", "Potion of Fire");
-		CSLang.addTranslation("potion.fire.postfix", "de_DE", "Trank des Feuers");
-		CSLang.addTranslation("potion.fire.postfix", "es_ES", "Poci\u00F3n del fuego");
-		CSLang.addTranslation("potion.fire", "Fire");
-		CSLang.addTranslation("potion.fire", "de_DE", "Feuer");
-		CSLang.addTranslation("potion.fire", "es_ES", "Fuego");
-
-		CSLang.addTranslation("potion.effectRemove.postfix", "Potion of Effect Removing");
-		CSLang.addTranslation("potion.effectRemove.postfix", "de_DE", "Trank der Effektentfernung");
-		CSLang.addTranslation("potion.effectRemove.postfix", "es_ES", "Poci\u00F3n de no effectos");
-		CSLang.addTranslation("potion.effectRemove", "Effect Removing");
-		CSLang.addTranslation("potion.effectRemove", "de_DE", "Effektentfernung");
-		CSLang.addTranslation("potion.effectRemove", "es_ES", "Eliminaci\u00F3n de los effectos");
-
-		CSLang.addTranslation("potion.waterWalking.postfix", "Potion of Water Walking");
-		CSLang.addTranslation("potion.waterWalking.postfix", "de_DE", "Trank des \u00dcberwasserlaufens");
-		CSLang.addTranslation("potion.waterWalking.postfix", "es_ES", "Poci\u00F3n de irse sobre el agua");
-		CSLang.addTranslation("potion.waterWalking", "Water Walking");
-		CSLang.addTranslation("potion.waterWalking", "de_DE", "\u00dcberwasserlaufen");
-		CSLang.addTranslation("potion.waterWalking", "es_ES", "Ir sobre el agua");
-
-		CSLang.addTranslation("potion.coldness.postfix", "Potion of Coldness");
-		CSLang.addTranslation("potion.coldness.postfix", "de_DE", "Trank der K\u00e4lte");
-		CSLang.addTranslation("potion.coldness.postfix", "es_ES", "Poci\u00F3n de la frialdad");
-		CSLang.addTranslation("potion.coldness", "Coldness");
-		CSLang.addTranslation("potion.coldness", "de_DE", "K\u00e4lte");
-		CSLang.addTranslation("potion.coldness", "es_ES", "Frialdad");
+		CSLang.addLocalizationUS("tile.mixer.name", "Mixer");
+		CSLang.addLocalization("tile.mixer.name", "de_DE", "Mischer");
+		CSLang.addLocalization("tile.mixer.name", "es_ES", "Mezclador");
+		CSLang.addLocalizationUS("tile.unbrewingstand.name", "Unbrewing Stand");
+		CSLang.addLocalization("tile.unbrewingstand.name", "de_DE", "Entbrau-Maschine");
 		
-		CSLang.addTranslation("potion.ironSkin.postfix", "Potion of Iron Skin");
-		CSLang.addGermanTranslation("potion.ironSkin.postfix", "Trank der Eisenhaut");
-		CSLang.addTranslation("potion.ironSkin", "Iron Skin");
-		CSLang.addGermanTranslation("potion.ironSkin", "Eisenhaut");
+		CSLang.addLocalizationUS("item.dustCoal.name", "Coal Dust");
+		CSLang.addLocalizationDE("item.dustCoal.name", "Kohlestaub");
+		CSLang.addLocalizationUS("item.dustIron.name", "Iron Dust");
+		CSLang.addLocalizationDE("item.dustIron.name", "Eisenstaub");
+		CSLang.addLocalizationUS("item.dustGold.name", "Gold Dust");
+		CSLang.addLocalizationDE("item.dustGold.name", "Goldstaub");
+		CSLang.addLocalizationUS("item.dustDiamond.name", "Diamond Dust");
+		CSLang.addLocalizationDE("item.dustDiamond.name", "Diamantstaub");
+		CSLang.addLocalizationUS("item.dustEmerald.name", "Emerald Dust");
+		CSLang.addLocalizationDE("item.dustEmerald.name", "Smaragdstaub");
+		CSLang.addLocalizationUS("item.dustObsidian.name", "Obsidian Dust");
+		CSLang.addLocalizationDE("item.dustObsidian.name", "Obsidianstaub");
+		CSLang.addLocalizationUS("item.dustQuartz.name", "Nether Quartz Dust");
+		CSLang.addLocalizationDE("item.dustQuartz.name", "Netherquarzstaub");
+		CSLang.addLocalizationUS("item.dustWither.name", "Wither Dust");
+		CSLang.addLocalizationDE("item.dustWither.name", "Witherstaub");
 		
-		CSLang.addTranslation("potion.doubleJump", "Double Jump");
-		CSLang.addGermanTranslation("potion.doubleJump", "Doppelsprung");
-		CSLang.addTranslation("potion.doubleJump.postfix", "Potion of Double Jump");
-		CSLang.addGermanTranslation("potion.doubleJump.postfix", "Trank des Doppelsprungs");
+		CSLang.addLocalizationUS("item.mortar.name", "Mortar");
+		CSLang.addLocalizationDE("item.mortar.name", "M\u00f6rser");
+
+		CSLang.addLocalizationUS("potion.fire.postfix", "Potion of Fire");
+		CSLang.addLocalization("potion.fire.postfix", "de_DE", "Trank des Feuers");
+		CSLang.addLocalization("potion.fire.postfix", "es_ES", "Poci\u00F3n del fuego");
+		CSLang.addLocalizationUS("potion.fire", "Fire");
+		CSLang.addLocalization("potion.fire", "de_DE", "Feuer");
+		CSLang.addLocalization("potion.fire", "es_ES", "Fuego");
+
+		CSLang.addLocalizationUS("potion.effectRemove.postfix", "Potion of Effect Removing");
+		CSLang.addLocalization("potion.effectRemove.postfix", "de_DE", "Trank der Effektentfernung");
+		CSLang.addLocalization("potion.effectRemove.postfix", "es_ES", "Poci\u00F3n de no effectos");
+		CSLang.addLocalizationUS("potion.effectRemove", "Effect Removing");
+		CSLang.addLocalization("potion.effectRemove", "de_DE", "Effektentfernung");
+		CSLang.addLocalization("potion.effectRemove", "es_ES", "Eliminaci\u00F3n de los effectos");
+
+		CSLang.addLocalizationUS("potion.waterWalking.postfix", "Potion of Water Walking");
+		CSLang.addLocalization("potion.waterWalking.postfix", "de_DE", "Trank des \u00dcberwasserlaufens");
+		CSLang.addLocalization("potion.waterWalking.postfix", "es_ES", "Poci\u00F3n de irse sobre el agua");
+		CSLang.addLocalizationUS("potion.waterWalking", "Water Walking");
+		CSLang.addLocalization("potion.waterWalking", "de_DE", "\u00dcberwasserlaufen");
+		CSLang.addLocalization("potion.waterWalking", "es_ES", "Ir sobre el agua");
+
+		CSLang.addLocalizationUS("potion.coldness.postfix", "Potion of Coldness");
+		CSLang.addLocalization("potion.coldness.postfix", "de_DE", "Trank der K\u00e4lte");
+		CSLang.addLocalization("potion.coldness.postfix", "es_ES", "Poci\u00F3n de la frialdad");
+		CSLang.addLocalizationUS("potion.coldness", "Coldness");
+		CSLang.addLocalization("potion.coldness", "de_DE", "K\u00e4lte");
+		CSLang.addLocalization("potion.coldness", "es_ES", "Frialdad");
 		
-		CSLang.addTranslation("potion.obsidianSkin.postfix", "Potion of Obsidian Skin");
-		CSLang.addGermanTranslation("potion.obsidianSkin.postfix", "Trank der Obsidianhaut");
-		CSLang.addTranslation("potion.obsidianSkin", "Obsidian Skin");
-		CSLang.addGermanTranslation("potion.obsidianSkin", "Obsidianhaut");
+		CSLang.addLocalizationUS("potion.ironSkin.postfix", "Potion of Iron Skin");
+		CSLang.addLocalizationDE("potion.ironSkin.postfix", "Trank der Eisenhaut");
+		CSLang.addLocalizationUS("potion.ironSkin", "Iron Skin");
+		CSLang.addLocalizationDE("potion.ironSkin", "Eisenhaut");
+		
+		CSLang.addLocalizationUS("potion.doubleJump", "Double Jump");
+		CSLang.addLocalizationDE("potion.doubleJump", "Doppelsprung");
+		CSLang.addLocalizationUS("potion.doubleJump.postfix", "Potion of Double Jump");
+		CSLang.addLocalizationDE("potion.doubleJump.postfix", "Trank des Doppelsprungs");
+		
+		CSLang.addLocalizationUS("potion.obsidianSkin.postfix", "Potion of Obsidian Skin");
+		CSLang.addLocalizationDE("potion.obsidianSkin.postfix", "Trank der Obsidianhaut");
+		CSLang.addLocalizationUS("potion.obsidianSkin", "Obsidian Skin");
+		CSLang.addLocalizationDE("potion.obsidianSkin", "Obsidianhaut");
 
-		CSLang.addTranslation("potion.goodeffects", "Good Effects");
-		CSLang.addTranslation("potion.goodeffects", "de_DE", "Gute Effekte");
-		CSLang.addTranslation("potion.goodeffects", "es_ES", "Buenos Effectos");
-		CSLang.addTranslation("potion.negativeEffects", "Bad Effects");
-		CSLang.addTranslation("potion.negativeEffects", "de_DE", "Schlechte Effekte");
-		CSLang.addTranslation("potion.negativeEffects", "es_ES", "Malos Effectos");
-		CSLang.addTranslation("potion.potionof", "Potion of");
-		CSLang.addTranslation("potion.potionof", "de_DE", "Trank von");
-		CSLang.addTranslation("potion.potionof", "es_ES", "Poci\u00F3n del");
-		CSLang.addTranslation("potion.effects", "Effects");
-		CSLang.addTranslation("potion.effects", "de_DE", "Effekten");
-		CSLang.addTranslation("potion.effects", "es_ES", "Effectos");
-		CSLang.addTranslation("potion.and", "and");
-		CSLang.addTranslation("potion.and", "de_DE", "und");
-		CSLang.addTranslation("potion.and", "es_ES", "y");
-		CSLang.addTranslation("potion.useto", "Used to make");
-		CSLang.addTranslation("potion.useto", "de_DE", "Benutzt für");
+		CSLang.addLocalizationUS("potion.goodeffects", "Good Effects");
+		CSLang.addLocalization("potion.goodeffects", "de_DE", "Gute Effekte");
+		CSLang.addLocalization("potion.goodeffects", "es_ES", "Buenos Effectos");
+		CSLang.addLocalizationUS("potion.negativeEffects", "Bad Effects");
+		CSLang.addLocalization("potion.negativeEffects", "de_DE", "Schlechte Effekte");
+		CSLang.addLocalization("potion.negativeEffects", "es_ES", "Malos Effectos");
+		CSLang.addLocalizationUS("potion.potionof", "Potion of");
+		CSLang.addLocalization("potion.potionof", "de_DE", "Trank von");
+		CSLang.addLocalization("potion.potionof", "es_ES", "Poci\u00F3n del");
+		CSLang.addLocalizationUS("potion.effects", "Effects");
+		CSLang.addLocalization("potion.effects", "de_DE", "Effekten");
+		CSLang.addLocalization("potion.effects", "es_ES", "Effectos");
+		CSLang.addLocalizationUS("potion.and", "and");
+		CSLang.addLocalization("potion.and", "de_DE", "und");
+		CSLang.addLocalization("potion.and", "es_ES", "y");
+		CSLang.addLocalizationUS("potion.useto", "Used to make");
+		CSLang.addLocalization("potion.useto", "de_DE", "Benutzt f\u00fcr");
 
-		CSLang.addTranslation("potion.highestamplifier", "Highest Amplifier");
-		CSLang.addTranslation("potion.highestamplifier", "de_DE", "Gr\u00f6\u00dftes Level");
-		CSLang.addTranslation("potion.highestamplifier", "es_ES", "Alto Nivel");
-		CSLang.addTranslation("potion.averageamplifier", "Average Amplifier");
-		CSLang.addTranslation("potion.averageamplifier", "de_DE", "Durchschnittliches Level");
-		CSLang.addTranslation("potion.averageamplifier", "es_ES", "Nivel promedio");
-		CSLang.addTranslation("potion.highestduration", "Highest Duration");
-		CSLang.addTranslation("potion.highestduration", "de_DE", "H\u00f6chste Dauer");
-		CSLang.addTranslation("potion.highestduration", "es_ES", "Alto Duraci\u00F3n");
-		CSLang.addTranslation("potion.averageduration", "Average Duration");
-		CSLang.addTranslation("potion.averageduration", "de_DE", "Durchschnittliche Dauer");
-		CSLang.addTranslation("potion.averageduration", "es_ES", "Duraci\u00f3n promedio");
-		CSLang.addTranslation("potion.value", "Value");
-		CSLang.addTranslation("potion.value", "de_DE", "Wert");
-		CSLang.addTranslation("potion.value", "es_ES", "Valor");
+		CSLang.addLocalizationUS("potion.highestamplifier", "Highest Amplifier");
+		CSLang.addLocalization("potion.highestamplifier", "de_DE", "Gr\u00f6\u00dftes Level");
+		CSLang.addLocalization("potion.highestamplifier", "es_ES", "Alto Nivel");
+		CSLang.addLocalizationUS("potion.averageamplifier", "Average Amplifier");
+		CSLang.addLocalization("potion.averageamplifier", "de_DE", "Durchschnittliches Level");
+		CSLang.addLocalization("potion.averageamplifier", "es_ES", "Nivel promedio");
+		CSLang.addLocalizationUS("potion.highestduration", "Highest Duration");
+		CSLang.addLocalization("potion.highestduration", "de_DE", "H\u00f6chste Dauer");
+		CSLang.addLocalization("potion.highestduration", "es_ES", "Alto Duraci\u00F3n");
+		CSLang.addLocalizationUS("potion.averageduration", "Average Duration");
+		CSLang.addLocalization("potion.averageduration", "de_DE", "Durchschnittliche Dauer");
+		CSLang.addLocalization("potion.averageduration", "es_ES", "Duraci\u00f3n promedio");
+		CSLang.addLocalizationUS("potion.value", "Value");
+		CSLang.addLocalization("potion.value", "de_DE", "Wert");
+		CSLang.addLocalization("potion.value", "es_ES", "Valor");
 
-		CSLang.addTranslation("potion.alleffects.postfix", "Potion of all Effects");
-		CSLang.addTranslation("potion.alleffects.postfix", "de_DE", "Trank aller Effekte");
-		CSLang.addTranslation("potion.alleffects.postfix", "es_ES", "Poci\u00F3n de todos los efectos");
+		CSLang.addLocalizationUS("potion.alleffects.postfix", "Potion of all Effects");
+		CSLang.addLocalization("potion.alleffects.postfix", "de_DE", "Trank aller Effekte");
+		CSLang.addLocalization("potion.alleffects.postfix", "es_ES", "Poci\u00F3n de todos los efectos");
 	}
 
 	public static class MorePotionsModEffectHandler implements IPotionEffectHandler
@@ -414,5 +475,35 @@ public class MorePotionsMod
 		}
 	}
 
+	public class MorePotionsModCraftingHandler implements ICraftingHandler
+	{
 
+		@Override
+		public void onCrafting(EntityPlayer player, ItemStack item, IInventory craftMatrix)
+		{
+			for(int i=0; i < craftMatrix.getSizeInventory(); i++)
+			{               
+				if(craftMatrix.getStackInSlot(i) != null)
+				{
+					ItemStack j = craftMatrix.getStackInSlot(i);
+					if(j.getItem() != null && j.getItem() == MorePotionsMod.mortar)
+					{
+						ItemStack k = new ItemStack(MorePotionsMod.mortar, 2, (j.getItemDamage() + 1));
+						if(k.getItemDamage() >= k.getMaxDamage())
+						{
+							k.stackSize--;
+						}
+						craftMatrix.setInventorySlotContents(i, k);
+					}
+				}
+			}
+		}
+
+		@Override
+		public void onSmelting(EntityPlayer player, ItemStack item)
+		{
+			
+		}
+		
+	}
 }

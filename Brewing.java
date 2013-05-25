@@ -97,7 +97,7 @@ public class Brewing
 	public static Brewing moveSlowdown = new Brewing(new PotionEffect(Potion.moveSlowdown.id, 20*90, 0), 4, 20*240, getBaseBrewing(dashing));
 	public static Brewing moveSpeed = new Brewing(new PotionEffect(Potion.moveSpeed.id, 20*180, 0), 7, 20*360, moveSlowdown, new ItemStack(Item.sugar), getBaseBrewing(dashing));
 	public static Brewing digSlowdown = new Brewing(new PotionEffect(Potion.digSlowdown.id, 20*90, 0), 4, 20*240, getBaseBrewing(dashing));
-	public static Brewing digSpeed = new Brewing(new PotionEffect(Potion.digSpeed.id, 20*180, 0), 7, 20*360, digSlowdown, new ItemStack(Item.carrot), getBaseBrewing(dashing));
+	public static Brewing digSpeed = new Brewing(new PotionEffect(Potion.digSpeed.id, 20*180, 0), 7, 20*360, digSlowdown, MorePotionsMod.dustGold, getBaseBrewing(dashing));
 	public static Brewing weakness = new Brewing(new PotionEffect(Potion.weakness.id, 20*90, 0), 2, 20*240, new ItemStack(Item.fermentedSpiderEye), awkward);
 	public static Brewing damageBoost = new Brewing(new PotionEffect(Potion.damageBoost.id, 20*180, 0), 4, 20*300, weakness, new ItemStack(Item.blazePowder), awkward);
 	public static Brewing harm = new Brewing(new PotionEffect(Potion.harm.id, 1, 0), 1, 0, getBaseBrewing(thick));
@@ -106,9 +106,9 @@ public class Brewing
 	public static Brewing doubleJump = new Brewing(new PotionEffect(MorePotionsMod.doubleJump.id, 20*180, 0), 4, 20*3000, jump, new ItemStack(Item.feather), getBaseBrewing(dashing));
 	public static Brewing confusion = new Brewing(new PotionEffect(Potion.confusion.id, 20*90, 0), 2, 20*180, new ItemStack(Item.poisonousPotato), awkward);
 	public static Brewing regeneration = new Brewing(new PotionEffect(Potion.regeneration.id, 20*45, 0), 2, 20*180, moveSlowdown, new ItemStack(Item.ghastTear), awkward);
-	public static Brewing resistance = new Brewing(new PotionEffect(Potion.resistance.id, 20*180, 0), 3, 20*240, new ItemStack(Item.diamond), getBaseBrewing(thick));
-	public static Brewing ironSkin = new Brewing(new PotionEffect(MorePotionsMod.ironSkin.id, 20*120, 0), 1, 20*240, new ItemStack(MorePotionsMod.dust, 1, 0), getBaseBrewing(thick));
-	public static Brewing obsidianSkin = new Brewing(new PotionEffect(MorePotionsMod.obsidianSkin.id, 20*120, 0), 1, 20*240, new ItemStack(MorePotionsMod.dust, 1, 1), getBaseBrewing(thick));
+	public static Brewing resistance = new Brewing(new PotionEffect(Potion.resistance.id, 20*180, 0), 3, 20*240, MorePotionsMod.dustDiamond, getBaseBrewing(thick));
+	public static Brewing ironSkin = new Brewing(new PotionEffect(MorePotionsMod.ironSkin.id, 20*120, 0), 1, 20*240, MorePotionsMod.dustIron, getBaseBrewing(thick));
+	public static Brewing obsidianSkin = new Brewing(new PotionEffect(MorePotionsMod.obsidianSkin.id, 20*120, 0), 1, 20*240, MorePotionsMod.dustObsidian, getBaseBrewing(thick));
 	public static Brewing fireResistance = new Brewing(new PotionEffect(Potion.fireResistance.id, 20*180, 0), 0, 20*360, moveSlowdown, new ItemStack(Item.magmaCream), awkward);
 	public static Brewing waterWalking = new Brewing(new PotionEffect(MorePotionsMod.waterWalking.id, 20*120, 0), 0, 240*20, awkward);
 	public static Brewing waterBreathing = new Brewing(new PotionEffect(Potion.waterBreathing.id, 20*180, 0), 2, 20*360, waterWalking, new ItemStack(Item.bone), awkward);
@@ -117,21 +117,10 @@ public class Brewing
 	public static Brewing blindness = new Brewing(new PotionEffect(Potion.blindness.id, 20*90, 0), 0, 20*240, new ItemStack(Item.dyePowder, 1, 0), getBaseBrewing(thin));
 	public static Brewing nightVision = new Brewing(new PotionEffect(Potion.nightVision.id, 20*180, 0), 0, 20*300, invisibility, new ItemStack(Item.goldenCarrot), getBaseBrewing(thin));
 	public static Brewing poison = new Brewing(new PotionEffect(Potion.poison.id, 20*45, 0), 2, 20*60, new ItemStack(Item.spiderEye), getBaseBrewing(acrid));
-	public static Brewing hunger = new Brewing(new PotionEffect(Potion.hunger.id, 20*45, 0), 3, 20*60, poison, new ItemStack(Block.dirt), getBaseBrewing(acrid));
-	public static Brewing wither = new Brewing(new PotionEffect(Potion.wither.id, 450, 0), 1, 20*60, new ItemStack(Item.coal), getBaseBrewing(acrid));
+	public static Brewing hunger = new Brewing(new PotionEffect(Potion.hunger.id, 20*45, 0), 3, 20*60, poison, new ItemStack(Item.rottenFlesh), getBaseBrewing(acrid));
+	public static Brewing wither = new Brewing(new PotionEffect(Potion.wither.id, 450, 0), 1, 20*60, MorePotionsMod.dustWither, getBaseBrewing(acrid));
 	public static Brewing fire = new Brewing(new PotionEffect(MorePotionsMod.fire.id, 20*10, 0), 0, 20*20, new ItemStack(Item.fireballCharge), awkward);
 	public static Brewing effectRemove = new Brewing(new PotionEffect(MorePotionsMod.effectRemove.id, 20*45, 0), 0, 20*90, new ItemStack(Item.bucketMilk), awkward);
-	
-	//public static Brewing randomEffect = new Brewing(new PotionEffect(1, 1, 1), 0, 0, new ItemStack(Item.bed)).setIsRandom(true);
-	
-	private static BrewingBase getBaseBrewing(BrewingBase par1BrewingBase)
-	{
-		if (MorePotionsMod.defaultAwkwardBrewing)
-		{
-			return awkward;
-		}
-		return par1BrewingBase;
-	}
 
 	/**
 	 * Creates a new Brewing
@@ -527,6 +516,10 @@ public class Brewing
 	{
 		if (par1 != null)
 		{
+			if (BrewingBase.getBrewingBaseFromIngredient(par1) != null)
+			{
+				return BrewingBase.getBrewingBaseFromIngredient(par1);
+			}
 			for (Brewing b : brewingList)
 			{
 				if (b.getIngredient() != null)
@@ -542,10 +535,7 @@ public class Brewing
 					}
 				}
 			}
-			if (BrewingBase.getBrewingBaseFromIngredient(par1) != null)
-			{
-				return Brewing.getBrewingFromIngredient(par1);
-			}
+
 		}
 		return null;
 	}
@@ -624,6 +614,7 @@ public class Brewing
 	 * Returns a random potion. Used by the random potion.
 	 * @return Random Potion
 	 */
+	@Deprecated
 	public static Brewing random()
 	{
 		Random rnd = new Random();
@@ -654,5 +645,19 @@ public class Brewing
 			}
 		}
 		return f;
+	}
+	
+	/**
+	 * Used to determine if it should use the actual Base or awkward when turned off in the config
+	 * @param par1BrewingBase Brewing Base
+	 * @return par1BrewingBase or awkward
+	 */
+	private static BrewingBase getBaseBrewing(BrewingBase par1BrewingBase)
+	{
+		if (MorePotionsMod.defaultAwkwardBrewing)
+		{
+			return awkward;
+		}
+		return par1BrewingBase;
 	}
 }
