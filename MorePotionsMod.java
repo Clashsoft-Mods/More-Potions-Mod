@@ -2,12 +2,14 @@ package clashsoft.mods.morepotions;
 
 import java.awt.event.KeyEvent;
 import java.util.EnumSet;
+import java.util.Random;
 
 import org.lwjgl.input.Keyboard;
 
 import clashsoft.clashsoftapi.CSCrafting;
 import clashsoft.clashsoftapi.CSItems;
 import clashsoft.clashsoftapi.CSLang;
+import clashsoft.clashsoftapi.CSUtil;
 import clashsoft.clashsoftapi.CustomItem;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
@@ -49,7 +51,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
-@Mod(modid = "MorePotionsMod", name = "MorePotionsMod", version = "1.5.2")
+@Mod(modid = "MorePotionsMod", name = "More Potions Mod", version = CSUtil.CURRENT_VERION)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class MorePotionsMod
 {
@@ -90,6 +92,7 @@ public class MorePotionsMod
 	public static Potion ironSkin = new Potion2("potion.ironSkin", false, 0xD8D8D8, false, 6, 2);
 	public static Potion obsidianSkin = new Potion2("potion.obsidianSkin", false, 0x101023, false, 7, 2);
 	public static Potion doubleJump = new Potion2("potion.doubleJump", false, 0x123456, false, 0, 0);
+	public static Potion doubleLife = new Potion2("potion.doubleLife", false, 0xFF2222, false, 0, 0);
 
 	public static Block brewingStand2;
 	public static Block mixxer;
@@ -107,6 +110,18 @@ public class MorePotionsMod
 	public static ItemStack dustEmerald;
 	public static ItemStack dustQuartz;
 	public static ItemStack dustWither;
+	public static ItemStack dustEnderpearl;
+	public static ItemStack dustClay;
+	public static ItemStack dustBrick;
+	public static ItemStack dustFlint;
+	public static ItemStack dustGlass;
+	public static ItemStack dustCharcoal;
+	public static ItemStack dustWoodOak;
+	public static ItemStack dustWoodBirch;
+	public static ItemStack dustWoodSpruce;
+	public static ItemStack dustWoodJungle;
+	public static ItemStack dustNetherstar;
+	public static ItemStack dustNetherbrick;
 	public static Item mortar;
 
 	@PreInit
@@ -179,26 +194,13 @@ public class MorePotionsMod
 		
 		mortar = new Item(Mortar_ID).setCreativeTab(CreativeTabs.tabTools).setMaxDamage(32).setNoRepair().setMaxStackSize(1).setUnlocalizedName("mortar");
 		ModLoader.addRecipe(new ItemStack(mortar), new Object[]{"SfS", " S ", 'S', Block.stone, 'f', Item.flint});
-		ItemStack mortarStack = new ItemStack(mortar, 1, OreDictionary.WILDCARD_VALUE);
 		
-		dust = new CustomItem(Dust_ID, new String[]{"dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither"}, new String[]{"dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither"}, new String[]{"C2", "Fe", "Au", "C128", "Be3Al2Si6O18", "(SiO2)(Fe2O3)(H2O)", "SiO2", "(C2)(SiO2)(H20)(Ca3(PO4)2)(CaCO3)\n (CaF2)(CaCl2)(Mg3(PO4)2)"}).setCreativeTab(CreativeTabs.tabMaterials);
-		dustCoal = CSCrafting.registerOre("dustCoal", new ItemStack(dust, 1, 0));
-		dustIron = CSCrafting.registerOre("dustIron", new ItemStack(dust, 1, 1));
-		dustGold = CSCrafting.registerOre("dustGold", new ItemStack(dust, 1, 2));
-		dustDiamond = CSCrafting.registerOre("dustDiamond", new ItemStack(dust, 1, 3));
-		dustEmerald = CSCrafting.registerOre("dustEmerald", new ItemStack(dust, 1, 4));
-		dustObsidian = CSCrafting.registerOre("dustObsidian", new ItemStack(dust, 1, 5));
-		dustQuartz = CSCrafting.registerOre("dustQuartz", new ItemStack(dust, 1, 6));
-		dustWither = CSCrafting.registerOre("dustWither", new ItemStack(dust, 1, 7));
-		ModLoader.addShapelessRecipe(dustCoal, new Object[]{Item.coal, mortarStack});
-		ModLoader.addShapelessRecipe(dustIron, new Object[]{Item.ingotIron, mortarStack});
-		ModLoader.addShapelessRecipe(dustGold, new Object[]{Item.ingotGold, mortarStack});
-		ModLoader.addShapelessRecipe(dustDiamond, new Object[]{Item.diamond, mortarStack});
-		ModLoader.addShapelessRecipe(dustEmerald, new Object[]{Item.emerald, mortarStack});
-		ModLoader.addShapelessRecipe(dustObsidian, new Object[]{Block.obsidian, mortarStack});
-		ModLoader.addShapelessRecipe(dustQuartz, new Object[]{Item.netherQuartz, mortarStack});
-		ModLoader.addShapelessRecipe(dustWither, new Object[]{new ItemStack(Item.skull, 1, 1), dustCoal, dustQuartz});
-
+		dust = new CustomItem(Dust_ID,
+				new String[]{"dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCharcoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick"},
+				new String[]{"dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick"},
+				new String[]{"C2",		 "Fe", 		 "Au", 		 "C128", 		"Be3Al2Si6O18", "MgFeSi2O8",   "SiO2",		 "\u00a7k???", "BeK4N5Cl6", 	 "Na2LiAl2Si2", "Na2LiAl2Si2", "SiO2", "SiO4", "C", "", "", "", "", "", ""}).setCreativeTab(CreativeTabs.tabMaterials);
+		addDusts();
+		
 		Item.sugar.setCreativeTab(CreativeTabs.tabBrewing);
 		Item.netherStalkSeeds.setCreativeTab(CreativeTabs.tabBrewing);
 
@@ -249,6 +251,30 @@ public class MorePotionsMod
 		CSLang.addLocalizationDE("item.dustQuartz.name", "Netherquarzstaub");
 		CSLang.addLocalizationUS("item.dustWither.name", "Wither Dust");
 		CSLang.addLocalizationDE("item.dustWither.name", "Witherstaub");
+		CSLang.addLocalizationUS("item.dustEnderpearl.name", "Enderpearl Dust");
+		CSLang.addLocalizationDE("item.dustEnderpearl.name", "Enderperlenstaub");
+		CSLang.addLocalizationUS("item.dustClay.name", "Clay Dust");
+		CSLang.addLocalizationDE("item.dustClay.name", "Lehmstaub");
+		CSLang.addLocalizationUS("item.dustBrick.name", "Brick Dust");
+		CSLang.addLocalizationDE("item.dustBrick.name", "Ziegelstaub");
+		CSLang.addLocalizationUS("item.dustFlint.name", "Flint Dust");
+		CSLang.addLocalizationDE("item.dustFlint.name", "Feuersteinstaub");
+		CSLang.addLocalizationUS("item.dustGlass.name", "Glass Dust");
+		CSLang.addLocalizationDE("item.dustGlass.name", "Glasstaub");
+		CSLang.addLocalizationUS("item.dustCharcoal.name", "Charcoal Dust");
+		CSLang.addLocalizationDE("item.dustCharcoal.name", "Holzkohlestaub");
+		CSLang.addLocalizationUS("item.dustWoodOak.name", "Oak Wood Dust");
+		CSLang.addLocalizationDE("item.dustWoodOak.name", "Eichenholzstaub");
+		CSLang.addLocalizationUS("item.dustWoodBirch.name", "Birch Wood Dust");
+		CSLang.addLocalizationDE("item.dustWoodBirch.name", "Birkenholzstaub");
+		CSLang.addLocalizationUS("item.dustWoodSpruce.name", "Spruce Wood Dust");
+		CSLang.addLocalizationDE("item.dustWoodSpruce.name", "Fichtenholzstaub");
+		CSLang.addLocalizationUS("item.dustWoodJungle.name", "Jungle Wood Dust");
+		CSLang.addLocalizationDE("item.dustWoodJungle.name", "Tropenholzstaub");
+		CSLang.addLocalizationUS("item.dustNetherstar.name", "Star Dust");
+		CSLang.addLocalizationDE("item.dustNetherstar.name", "Sternenstaub");
+		CSLang.addLocalizationUS("item.dustNetherbrick.name", "Nether Brick Dust");
+		CSLang.addLocalizationDE("item.dustNetherbrick.name", "Netherziegelstaub");
 		
 		CSLang.addLocalizationUS("item.mortar.name", "Mortar");
 		CSLang.addLocalizationDE("item.mortar.name", "M\u00f6rser");
@@ -295,6 +321,11 @@ public class MorePotionsMod
 		CSLang.addLocalizationDE("potion.obsidianSkin.postfix", "Trank der Obsidianhaut");
 		CSLang.addLocalizationUS("potion.obsidianSkin", "Obsidian Skin");
 		CSLang.addLocalizationDE("potion.obsidianSkin", "Obsidianhaut");
+		
+		CSLang.addLocalizationUS("potion.doubleLife.postfix", "Potion of Double Life");
+		CSLang.addLocalizationDE("potion.doubleLife.postfix", "Trank des Doppellebens");
+		CSLang.addLocalizationUS("potion.doubleLife", "Double Life");
+		CSLang.addLocalizationDE("potion.doubleLife", "Doppelleben");
 
 		CSLang.addLocalizationUS("potion.goodeffects", "Good Effects");
 		CSLang.addLocalization("potion.goodeffects", "de_DE", "Gute Effekte");
@@ -313,6 +344,8 @@ public class MorePotionsMod
 		CSLang.addLocalization("potion.and", "es_ES", "y");
 		CSLang.addLocalizationUS("potion.useto", "Used to make");
 		CSLang.addLocalization("potion.useto", "de_DE", "Benutzt f\u00fcr");
+		CSLang.addLocalizationUS("potion.infinite", "Infinite");
+		CSLang.addLocalizationDE("potion.infinite", "Unendlich");
 
 		CSLang.addLocalizationUS("potion.highestamplifier", "Highest Amplifier");
 		CSLang.addLocalization("potion.highestamplifier", "de_DE", "Gr\u00f6\u00dftes Level");
@@ -335,6 +368,60 @@ public class MorePotionsMod
 		CSLang.addLocalization("potion.alleffects.postfix", "es_ES", "Poci\u00F3n de todos los efectos");
 	}
 
+	private void addDusts()
+	{
+		ItemStack mortarStack = new ItemStack(mortar, 1, OreDictionary.WILDCARD_VALUE);
+		
+		dustCoal = CSCrafting.registerOre("dustCoal", new ItemStack(dust, 1, 0));
+		dustIron = CSCrafting.registerOre("dustIron", new ItemStack(dust, 1, 1));
+		dustGold = CSCrafting.registerOre("dustGold", new ItemStack(dust, 1, 2));
+		dustDiamond = CSCrafting.registerOre("dustDiamond", new ItemStack(dust, 1, 3));
+		dustEmerald = CSCrafting.registerOre("dustEmerald", new ItemStack(dust, 1, 4));
+		dustObsidian = CSCrafting.registerOre("dustObsidian", new ItemStack(dust, 1, 5));
+		dustQuartz = CSCrafting.registerOre("dustQuartz", new ItemStack(dust, 1, 6));
+		dustWither = CSCrafting.registerOre("dustWither", new ItemStack(dust, 1, 7));
+		dustEnderpearl = CSCrafting.registerOre("dustEnderpearl", new ItemStack(dust, 1, 8));
+		dustClay = CSCrafting.registerOre("dustClay", new ItemStack(dust, 1, 9));
+		dustBrick = CSCrafting.registerOre("dustBrick", new ItemStack(dust, 1, 10));
+		dustFlint = CSCrafting.registerOre("dustFlint", new ItemStack(dust, 1, 11));
+		dustGlass = CSCrafting.registerOre("dustGlass", new ItemStack(dust, 1, 12));
+		dustCharcoal = CSCrafting.registerOre("dustCharcoal", new ItemStack(dust, 1, 13));
+		dustWoodOak = CSCrafting.registerOre("dustWoodOak", CSCrafting.registerOre("dustWood", new ItemStack(dust, 1, 14)));
+		dustWoodBirch = CSCrafting.registerOre("dustWoodBirch", CSCrafting.registerOre("dustWood", new ItemStack(dust, 1, 15)));
+		dustWoodSpruce = CSCrafting.registerOre("dustWoodSpruce", CSCrafting.registerOre("dustWood", new ItemStack(dust, 1, 16)));
+		dustWoodJungle = CSCrafting.registerOre("dustWoodJungle", CSCrafting.registerOre("dustWood", new ItemStack(dust, 1, 17)));
+		dustNetherstar = CSCrafting.registerOre("dustNetherstar", new ItemStack(dust, 1, 18));
+		dustNetherbrick = CSCrafting.registerOre("dustNetherbrick", new ItemStack(dust, 1, 19));
+		
+		ModLoader.addShapelessRecipe(dustCoal, new Object[]{Item.coal, mortarStack});
+		ModLoader.addShapelessRecipe(dustIron, new Object[]{Item.ingotIron, mortarStack});
+		ModLoader.addShapelessRecipe(dustGold, new Object[]{Item.ingotGold, mortarStack});
+		ModLoader.addShapelessRecipe(dustDiamond, new Object[]{Item.diamond, mortarStack});
+		ModLoader.addShapelessRecipe(dustEmerald, new Object[]{Item.emerald, mortarStack});
+		ModLoader.addShapelessRecipe(dustObsidian, new Object[]{Block.obsidian, mortarStack});
+		ModLoader.addShapelessRecipe(dustQuartz, new Object[]{Item.netherQuartz, mortarStack});
+		ModLoader.addShapelessRecipe(dustWither, new Object[]{new ItemStack(Item.skull, 1, 1), dustCoal, dustQuartz});
+		ModLoader.addShapelessRecipe(dustEnderpearl, new Object[]{Item.enderPearl, mortarStack});
+		ModLoader.addShapelessRecipe(dustClay, new Object[]{Item.clay, mortarStack});
+		ModLoader.addShapelessRecipe(dustBrick, new Object[]{Item.brick, mortarStack});
+		ModLoader.addShapelessRecipe(dustFlint, new Object[]{Item.flint, mortarStack});
+		ModLoader.addShapelessRecipe(dustGlass, new Object[]{Block.glass, mortarStack});
+		ModLoader.addShapelessRecipe(dustCharcoal, new Object[]{new ItemStack(Item.coal, 1, 1), mortarStack});
+		ModLoader.addShapelessRecipe(dustWoodOak, new Object[]{new ItemStack(Block.wood, 1, 0), mortarStack});
+		ModLoader.addShapelessRecipe(dustWoodBirch, new Object[]{new ItemStack(Block.wood, 1, 2), mortarStack});
+		ModLoader.addShapelessRecipe(dustWoodSpruce, new Object[]{new ItemStack(Block.wood, 1, 1), mortarStack});
+		ModLoader.addShapelessRecipe(dustWoodJungle, new Object[]{new ItemStack(Block.wood, 1, 3), mortarStack});
+		ModLoader.addShapelessRecipe(dustNetherstar, new Object[]{Item.netherStar, mortarStack});
+		ModLoader.addShapelessRecipe(dustNetherbrick, new Object[]{Item.netherrackBrick, mortarStack});
+		
+		CSCrafting.addSmelting(dustIron, new ItemStack(Item.ingotIron), 0F);
+		CSCrafting.addSmelting(dustGold, new ItemStack(Item.ingotGold), 0F);
+		CSCrafting.addSmelting(dustQuartz, new ItemStack(Item.netherQuartz), 0F);
+		CSCrafting.addSmelting(dustClay, new ItemStack(Item.brick), 0.1F);
+		CSCrafting.addSmelting(dustBrick, new ItemStack(Item.brick), 0F);
+		CSCrafting.addSmelting(dustGlass, new ItemStack(Block.glass), 0F);
+	}
+	
 	public static class MorePotionsModEffectHandler implements IPotionEffectHandler
 	{
 		private static boolean hasJumped = false;
@@ -342,10 +429,6 @@ public class MorePotionsMod
 		@ForgeSubscribe
 		public void onPotionUpdate(EntityLiving living, PotionEffect effect)
 		{
-			if (effect.getPotionID() == (MorePotionsMod.fire.id))
-			{
-				living.setFire(4);
-			}
 			if (effect.getPotionID() == (MorePotionsMod.effectRemove.id))
 			{
 				for (int i = 0; i < Potion.potionTypes.length; i++)
@@ -394,7 +477,8 @@ public class MorePotionsMod
 			{
 				if (living instanceof EntityPlayer)
 				{
-					if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && (living.isJumping || living.isAirBorne) && living.motionY < 0.07 && !hasJumped)  //Waaaaaay more checks than necessary
+					boolean canJump = !living.isPlayerSleeping() && living.isJumping;
+					if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && living.motionY < 0.07 && !hasJumped && canJump)  //Waaaaaay more checks than necessary
 					{
 						double motionY = 0.41999998688697815D;
 
@@ -426,7 +510,20 @@ public class MorePotionsMod
 		@ForgeSubscribe(priority = EventPriority.LOW)
 		public void onEntityDamaged(LivingAttackEvent event) 
 		{
-			if (event.entityLiving.isPotionActive(MorePotionsMod.ironSkin) || event.entityLiving.isPotionActive(MorePotionsMod.obsidianSkin));
+			if (event.entityLiving.isPotionActive(MorePotionsMod.doubleLife))
+			{
+				if (event.entityLiving.getHealth() - event.ammount <= 0)
+				{
+					event.setCanceled(true);
+					event.entityLiving.setEntityHealth(event.entityLiving.getMaxHealth());
+					event.entityLiving.removePotionEffect(MorePotionsMod.doubleLife.id);
+					if (event.entityLiving instanceof EntityPlayer)
+					{
+						((EntityPlayer)event.entityLiving).addChatMessage("<\u00a7kCLASHSOFT\u00a7r>: \u00a7bYour life has just been saved by a magic power. Be careful next time, it wont help you again.");
+					}
+				}
+			}
+			if (event.entityLiving.isPotionActive(MorePotionsMod.ironSkin));
 			{
 				if (event.source == DamageSource.inFire || event.source == DamageSource.onFire)
 				{
@@ -436,7 +533,7 @@ public class MorePotionsMod
 			}
 			if (event.entityLiving.isPotionActive(MorePotionsMod.obsidianSkin))
 			{
-				if (event.source == DamageSource.lava)
+				if (event.source == DamageSource.lava || event.source == DamageSource.inFire || event.source == DamageSource.onFire)
 				{
 					event.entityLiving.extinguish();
 					event.setCanceled(true);

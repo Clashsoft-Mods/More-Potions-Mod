@@ -18,7 +18,6 @@ import net.minecraftforge.oredict.OreDictionary;
 /**
  * Class that stores all data that the new potion need and all new potion types
  * @author Clashsoft
- *
  */
 public class Brewing
 {
@@ -61,7 +60,7 @@ public class Brewing
 	public static BrewingBase mundane = new BrewingBase("mundane", new ItemStack(Block.mushroomBrown));
 	public static BrewingBase uninteresting = new BrewingBase("uninteresting", new ItemStack(Item.paper));
 	public static BrewingBase bland = new BrewingBase("bland", new ItemStack(Item.melon));
-	public static BrewingBase clear = new BrewingBase("clear", new ItemStack(Item.clay));
+	public static BrewingBase clear = new BrewingBase("clear", MorePotionsMod.dustClay);
 	public static BrewingBase milky = new BrewingBase("milky", new ItemStack(Block.sapling));
 	public static BrewingBase diffuse = new BrewingBase("diffuse", new ItemStack(Item.wheat));
 	public static BrewingBase artless = new BrewingBase("artless", new ItemStack(Item.reed));
@@ -102,6 +101,7 @@ public class Brewing
 	public static Brewing damageBoost = new Brewing(new PotionEffect(Potion.damageBoost.id, 20*180, 0), 4, 20*300, weakness, new ItemStack(Item.blazePowder), awkward);
 	public static Brewing harm = new Brewing(new PotionEffect(Potion.harm.id, 1, 0), 1, 0, getBaseBrewing(thick));
 	public static Brewing heal = new Brewing(new PotionEffect(Potion.heal.id, 1, 0), 1, 0, harm, new ItemStack(Item.speckledMelon), getBaseBrewing(thick));
+	public static Brewing doubleLife = new Brewing(new PotionEffect(MorePotionsMod.doubleLife.id, 1625000, 0), 0, 0, harm, MorePotionsMod.dustNetherstar, getBaseBrewing(thick));
 	public static Brewing jump = new Brewing(new PotionEffect(Potion.jump.id, 20*180, 0), 4, 20*300, getBaseBrewing(dashing));
 	public static Brewing doubleJump = new Brewing(new PotionEffect(MorePotionsMod.doubleJump.id, 20*180, 0), 4, 20*3000, jump, new ItemStack(Item.feather), getBaseBrewing(dashing));
 	public static Brewing confusion = new Brewing(new PotionEffect(Potion.confusion.id, 20*90, 0), 2, 20*180, new ItemStack(Item.poisonousPotato), awkward);
@@ -111,7 +111,7 @@ public class Brewing
 	public static Brewing obsidianSkin = new Brewing(new PotionEffect(MorePotionsMod.obsidianSkin.id, 20*120, 0), 1, 20*240, MorePotionsMod.dustObsidian, getBaseBrewing(thick));
 	public static Brewing fireResistance = new Brewing(new PotionEffect(Potion.fireResistance.id, 20*180, 0), 0, 20*360, moveSlowdown, new ItemStack(Item.magmaCream), awkward);
 	public static Brewing waterWalking = new Brewing(new PotionEffect(MorePotionsMod.waterWalking.id, 20*120, 0), 0, 240*20, awkward);
-	public static Brewing waterBreathing = new Brewing(new PotionEffect(Potion.waterBreathing.id, 20*180, 0), 2, 20*360, waterWalking, new ItemStack(Item.bone), awkward);
+	public static Brewing waterBreathing = new Brewing(new PotionEffect(Potion.waterBreathing.id, 20*180, 0), 2, 20*360, waterWalking, MorePotionsMod.dustClay, awkward);
 	public static Brewing coldness = new Brewing(new PotionEffect(MorePotionsMod.coldness.id, 20*180, 0), 1, 20*360, new ItemStack(Item.snowball), awkward);
 	public static Brewing invisibility = new Brewing(new PotionEffect(Potion.invisibility.id, 20*180, 0), 0, 720*20, (Brewing)null, getBaseBrewing(thin));
 	public static Brewing blindness = new Brewing(new PotionEffect(Potion.blindness.id, 20*90, 0), 0, 20*240, new ItemStack(Item.dyePowder, 1, 0), getBaseBrewing(thin));
@@ -119,7 +119,7 @@ public class Brewing
 	public static Brewing poison = new Brewing(new PotionEffect(Potion.poison.id, 20*45, 0), 2, 20*60, new ItemStack(Item.spiderEye), getBaseBrewing(acrid));
 	public static Brewing hunger = new Brewing(new PotionEffect(Potion.hunger.id, 20*45, 0), 3, 20*60, poison, new ItemStack(Item.rottenFlesh), getBaseBrewing(acrid));
 	public static Brewing wither = new Brewing(new PotionEffect(Potion.wither.id, 450, 0), 1, 20*60, MorePotionsMod.dustWither, getBaseBrewing(acrid));
-	public static Brewing fire = new Brewing(new PotionEffect(MorePotionsMod.fire.id, 20*10, 0), 0, 20*20, new ItemStack(Item.fireballCharge), awkward);
+	//public static Brewing fire = new Brewing(new PotionEffect(MorePotionsMod.fire.id, 20*10, 0), 0, 20*20, new ItemStack(Item.fireballCharge), awkward);
 	public static Brewing effectRemove = new Brewing(new PotionEffect(MorePotionsMod.effectRemove.id, 20*45, 0), 0, 20*90, new ItemStack(Item.bucketMilk), awkward);
 
 	/**
@@ -186,7 +186,6 @@ public class Brewing
 	{
 		if (this.getEffect() != null)
 		{
-			int fireid = MorePotionsMod.fire.id;
 			switch(this.getEffect().getPotionID())
 			{
 			case 2:
@@ -198,10 +197,6 @@ public class Brewing
 			case 18:
 			case 19:
 			case 20: return true;
-			}
-			if (this.getEffect().getPotionID() == fireid)
-			{
-				return true;
 			}
 		}
 		return false;
@@ -314,6 +309,7 @@ public class Brewing
 		waterBreathing.register();
 		waterWalking.register();
 		coldness.register();
+		doubleLife.register();
 		heal.register();
 		harm.register();
 		poison.register();
@@ -330,14 +326,12 @@ public class Brewing
 		resistance.register();
 		ironSkin.register();
 		obsidianSkin.register();
-		fire.register();
 		effectRemove.register();
 	}
 	
 	public static void registerBaseBrewings()
 	{
 		awkward.register();
-		mundane.register();
 		thick.register();
 		thin.register();
 		dashing.register();
@@ -345,6 +339,7 @@ public class Brewing
 		
 		if (MorePotionsMod.showAllBaseBrewings)
 		{
+			mundane.register();
 			elegant.register();
 			uninteresting.register();
 			bland.register();
@@ -391,10 +386,6 @@ public class Brewing
 		{
 			list.add(new Brewing(this.getEffect() != null ? (new PotionEffect(this.getEffect().getPotionID(), this.getEffect().getDuration() * 2, this.getEffect().getAmplifier())) : null, 0, maxDuration, this.getOpposite(), this.getIngredient(), this.getBase()));
 		}
-		//		if (this.isExtendable() && this.isImprovable())
-		//		{
-		//			list.add(new Brewing(this.getEffect() != null ? (new PotionEffect(this.getEffect().getPotionID(), this.getEffect().getDuration() * 2, 1)) : null, true, true, this.getOpposite(), this.getIngredient()));
-		//		}
 		return list;
 	}
 

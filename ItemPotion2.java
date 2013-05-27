@@ -370,7 +370,7 @@ public class ItemPotion2 extends Item
 
 					if (var7.getEffect() != null && var7.getEffect().getDuration() > 20)
 					{
-						var8 = var8 + " (" + Potion.getDurationString(var7.getEffect()) + ")";
+						var8 += " (" + (var7.getEffect().getDuration() >= 1000000 ? StatCollector.translateToLocal("potion.infinite") : Potion.getDurationString(var7.getEffect())) + ")";
 					}
 
 					if (var7.isBadEffect())
