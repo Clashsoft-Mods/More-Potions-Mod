@@ -3,7 +3,6 @@ package clashsoft.mods.morepotions;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;

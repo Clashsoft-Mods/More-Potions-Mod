@@ -9,13 +9,20 @@ import net.minecraft.potion.Potion;
 public class Potion2 extends Potion {
 
 	private boolean instant;
+	private int customColor;
 	
-	public Potion2(String par1, boolean par2, int par3, boolean par4, int par5, int par6)
+	public Potion2(String name, boolean bad, int color, boolean instant, int iconX, int iconY)
 	{
-		super(getNextFreeID(), par2, par3);
-		this.setPotionName(par1);
-		instant = par4;
-		this.setIconIndex(par5, par6);
+		this(name, bad, color, instant, iconX, iconY, -1);
+	}
+	
+	public Potion2(String name, boolean bad, int color, boolean instant, int iconX, int iconY, int customColor)
+	{
+		super(getNextFreeID(), bad, color);
+		this.setPotionName(name);
+		this.instant = instant;
+		this.setIconIndex(iconX, iconY);
+		this.customColor = customColor;
 	}
 	
 	@Override
@@ -24,6 +31,11 @@ public class Potion2 extends Potion {
 	{
 		Minecraft.getMinecraft().renderEngine.bindTexture(ClientProxy.customEffects);
 		return super.getStatusIconIndex();
+	}
+	
+	public int getCustomColor()
+	{
+		return customColor;
 	}
 	
 	public boolean isInstant()

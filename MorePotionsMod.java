@@ -92,7 +92,7 @@ public class MorePotionsMod
 	public static Potion ironSkin = new Potion2("potion.ironSkin", false, 0xD8D8D8, false, 6, 2);
 	public static Potion obsidianSkin = new Potion2("potion.obsidianSkin", false, 0x101023, false, 7, 2);
 	public static Potion doubleJump = new Potion2("potion.doubleJump", false, 0x123456, false, 0, 0);
-	public static Potion doubleLife = new Potion2("potion.doubleLife", false, 0xFF2222, false, 0, 0);
+	public static Potion doubleLife = new Potion2("potion.doubleLife", false, 0xFF2222, false, 0, 0, CSUtil.fontColorInt(1, 0, 1, 1));
 
 	public static Block brewingStand2;
 	public static Block mixxer;
@@ -311,6 +311,8 @@ public class MorePotionsMod
 		CSLang.addLocalizationDE("potion.ironSkin.postfix", "Trank der Eisenhaut");
 		CSLang.addLocalizationUS("potion.ironSkin", "Iron Skin");
 		CSLang.addLocalizationDE("potion.ironSkin", "Eisenhaut");
+		CSLang.addLocalizationUS("potion.ironSkin.description", "A potion that gives you some resistance against fire and other damage sources.");
+		CSLang.addLocalizationDE("potion.ironSkin.description", "Ein Trank der Resistenz gegen Feuer und andere Schadensquellen bietet.");
 		
 		CSLang.addLocalizationUS("potion.doubleJump", "Double Jump");
 		CSLang.addLocalizationDE("potion.doubleJump", "Doppelsprung");
@@ -523,7 +525,7 @@ public class MorePotionsMod
 					}
 				}
 			}
-			if (event.entityLiving.isPotionActive(MorePotionsMod.ironSkin));
+			if (event.entityLiving.isPotionActive(MorePotionsMod.ironSkin))
 			{
 				if (event.source == DamageSource.inFire || event.source == DamageSource.onFire)
 				{

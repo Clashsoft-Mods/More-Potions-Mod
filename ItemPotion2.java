@@ -367,13 +367,16 @@ public class ItemPotion2 extends Item
 					{
 						var8 = var8 + " " + StatCollector.translateToLocal("potion.potency." + var7.getEffect().getAmplifier()).trim();
 					}
-
 					if (var7.getEffect() != null && var7.getEffect().getDuration() > 20)
 					{
 						var8 += " (" + (var7.getEffect().getDuration() >= 1000000 ? StatCollector.translateToLocal("potion.infinite") : Potion.getDurationString(var7.getEffect())) + ")";
 					}
-
-					if (var7.isBadEffect())
+					
+					if (var7.getEffect() != null && Potion.potionTypes[var7.getEffect().getPotionID()] instanceof Potion2 && ((Potion2)(Potion.potionTypes[var7.getEffect().getPotionID()])).getCustomColor() >= 0)
+					{
+						par3List.add("\u00a7" + Integer.toHexString(((Potion2)Potion.potionTypes[var7.getEffect().getPotionID()]).getCustomColor()) + var8);
+					}
+					else if (var7.isBadEffect())
 					{
 						par3List.add("\u00a7c" + var8);
 					}
@@ -392,6 +395,15 @@ public class ItemPotion2 extends Item
 					}
 					else
 					{
+						for (Brewing b : var5)
+						{
+							if (b.getEffect() != null)
+							{
+								String s = StatCollector.translateToLocal(b.getEffect().getEffectName() + ".description");
+								if (s != "")
+									par3List.add("\u00a7o" + s);
+							}
+						}
 						if (var5.size() > 1)
 						{
 							String green = CSUtil.fontColor("green") + "\u00a7o";
