@@ -119,7 +119,7 @@ public class Brewing
 	public static Brewing poison = new Brewing(new PotionEffect(Potion.poison.id, 20*45, 0), 2, 20*60, new ItemStack(Item.spiderEye), getBaseBrewing(acrid));
 	public static Brewing hunger = new Brewing(new PotionEffect(Potion.hunger.id, 20*45, 0), 3, 20*60, poison, new ItemStack(Item.rottenFlesh), getBaseBrewing(acrid));
 	public static Brewing wither = new Brewing(new PotionEffect(Potion.wither.id, 450, 0), 1, 20*60, MorePotionsMod.dustWither, getBaseBrewing(acrid));
-	//public static Brewing fire = new Brewing(new PotionEffect(MorePotionsMod.fire.id, 20*10, 0), 0, 20*20, new ItemStack(Item.fireballCharge), awkward);
+	public static Brewing fire = new Brewing(new PotionEffect(MorePotionsMod.fire.id, 20*10, 0), 0, 20*20, new ItemStack(Item.fireballCharge), awkward);
 	public static Brewing effectRemove = new Brewing(new PotionEffect(MorePotionsMod.effectRemove.id, 20*45, 0), 0, 20*90, new ItemStack(Item.bucketMilk), awkward);
 
 	/**
@@ -307,9 +307,9 @@ public class Brewing
 		digSlowdown.register();
 		fireResistance.register();
 		waterBreathing.register();
-		waterWalking.register();
-		coldness.register();
-		doubleLife.register();
+		waterWalking.register(); //
+		coldness.register(); //
+		doubleLife.register(); //
 		heal.register();
 		harm.register();
 		poison.register();
@@ -322,11 +322,11 @@ public class Brewing
 		damageBoost.register();
 		weakness.register();
 		jump.register();
-		doubleJump.register();
+		doubleJump.register(); //
 		resistance.register();
-		ironSkin.register();
-		obsidianSkin.register();
-		effectRemove.register();
+		ironSkin.register(); //
+		obsidianSkin.register(); //
+		effectRemove.register(); //
 	}
 	
 	public static void registerBaseBrewings()

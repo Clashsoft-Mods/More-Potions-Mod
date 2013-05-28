@@ -280,55 +280,102 @@ public class MorePotionsMod
 		CSLang.addLocalizationDE("item.mortar.name", "M\u00f6rser");
 
 		CSLang.addLocalizationUS("potion.fire.postfix", "Potion of Fire");
-		CSLang.addLocalization("potion.fire.postfix", "de_DE", "Trank des Feuers");
-		CSLang.addLocalization("potion.fire.postfix", "es_ES", "Poci\u00F3n del fuego");
+		CSLang.addLocalizationDE("potion.fire.postfix", "Trank des Feuers");
 		CSLang.addLocalizationUS("potion.fire", "Fire");
-		CSLang.addLocalization("potion.fire", "de_DE", "Feuer");
-		CSLang.addLocalization("potion.fire", "es_ES", "Fuego");
+		CSLang.addLocalizationDE("potion.fire", "Feuer");
+		CSLang.addLocalizationUS("potion.fire.description", "Makes you burn.");
+		CSLang.addLocalizationDE("potion.fire.description", "L\u00e4sst dich brennen.");
 
 		CSLang.addLocalizationUS("potion.effectRemove.postfix", "Potion of Effect Removing");
-		CSLang.addLocalization("potion.effectRemove.postfix", "de_DE", "Trank der Effektentfernung");
-		CSLang.addLocalization("potion.effectRemove.postfix", "es_ES", "Poci\u00F3n de no effectos");
+		CSLang.addLocalizationDE("potion.effectRemove.postfix", "Trank der Effektentfernung");
 		CSLang.addLocalizationUS("potion.effectRemove", "Effect Removing");
-		CSLang.addLocalization("potion.effectRemove", "de_DE", "Effektentfernung");
-		CSLang.addLocalization("potion.effectRemove", "es_ES", "Eliminaci\u00F3n de los effectos");
+		CSLang.addLocalizationDE("potion.effectRemove", "Effektentfernung");
+		CSLang.addLocalizationUS("potion.effectRemove.description", "Prevents any effects.");
+		CSLang.addLocalizationDE("potion.effectRemove.description", "Verhindert alle Effekte.");
 
 		CSLang.addLocalizationUS("potion.waterWalking.postfix", "Potion of Water Walking");
-		CSLang.addLocalization("potion.waterWalking.postfix", "de_DE", "Trank des \u00dcberwasserlaufens");
-		CSLang.addLocalization("potion.waterWalking.postfix", "es_ES", "Poci\u00F3n de irse sobre el agua");
+		CSLang.addLocalizationDE("potion.waterWalking.postfix", "Trank des \u00dcberwasserlaufens");
 		CSLang.addLocalizationUS("potion.waterWalking", "Water Walking");
-		CSLang.addLocalization("potion.waterWalking", "de_DE", "\u00dcberwasserlaufen");
-		CSLang.addLocalization("potion.waterWalking", "es_ES", "Ir sobre el agua");
+		CSLang.addLocalizationDE("potion.waterWalking", "\u00dcberwasserlaufen");
+		CSLang.addLocalizationUS("potion.waterWalking.description", "Lets you walk over water.");
+		CSLang.addLocalizationDE("potion.waterWalking.description", "L\u00e4sst dich über Wasser laufen.");
 
 		CSLang.addLocalizationUS("potion.coldness.postfix", "Potion of Coldness");
-		CSLang.addLocalization("potion.coldness.postfix", "de_DE", "Trank der K\u00e4lte");
-		CSLang.addLocalization("potion.coldness.postfix", "es_ES", "Poci\u00F3n de la frialdad");
+		CSLang.addLocalizationDE("potion.coldness.postfix", "Trank der K\u00e4lte");
 		CSLang.addLocalizationUS("potion.coldness", "Coldness");
-		CSLang.addLocalization("potion.coldness", "de_DE", "K\u00e4lte");
-		CSLang.addLocalization("potion.coldness", "es_ES", "Frialdad");
+		CSLang.addLocalizationDE("potion.coldness", "K\u00e4lte");
+		CSLang.addLocalizationUS("potion.coldness.description", "Makes you really cold, freezing water and generating snow around you.");
+		CSLang.addLocalizationDE("potion.coldness.description", "Macht dich sehr kalt, gefriert Wasser und generiert Schnee in deiner N\u00e4he.");
 		
 		CSLang.addLocalizationUS("potion.ironSkin.postfix", "Potion of Iron Skin");
 		CSLang.addLocalizationDE("potion.ironSkin.postfix", "Trank der Eisenhaut");
 		CSLang.addLocalizationUS("potion.ironSkin", "Iron Skin");
 		CSLang.addLocalizationDE("potion.ironSkin", "Eisenhaut");
-		CSLang.addLocalizationUS("potion.ironSkin.description", "A potion that gives you some resistance against fire and other damage sources.");
-		CSLang.addLocalizationDE("potion.ironSkin.description", "Ein Trank der Resistenz gegen Feuer und andere Schadensquellen bietet.");
+		CSLang.addLocalizationUS("potion.ironSkin.description", "Gives you resistance against fire and other damage sources.");
+		CSLang.addLocalizationDE("potion.ironSkin.description", "Bietet Resistenz gegen Feuer und andere Schadensquellen.");
 		
 		CSLang.addLocalizationUS("potion.doubleJump", "Double Jump");
 		CSLang.addLocalizationDE("potion.doubleJump", "Doppelsprung");
 		CSLang.addLocalizationUS("potion.doubleJump.postfix", "Potion of Double Jump");
 		CSLang.addLocalizationDE("potion.doubleJump.postfix", "Trank des Doppelsprungs");
+		CSLang.addLocalizationUS("potion.doubleJump.description", "Allows you to jump in mid-air.");
+		CSLang.addLocalizationDE("potion.doubleJump.description", "Erlaubt es, in der Luft ein zweites Mal zu springen.");
 		
 		CSLang.addLocalizationUS("potion.obsidianSkin.postfix", "Potion of Obsidian Skin");
 		CSLang.addLocalizationDE("potion.obsidianSkin.postfix", "Trank der Obsidianhaut");
 		CSLang.addLocalizationUS("potion.obsidianSkin", "Obsidian Skin");
 		CSLang.addLocalizationDE("potion.obsidianSkin", "Obsidianhaut");
+		CSLang.addLocalizationUS("potion.obsidianSkin.description", "Gives you resistance against fire, lava and other damage sources.");
+		CSLang.addLocalizationDE("potion.obsidianSkin.description", "Bietet Resistenz gegen Feuer, Lava und andere Schadesquellen.");
 		
 		CSLang.addLocalizationUS("potion.doubleLife.postfix", "Potion of Double Life");
 		CSLang.addLocalizationDE("potion.doubleLife.postfix", "Trank des Doppellebens");
 		CSLang.addLocalizationUS("potion.doubleLife", "Double Life");
 		CSLang.addLocalizationDE("potion.doubleLife", "Doppelleben");
-
+		CSLang.addLocalizationUS("potion.doubleLife.description", "Lasts forever, resurrects you once.");
+		CSLang.addLocalizationDE("potion.doubleLife.description", "H\u00e4lt f\u00fcr immer, wiederbelebt dich beim Tod ein Mal.");
+		
+		CSLang.addLocalizationUS("potion.regeneration.description", "Regenerates life.");
+		CSLang.addLocalizationDE("potion.regeneration.description", "Regeneriert Leben.");
+		CSLang.addLocalizationUS("potion.moveSpeed.description", "Allows you to move Faster.");
+		CSLang.addLocalizationDE("potion.moveSpeed.description", "Erlaubt es, sich schneller zu bewegen.");
+		CSLang.addLocalizationUS("potion.moveSlowdown.description", "Slows you down.");
+		CSLang.addLocalizationDE("potion.moveSlowdown.description", "Verlangsamt.");
+		CSLang.addLocalizationUS("potion.digSpeed.description", "Allows you to move your arms faster and dig faster.");
+		CSLang.addLocalizationDE("potion.digSpeed.description", "Erlaubt es, die Arme schneller zu bewegen und schneller zu graben.");
+		CSLang.addLocalizationUS("potion.digSlowDown.description", "Slows down your arms and your digging.");
+		CSLang.addLocalizationDE("potion.digSlowDown.description", "Verlangsamt Arme und Graben.");
+		CSLang.addLocalizationUS("potion.fireResistance.description", "Prevents you from getting fire and lava damage.");
+		CSLang.addLocalizationDE("potion.fireResistance.description", "Verhindert Feuer- und Lavaschaden.");
+		CSLang.addLocalizationUS("potion.waterBreathing.description", "Lets you breathe underwater.");
+		CSLang.addLocalizationDE("potion.waterBreathing.description", "L\u00e4sst dich unter Wasser atmen.");
+		CSLang.addLocalizationUS("potion.heal.description", "Gives you some hearts.");
+		CSLang.addLocalizationDE("potion.heal.description", "Gibt dir ein paar Leben.");
+		CSLang.addLocalizationUS("potion.harm.description", "Deals some damage.");
+		CSLang.addLocalizationDE("potion.harm.description", "F\u00fcgt dir Schaden zu.");
+		CSLang.addLocalizationUS("potion.poison.description", "Poisons you.");
+		CSLang.addLocalizationDE("potion.poison.description", "Vergiftet dich.");
+		CSLang.addLocalizationUS("potion.hunger.description", "Makes your hunger bar go down faster.");
+		CSLang.addLocalizationDE("potion.hunger.description", "L\u00e4sst deine Hungeranzeige schneller sinken.");
+		CSLang.addLocalizationUS("potion.wither.description", "Withers you as you would be hit by a wither skeleton.");
+		CSLang.addLocalizationDE("potion.wither.description", "Withert dich als w\u00fcrdest du von einem Witherskelett geschlagen werden.");
+		CSLang.addLocalizationUS("potion.confusion.description", "Makes you dizzy.");
+		CSLang.addLocalizationDE("potion.confusion.description", "Macht dich schwindelig.");
+		CSLang.addLocalizationUS("potion.nightVision.description", "Lets you see everything in the dark.");
+		CSLang.addLocalizationDE("potion.nightVision.description", "L\u00e4sst dich im Dunkeln alles sehen.");
+		CSLang.addLocalizationUS("potion.invisibility.description", "Makes you invisible.");
+		CSLang.addLocalizationDE("potion.invisibility.description", "Macht dich unsichtbar für Spieler und Mobs.");
+		CSLang.addLocalizationUS("potion.blindness.description", "Makes you blind.");
+		CSLang.addLocalizationDE("potion.blindness.description", "Macht dicht blind.");
+		CSLang.addLocalizationUS("potion.damageBoost.description", "Allows you to deal more damage.");
+		CSLang.addLocalizationDE("potion.damageBoost.description", "L\u00e4sst dich mehr Schaden austeilen.");
+		CSLang.addLocalizationUS("potion.weakness.description", "Decreases your delt damage.");
+		CSLang.addLocalizationDE("potion.weakness.description", "Verringert den Schaden, den du machst.");
+		CSLang.addLocalizationUS("potion.jump.description", "Lets you jump higher.");
+		CSLang.addLocalizationDE("potion.jump.description", "L\u00e4sst dich h\u00f6her springen.");
+		CSLang.addLocalizationUS("potion.resistance.description", "Makes you get less damage when getting hit.");
+		CSLang.addLocalizationDE("potion.resistance.description", "Verringert den Schaden, den du bekommst.");
+		
 		CSLang.addLocalizationUS("potion.goodeffects", "Good Effects");
 		CSLang.addLocalization("potion.goodeffects", "de_DE", "Gute Effekte");
 		CSLang.addLocalization("potion.goodeffects", "es_ES", "Buenos Effectos");
@@ -576,7 +623,6 @@ public class MorePotionsMod
 
 	public class MorePotionsModCraftingHandler implements ICraftingHandler
 	{
-
 		@Override
 		public void onCrafting(EntityPlayer player, ItemStack item, IInventory craftMatrix)
 		{
@@ -599,10 +645,6 @@ public class MorePotionsMod
 		}
 
 		@Override
-		public void onSmelting(EntityPlayer player, ItemStack item)
-		{
-			
-		}
-		
+		public void onSmelting(EntityPlayer player, ItemStack item) {}	
 	}
 }

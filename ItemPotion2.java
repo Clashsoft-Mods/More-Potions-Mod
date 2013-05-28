@@ -385,7 +385,7 @@ public class ItemPotion2 extends Item
 						par3List.add("\u00a7a" + var8);
 					}
 				}
-				if (MorePotionsMod.advancedPotionInfo && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
+				if (MorePotionsMod.advancedPotionInfo && Keyboard.isKeyDown(Keyboard.KEY_CAPITAL))
 				{
 					List<String> usedTo = PotionUtils.getUsedTo(par1ItemStack);
 					if (!usedTo.isEmpty() && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
@@ -395,13 +395,22 @@ public class ItemPotion2 extends Item
 					}
 					else
 					{
-						for (Brewing b : var5)
+						if (var5.size() == 1)
 						{
-							if (b.getEffect() != null)
+							for (Brewing b : var5)
 							{
-								String s = StatCollector.translateToLocal(b.getEffect().getEffectName() + ".description");
-								if (s != "")
-									par3List.add("\u00a7o" + s);
+								if (b.getEffect() != null)
+								{
+									String s = StatCollector.translateToLocal(b.getEffect().getEffectName() + ".description");
+									if (s != b.getEffect().getEffectName() + ".description")
+									{
+										s = CSUtil.cutString(s, par1ItemStack.getDisplayName().length());
+										for (String s1 : CSUtil.makeLineList(s))
+										{
+											par3List.add(CSUtil.fontColor("purpleblue") + "\u00a7o" + s1);
+										}
+									}
+								}
 							}
 						}
 						if (var5.size() > 1)
@@ -431,7 +440,7 @@ public class ItemPotion2 extends Item
 						}
 						if (Brewing.getExperience(par1ItemStack) > 0.3F)
 						{
-							par3List.add(CSUtil.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.value") + ": " + CSUtil.fontColor("yellow") + "\u00a7o" + String.format("%.2f", Brewing.getExperience(par1ItemStack) * 100 / 223.9F));
+							par3List.add(CSUtil.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.value") + ": " + CSUtil.fontColor("yellow") + "\u00a7o" + String.format("%.2f", (Brewing.getExperience(par1ItemStack) * 100F) / 270.870F));
 						}
 					}
 				}
