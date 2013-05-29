@@ -2,6 +2,7 @@ package clashsoft.mods.morepotions;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -11,6 +12,7 @@ import java.util.Random;
 import org.lwjgl.input.Keyboard;
 
 import clashsoft.clashsoftapi.CSUtil;
+import clashsoft.clashsoftapi.EnumFontColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -407,7 +409,7 @@ public class ItemPotion2 extends Item
 										s = CSUtil.cutString(s, par1ItemStack.getDisplayName().length());
 										for (String s1 : CSUtil.makeLineList(s))
 										{
-											par3List.add(CSUtil.fontColor("purpleblue") + "\u00a7o" + s1);
+											par3List.add(CSUtil.fontColor(EnumFontColor.LIGHTBLUE) + "\u00a7o" + s1);
 										}
 									}
 								}
@@ -415,8 +417,8 @@ public class ItemPotion2 extends Item
 						}
 						if (var5.size() > 1)
 						{
-							String green = CSUtil.fontColor("green") + "\u00a7o";
-							String red = CSUtil.fontColor("red") + "\u00a7o";
+							String green = CSUtil.fontColor(EnumFontColor.GREEN) + "\u00a7o";
+							String red = CSUtil.fontColor(EnumFontColor.RED) + "\u00a7o";
 
 							int goodEffects = PotionUtils.getGoodEffects(var5);
 							float goodEffectsPercentage = (float)goodEffects / (float)var5.size() * 100;
@@ -428,19 +430,19 @@ public class ItemPotion2 extends Item
 							int maxDuration = PotionUtils.getMaxDuration(var5);
 
 							if (goodEffects > 1)
-								par3List.add(CSUtil.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.goodeffects") + ": " + green + goodEffects + " (" + String.format("%.1f", goodEffectsPercentage) + "%)");
+								par3List.add(CSUtil.fontColor(EnumFontColor.LIGHTGRAY) + "\u00a7o" + StatCollector.translateToLocal("potion.goodeffects") + ": " + green + goodEffects + " (" + String.format("%.1f", goodEffectsPercentage) + "%)");
 							if (badEffects > 1)
-								par3List.add(CSUtil.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.negativeEffects") + ": " + red + badEffects + " (" + String.format("%.1f", badEffectsPercentage) + "%)");
+								par3List.add(CSUtil.fontColor(EnumFontColor.LIGHTGRAY) + "\u00a7o" + StatCollector.translateToLocal("potion.negativeEffects") + ": " + red + badEffects + " (" + String.format("%.1f", badEffectsPercentage) + "%)");
 							if (averageAmplifier > 0)
-								par3List.add(CSUtil.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.averageamplifier") + ": " + CSUtil.fontColor("darkgray") + "\u00a7o" + StatCollector.translateToLocal("potion.potency." + averageAmplifier));
-							par3List.add(CSUtil.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.averageduration") + ": " + CSUtil.fontColor("darkgray") + "\u00a7o" + Potion.getDurationString(new PotionEffect(0, averageDuration, 0)));
+								par3List.add(CSUtil.fontColor(EnumFontColor.LIGHTGRAY) + "\u00a7o" + StatCollector.translateToLocal("potion.averageamplifier") + ": " + CSUtil.fontColor(EnumFontColor.DARKGRAY) + "\u00a7o" + StatCollector.translateToLocal("potion.potency." + averageAmplifier));
+							par3List.add(CSUtil.fontColor(EnumFontColor.LIGHTGRAY) + "\u00a7o" + StatCollector.translateToLocal("potion.averageduration") + ": " + CSUtil.fontColor(EnumFontColor.DARKGRAY) + "\u00a7o" + Potion.getDurationString(new PotionEffect(0, averageDuration, 0)));
 							if (maxAmplifier > 0)
-								par3List.add(CSUtil.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.highestamplifier") + ": " + CSUtil.fontColor("darkgray") + "\u00a7o" + StatCollector.translateToLocal("potion.potency." + maxAmplifier));
-							par3List.add(CSUtil.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.highestduration") + ": " + CSUtil.fontColor("darkgray") + "\u00a7o" + Potion.getDurationString(new PotionEffect(0, maxDuration, 0)));
+								par3List.add(CSUtil.fontColor(EnumFontColor.LIGHTGRAY) + "\u00a7o" + StatCollector.translateToLocal("potion.highestamplifier") + ": " + CSUtil.fontColor(EnumFontColor.DARKGRAY) + "\u00a7o" + StatCollector.translateToLocal("potion.potency." + maxAmplifier));
+							par3List.add(CSUtil.fontColor(EnumFontColor.LIGHTGRAY) + "\u00a7o" + StatCollector.translateToLocal("potion.highestduration") + ": " + CSUtil.fontColor(EnumFontColor.DARKGRAY) + "\u00a7o" + Potion.getDurationString(new PotionEffect(0, maxDuration, 0)));
 						}
 						if (Brewing.getExperience(par1ItemStack) > 0.3F)
 						{
-							par3List.add(CSUtil.fontColor("lightgray") + "\u00a7o" + StatCollector.translateToLocal("potion.value") + ": " + CSUtil.fontColor("yellow") + "\u00a7o" + String.format("%.2f", (Brewing.getExperience(par1ItemStack) * 100F) / 270.870F));
+							par3List.add(CSUtil.fontColor(EnumFontColor.LIGHTGRAY) + "\u00a7o" + StatCollector.translateToLocal("potion.value") + ": " + CSUtil.fontColor(EnumFontColor.YELLOW) + "\u00a7o" + String.format("%.2f", (Brewing.getExperience(par1ItemStack) * 100F) / 270.870F));
 						}
 					}
 				}

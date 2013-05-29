@@ -10,6 +10,7 @@ public class Potion2 extends Potion {
 
 	private boolean instant;
 	private int customColor;
+	private boolean isBadEffect;
 	
 	public Potion2(String name, boolean bad, int color, boolean instant, int iconX, int iconY)
 	{
@@ -23,6 +24,7 @@ public class Potion2 extends Potion {
 		this.instant = instant;
 		this.setIconIndex(iconX, iconY);
 		this.customColor = customColor;
+		this.isBadEffect = bad;
 	}
 	
 	@Override
@@ -41,6 +43,11 @@ public class Potion2 extends Potion {
 	public boolean isInstant()
 	{
 		return instant;
+	}
+	
+	public boolean isBadEffect()
+	{
+		return isBadEffect;
 	}
 	
 	public static int getNextFreeID()

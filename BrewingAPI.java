@@ -1,5 +1,6 @@
 package clashsoft.mods.morepotions;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,15 +34,26 @@ public class BrewingAPI
 	@ForgeSubscribe
 	public void onEntityUpdate(LivingUpdateEvent event)
 	{
+		Collection c = event.entityLiving.getActivePotionEffects();
 		for (IPotionEffectHandler handler : effectHandlers)
 		{
-			for (Object effect : event.entityLiving.getActivePotionEffects())
+			for (Object effect : c)
 			{
 				if (handler.canHandle((PotionEffect)effect))
 				{
 					handler.onPotionUpdate(event.entityLiving, (PotionEffect)effect);
 				}
 			}
+			for (PotionEffect pe : handler.addEffectQueue)
+			{
+				event.entityLiving.addPotionEffect(pe);
+			}
+			handler.addEffectQueue.clear();
+			for (int i : handler.removeEffectQueue)
+			{
+				event.entityLiving.removePotionEffect(i);
+			}
+			handler.removeEffectQueue.clear();
 		}
 	}
 }

@@ -117,11 +117,14 @@ public class Brewing
 	public static Brewing blindness = new Brewing(new PotionEffect(Potion.blindness.id, 20*90, 0), 0, 20*240, new ItemStack(Item.dyePowder, 1, 0), getBaseBrewing(thin));
 	public static Brewing nightVision = new Brewing(new PotionEffect(Potion.nightVision.id, 20*180, 0), 0, 20*300, invisibility, new ItemStack(Item.goldenCarrot), getBaseBrewing(thin));
 	public static Brewing poison = new Brewing(new PotionEffect(Potion.poison.id, 20*45, 0), 2, 20*60, new ItemStack(Item.spiderEye), getBaseBrewing(acrid));
-	public static Brewing hunger = new Brewing(new PotionEffect(Potion.hunger.id, 20*45, 0), 3, 20*60, poison, new ItemStack(Item.rottenFlesh), getBaseBrewing(acrid));
+	public static Brewing hunger = new Brewing(new PotionEffect(Potion.hunger.id, 20*45, 0), 3, 20*60, getBaseBrewing(acrid));
+	public static Brewing antiHunger = new Brewing(new PotionEffect(MorePotionsMod.antiHunger.id, 20*45, 0), 3, 20*60, hunger, new ItemStack(Item.bread), getBaseBrewing(awkward));
 	public static Brewing wither = new Brewing(new PotionEffect(Potion.wither.id, 450, 0), 1, 20*60, MorePotionsMod.dustWither, getBaseBrewing(acrid));
-	public static Brewing fire = new Brewing(new PotionEffect(MorePotionsMod.fire.id, 20*10, 0), 0, 20*20, new ItemStack(Item.fireballCharge), awkward);
-	public static Brewing effectRemove = new Brewing(new PotionEffect(MorePotionsMod.effectRemove.id, 20*45, 0), 0, 20*90, new ItemStack(Item.bucketMilk), awkward);
-
+	public static Brewing explosiveness = new Brewing(new PotionEffect(MorePotionsMod.explosiveness.id, 20*10, 0), 4, 20*20, awkward);
+	public static Brewing fire = new Brewing(new PotionEffect(MorePotionsMod.fire.id, 20*10, 0), 0, 20*20, explosiveness, new ItemStack(Item.fireballCharge), awkward);
+	public static Brewing random = new Brewing(new PotionEffect(MorePotionsMod.random.id, MorePotionsMod.randomMode == 0 ? 1 : 20*45, 0), 0, MorePotionsMod.randomMode == 0 ? 1 : 20*90, awkward);
+	public static Brewing effectRemove = new Brewing(new PotionEffect(MorePotionsMod.effectRemove.id, 20*45, 0), 0, 20*90, random, new ItemStack(Item.bucketMilk), awkward);
+	
 	/**
 	 * Creates a new Brewing
 	 * @param par1PotionEffect Effect
@@ -197,6 +200,10 @@ public class Brewing
 			case 18:
 			case 19:
 			case 20: return true;
+			}
+			if (Potion.potionTypes[this.getEffect().getPotionID()] instanceof Potion2)
+			{
+				return ((Potion2)Potion.potionTypes[this.getEffect().getPotionID()]).isBadEffect();
 			}
 		}
 		return false;
@@ -281,7 +288,7 @@ public class Brewing
 		{
 			effectBrewings.add(this);
 		}
-		if (!(this instanceof BrewingBase) && this != effectRemove)
+		if (!(this instanceof BrewingBase) && this != effectRemove && this != random)
 		{
 			combinableEffects.add(this);
 		}
@@ -313,8 +320,11 @@ public class Brewing
 		heal.register();
 		harm.register();
 		poison.register();
-		hunger.register();
+		fire.register();
+		explosiveness.register();
 		wither.register();
+		antiHunger.register();
+		hunger.register();
 		confusion.register();
 		nightVision.register();
 		invisibility.register();
@@ -327,6 +337,7 @@ public class Brewing
 		ironSkin.register(); //
 		obsidianSkin.register(); //
 		effectRemove.register(); //
+		random.register();
 	}
 	
 	public static void registerBaseBrewings()
