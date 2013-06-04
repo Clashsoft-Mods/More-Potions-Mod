@@ -12,6 +12,7 @@ import java.util.Random;
 import org.lwjgl.input.Keyboard;
 
 import clashsoft.clashsoftapi.CSUtil;
+import clashsoft.clashsoftapi.CustomPotion;
 import clashsoft.clashsoftapi.EnumFontColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -341,11 +342,13 @@ public class ItemPotion2 extends Item
 			}
 			else
 			{
-				return "Unknown";
+				return super.getItemDisplayName(par1ItemStack);
 			}
 		}
 	}
-
+	
+	
+	float glowPos = 0F;
 	@Override
 	@SideOnly(Side.CLIENT)
 	/**
@@ -359,11 +362,17 @@ public class ItemPotion2 extends Item
 
 			if (var5 != null && !var5.isEmpty())
 			{
-				Iterator var9 = var5.iterator();
-				while (var9.hasNext())
+				int longestString = this.getItemDisplayName(par1ItemStack).length() + 10;
+				glowPos += 0.35F;
+				if (glowPos >= longestString)
 				{
-					Brewing var7 = (Brewing)var9.next();
+					glowPos = 0;
+				}
+				for (int i = 0; i < var5.size(); i++)
+				{
+					Brewing var7 = (Brewing)var5.get(i);
 					String var8 = (var7.getEffect() != null && var7.getEffect().getPotionID() > 0 ? StatCollector.translateToLocal(var7.getEffect().getEffectName()) : "\u00a77" + StatCollector.translateToLocal("potion.empty")).trim();
+					int randPos = 0;
 
 					if (var7.getEffect() != null && var7.getEffect().getAmplifier() > 0)
 					{
@@ -374,18 +383,28 @@ public class ItemPotion2 extends Item
 						var8 += " (" + (var7.getEffect().getDuration() >= 1000000 ? StatCollector.translateToLocal("potion.infinite") : Potion.getDurationString(var7.getEffect())) + ")";
 					}
 					
-					if (var7.getEffect() != null && Potion.potionTypes[var7.getEffect().getPotionID()] instanceof Potion2 && ((Potion2)(Potion.potionTypes[var7.getEffect().getPotionID()])).getCustomColor() >= 0)
+					int glowPos2 = MathHelper.floor_float(glowPos) < var8.length() ? MathHelper.floor_float(glowPos) : var8.length();
+					
+					String var10 = var8.substring(0, glowPos2);
+					String var11 = glowPos2 < var8.length() ? String.valueOf(var8.charAt(glowPos2)) : "";
+					String var12 = glowPos2 + 1 < var8.length() ? var8.substring(glowPos2 + 1, var8.length()) : "";
+					
+					if (var7.getEffect() != null && Potion.potionTypes[var7.getEffect().getPotionID()] instanceof CustomPotion && ((CustomPotion)(Potion.potionTypes[var7.getEffect().getPotionID()])).getCustomColor() >= 0)
 					{
-						par3List.add("\u00a7" + Integer.toHexString(((Potion2)Potion.potionTypes[var7.getEffect().getPotionID()]).getCustomColor()) + var8);
+						int c = ((CustomPotion)Potion.potionTypes[var7.getEffect().getPotionID()]).getCustomColor();
+						String colorLight = "\u00a7" + Integer.toHexString(c >= 8 ? c : c + 8);
+						String colorDark = "\u00a7" + Integer.toHexString(c);
+						var8 = (colorDark + var10 + colorLight + var11 + colorDark + var12);
 					}
 					else if (var7.isBadEffect())
 					{
-						par3List.add("\u00a7c" + var8);
+						var8 = (CSUtil.fontColor(EnumFontColor.RED) + var10 + CSUtil.fontColor(EnumFontColor.LIGHTRED) + var11 + CSUtil.fontColor(EnumFontColor.RED) + var12);
 					}
 					else
 					{
-						par3List.add("\u00a7a" + var8);
+						var8 = (CSUtil.fontColor(EnumFontColor.GREEN) + var10 + CSUtil.fontColor(EnumFontColor.LIGHTGREEN) + var11 + CSUtil.fontColor(EnumFontColor.GREEN) + var12);
 					}
+					par3List.add(var8);
 				}
 				if (MorePotionsMod.advancedPotionInfo && Keyboard.isKeyDown(Keyboard.KEY_CAPITAL))
 				{

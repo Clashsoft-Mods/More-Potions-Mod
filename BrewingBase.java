@@ -50,21 +50,6 @@ public class BrewingBase extends Brewing
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setString("BaseName", basename);
-//		if (getIngredient() != null)
-//		{
-//			if (getIngredient().itemID > 0)
-//			{
-//				nbt.setInteger("IngredientID", getIngredient().itemID);
-//			}
-//			if (getIngredient().stackSize > 0)
-//			{
-//				nbt.setInteger("IngredientAmount", getIngredient().stackSize);
-//			}
-//			if (getIngredient().getItemDamage() != 0)
-//			{
-//				nbt.setInteger("IngredientDamage", getIngredient().getItemDamage());
-//			}
-//		}
 		return nbt;
 	}
 	

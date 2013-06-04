@@ -11,6 +11,7 @@ import clashsoft.clashsoftapi.CSItems;
 import clashsoft.clashsoftapi.CSLang;
 import clashsoft.clashsoftapi.CSUtil;
 import clashsoft.clashsoftapi.CustomItem;
+import clashsoft.clashsoftapi.CustomPotion;
 import clashsoft.clashsoftapi.EnumFontColor;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
@@ -97,17 +98,17 @@ public class MorePotionsMod
 
 	public static CreativeTabs potions = new CreativeTabs(PotionsTab_ID, "morepotions");
 
-	public static Potion fire = new Potion2("potion.fire", true, 0xFFE500, false, 2, 2);
-	public static Potion effectRemove = new Potion2("potion.effectRemove", false, 0xFFFFFF, false, 3, 2);
-	public static Potion waterWalking = new Potion2("potion.waterWalking", false, 0x124EFE, false, 4, 2);
-	public static Potion coldness = new Potion2("potion.coldness", false, 0x00DDFF, false, 5, 2);
-	public static Potion ironSkin = new Potion2("potion.ironSkin", false, 0xD8D8D8, false, 6, 2);
-	public static Potion obsidianSkin = new Potion2("potion.obsidianSkin", false, 0x101023, false, 7, 2);
-	public static Potion doubleJump = new Potion2("potion.doubleJump", false, 0x123456, false, 0, 0);
-	public static Potion doubleLife = new Potion2("potion.doubleLife", false, 0xFF2222, false, 1, 0, CSUtil.fontColorInt(1, 0, 1, 1));
-	public static Potion antiHunger = new Potion2("potion.antiHunger", false, 0xE3E3E3, false, 2, 0);
-	public static Potion explosiveness = new Potion2("potion.explosiveness", true, 0xCC0000, false, 3, 0);
-	public static Potion random = new Potion2("potion.random", false, 0x000000, randomMode == 0, 4, 0, CSUtil.fontColorInt(1, 0, 0, 0));
+	public static Potion fire = new CustomPotion("potion.fire", true, 0xFFE500, false, 0, 0);
+	public static Potion effectRemove = new CustomPotion("potion.effectRemove", false, 0xFFFFFF, false, 1, 0);
+	public static Potion waterWalking = new CustomPotion("potion.waterWalking", false, 0x124EFE, false, 2, 0);
+	public static Potion coldness = new CustomPotion("potion.coldness", false, 0x00DDFF, false, 3, 0);
+	public static Potion ironSkin = new CustomPotion("potion.ironSkin", false, 0xD8D8D8, false, 4, 0);
+	public static Potion obsidianSkin = new CustomPotion("potion.obsidianSkin", false, 0x101023, false, 5, 0);
+	public static Potion doubleJump = new CustomPotion("potion.doubleJump", false, 0x123456, false, 6, 0);
+	public static Potion doubleLife = new CustomPotion("potion.doubleLife", false, 0xFF2222, false, 7, 0, CSUtil.fontColorInt(0, 0, 1, 1));
+	public static Potion antiHunger = new CustomPotion("potion.antiHunger", false, 0xE3E3E3, false, 0, 1);
+	public static Potion explosiveness = new CustomPotion("potion.explosiveness", true, 0xCC0000, false, 1, 1);
+	public static Potion random = new CustomPotion("potion.random", false, 0x000000, randomMode == 0, 2, 1, CSUtil.fontColorInt(0, 1, 1, 1));
 
 	public static Block brewingStand2;
 	public static Block mixxer;
@@ -362,6 +363,27 @@ public class MorePotionsMod
 		CSLang.addLocalizationDE("potion.doubleLife", "Doppelleben");
 		CSLang.addLocalizationUS("potion.doubleLife.description", "Lasts forever, resurrects you once.");
 		CSLang.addLocalizationDE("potion.doubleLife.description", "H\u00e4lt f\u00fcr immer, wiederbelebt dich beim Tod ein Mal.");
+		
+		CSLang.addLocalizationUS("potion.antiHunger.postfix", "Potion of Anti Hunger");
+		CSLang.addLocalizationDE("potion.antiHunger.postfix", "Trank des Antihungers");
+		CSLang.addLocalizationUS("potion.antiHunger", "Anti Hunger");
+		CSLang.addLocalizationDE("potion.antiHunger", "Antihunger");
+		CSLang.addLocalizationUS("potion.antiHunger.description", "Makes your hunger bar regenerate.");
+		CSLang.addLocalizationDE("potion.antiHunger.description", "L\u00e4sst deine Hungerleiste regenerieren.");
+		
+		CSLang.addLocalizationUS("potion.explosiveness.postfix", "Potion of Explosion");
+		CSLang.addLocalizationDE("potion.explosiveness.postfix", "Trank der Explosion");
+		CSLang.addLocalizationUS("potion.explosiveness", "Explosion");
+		CSLang.addLocalizationDE("potion.explosiveness", "Explosion");
+		CSLang.addLocalizationUS("potion.explosiveness.description", "Makes you explode every 2 seconds.");
+		CSLang.addLocalizationDE("potion.explosiveness.description", "L\u00e4sst dich alle 2 Sekunden explodieren.");
+		
+		CSLang.addLocalizationUS("potion.random.postfix", "Random Potion");
+		CSLang.addLocalizationDE("potion.random.postfix", "Zufallstrank");
+		CSLang.addLocalizationUS("potion.random", "Random Effect");
+		CSLang.addLocalizationDE("potion.random", "Zuf\u00e4lliger Effekt");
+		CSLang.addLocalizationUS("potion.random.description", randomMode == 0 ? "Gives you a random effect." : "Gives you a new random effect every 2 seconds.");
+		CSLang.addLocalizationDE("potion.random.description", randomMode == 0 ? "Gibt dir einen zuf\u00e4lligen Trankeffekt." : "Gibt dir einen neuen zuf\u00e4lligen Trankeffekt alle 2 Sekunden.");
 
 		CSLang.addLocalizationUS("potion.regeneration.description", "Regenerates life.");
 		CSLang.addLocalizationDE("potion.regeneration.description", "Regeneriert Leben.");
@@ -645,12 +667,13 @@ public class MorePotionsMod
 					event.entityLiving.removePotionEffect(MorePotionsMod.doubleLife.id);
 					if (event.entityLiving instanceof EntityPlayer)
 					{
-						((EntityPlayer)event.entityLiving).addChatMessage("<\u00a7kCLASHSOFT\u00a7r>: \u00a7bYour life has just been saved by a magic power. Be careful next time, it wont help you again.");
+						((EntityPlayer)event.entityLiving).addChatMessage("<\u00a7kCLASHSOFT\u00a7r>: \u00a7bYour life has just been saved by a magical power. Be careful next time, it wont help you again.");
 					}
 				}
 			}
 			if (event.entityLiving.isPotionActive(MorePotionsMod.ironSkin))
 			{
+				event.entityLiving.addPotionEffect(new PotionEffect(Potion.resistance.id, event.entityLiving.getActivePotionEffect(MorePotionsMod.ironSkin).getDuration(), 2));
 				if (event.source == DamageSource.inFire || event.source == DamageSource.onFire)
 				{
 					event.entityLiving.extinguish();
@@ -659,6 +682,7 @@ public class MorePotionsMod
 			}
 			if (event.entityLiving.isPotionActive(MorePotionsMod.obsidianSkin))
 			{
+				event.entityLiving.addPotionEffect(new PotionEffect(Potion.resistance.id, event.entityLiving.getActivePotionEffect(MorePotionsMod.obsidianSkin).getDuration(), 2));
 				if (event.source == DamageSource.lava || event.source == DamageSource.inFire || event.source == DamageSource.onFire)
 				{
 					event.entityLiving.extinguish();

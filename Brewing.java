@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import clashsoft.clashsoftapi.CustomPotion;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -201,9 +202,9 @@ public class Brewing
 			case 19:
 			case 20: return true;
 			}
-			if (Potion.potionTypes[this.getEffect().getPotionID()] instanceof Potion2)
+			if (Potion.potionTypes[this.getEffect().getPotionID()] instanceof CustomPotion)
 			{
-				return ((Potion2)Potion.potionTypes[this.getEffect().getPotionID()]).isBadEffect();
+				return ((CustomPotion)Potion.potionTypes[this.getEffect().getPotionID()]).isBadEffect();
 			}
 		}
 		return false;
