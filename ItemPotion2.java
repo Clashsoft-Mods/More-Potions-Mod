@@ -11,10 +11,12 @@ import java.util.Random;
 
 import org.lwjgl.input.Keyboard;
 
-import clashsoft.clashsoftapi.CSUtil;
 import clashsoft.clashsoftapi.CustomPotion;
-import clashsoft.clashsoftapi.EnumFontColor;
+import clashsoft.clashsoftapi.util.CSFontRenderer;
+import clashsoft.clashsoftapi.util.CSUtil;
+import clashsoft.clashsoftapi.util.EnumFontColor;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -347,6 +349,13 @@ public class ItemPotion2 extends Item
 		}
 	}
 	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public FontRenderer getFontRenderer(ItemStack stack)
+	{
+		return CSFontRenderer.getFontRenderer();
+	}
+	
 	
 	float glowPos = 0F;
 	@Override
@@ -355,7 +364,7 @@ public class ItemPotion2 extends Item
 	 * allows items to add custom lines of information to the mouseover description
 	 */
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
-	{
+	{	
 		if (par1ItemStack.getItemDamage() != 0)
 		{
 			List<Brewing> var5 = this.getEffects(par1ItemStack);
@@ -371,7 +380,8 @@ public class ItemPotion2 extends Item
 				for (int i = 0; i < var5.size(); i++)
 				{
 					Brewing var7 = (Brewing)var5.get(i);
-					String var8 = (var7.getEffect() != null && var7.getEffect().getPotionID() > 0 ? StatCollector.translateToLocal(var7.getEffect().getEffectName()) : "\u00a77" + StatCollector.translateToLocal("potion.empty")).trim();
+					boolean isBase = var7.getEffect() != null && var7.getEffect().getPotionID() > 0;
+					String var8 = (isBase ? StatCollector.translateToLocal(var7.getEffect().getEffectName()) : "\u00a77" + StatCollector.translateToLocal("potion.empty")).trim();
 					int randPos = 0;
 
 					if (var7.getEffect() != null && var7.getEffect().getAmplifier() > 0)
@@ -394,15 +404,15 @@ public class ItemPotion2 extends Item
 						int c = ((CustomPotion)Potion.potionTypes[var7.getEffect().getPotionID()]).getCustomColor();
 						String colorLight = "\u00a7" + Integer.toHexString(c >= 8 ? c : c + 8);
 						String colorDark = "\u00a7" + Integer.toHexString(c);
-						var8 = (colorDark + var10 + colorLight + var11 + colorDark + var12);
+						var8 = !isBase ? var8 : (colorDark + var10 + colorLight + var11 + colorDark + var12);
 					}
 					else if (var7.isBadEffect())
 					{
-						var8 = (CSUtil.fontColor(EnumFontColor.RED) + var10 + CSUtil.fontColor(EnumFontColor.LIGHTRED) + var11 + CSUtil.fontColor(EnumFontColor.RED) + var12);
+						var8 = !isBase ? var8 : (CSUtil.fontColor(EnumFontColor.RED) + var10 + CSUtil.fontColor(EnumFontColor.LIGHTRED) + var11 + CSUtil.fontColor(EnumFontColor.RED) + var12);
 					}
 					else
 					{
-						var8 = (CSUtil.fontColor(EnumFontColor.GREEN) + var10 + CSUtil.fontColor(EnumFontColor.LIGHTGREEN) + var11 + CSUtil.fontColor(EnumFontColor.GREEN) + var12);
+						var8 = !isBase ? var8 : (CSUtil.fontColor(EnumFontColor.GREEN) + var10 + CSUtil.fontColor(EnumFontColor.LIGHTGREEN) + var11 + CSUtil.fontColor(EnumFontColor.GREEN) + var12);
 					}
 					par3List.add(var8);
 				}
@@ -489,7 +499,7 @@ public class ItemPotion2 extends Item
 	 */
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
-		if (par2CreativeTabs == CreativeTabs.tabBrewing)
+		if (par2CreativeTabs == CreativeTabs.tabBrewing || par2CreativeTabs == CreativeTabs.tabAllSearch)
 		{
 			par3List.add(new ItemStack(this, 1, 0));
 			ItemStack allEffects1 = new ItemStack(this, 1, 1);
@@ -550,7 +560,7 @@ public class ItemPotion2 extends Item
 			par3List.add(bad1);
 			par3List.add(bad2);
 		}
-		if (MorePotionsMod.multiPotions && par2CreativeTabs == MorePotionsMod.potions)
+		if (MorePotionsMod.multiPotions && (par2CreativeTabs == MorePotionsMod.potions || par2CreativeTabs == CreativeTabs.tabAllSearch))
 		{
 			for (int i = 1; i <= 2; i++)
 			{

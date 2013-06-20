@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.StatCollector;
-import clashsoft.clashsoftapi.CSUtil;
+import clashsoft.clashsoftapi.util.CSUtil;
 
 public class PotionUtils
 {

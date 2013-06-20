@@ -6,13 +6,14 @@ import java.util.Random;
 
 import org.lwjgl.input.Keyboard;
 
-import clashsoft.clashsoftapi.CSCrafting;
-import clashsoft.clashsoftapi.CSItems;
-import clashsoft.clashsoftapi.CSLang;
-import clashsoft.clashsoftapi.CSUtil;
 import clashsoft.clashsoftapi.CustomItem;
 import clashsoft.clashsoftapi.CustomPotion;
-import clashsoft.clashsoftapi.EnumFontColor;
+import clashsoft.clashsoftapi.util.CSArray;
+import clashsoft.clashsoftapi.util.CSCrafting;
+import clashsoft.clashsoftapi.util.CSItems;
+import clashsoft.clashsoftapi.util.CSLang;
+import clashsoft.clashsoftapi.util.CSUtil;
+import clashsoft.clashsoftapi.util.EnumFontColor;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -213,7 +214,7 @@ public class MorePotionsMod
 		ModLoader.addRecipe(new ItemStack(mortar), new Object[]{"SfS", " S ", 'S', Block.stone, 'f', Item.flint});
 
 		dust = new CustomItem(Dust_ID,
-				new String[]{"dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCharcoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick"},
+				CSArray.addToAll(new String[]{"dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCharcoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick"}, "item.", ".name"),
 				new String[]{"dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick"},
 				new String[]{"C2",		 "Fe", 		 "Au", 		 "C128", 		"Be3Al2Si6O18", "MgFeSi2O8",   "SiO2",		 "\u00a7k???", "BeK4N5Cl6", 	 "Na2LiAl2Si2", "Na2LiAl2Si2", "SiO2", "SiO4", "C", "", "", "", "", "", ""}).setCreativeTab(CreativeTabs.tabMaterials);
 		addDusts();
@@ -327,7 +328,7 @@ public class MorePotionsMod
 		CSLang.addLocalizationUS("potion.waterWalking", "Water Walking");
 		CSLang.addLocalizationDE("potion.waterWalking", "\u00dcberwasserlaufen");
 		CSLang.addLocalizationUS("potion.waterWalking.description", "Lets you walk over water.");
-		CSLang.addLocalizationDE("potion.waterWalking.description", "L\u00e4sst dich über Wasser laufen.");
+		CSLang.addLocalizationDE("potion.waterWalking.description", "L\u00e4sst dich \u00fcber Wasser laufen.");
 
 		CSLang.addLocalizationUS("potion.coldness.postfix", "Potion of Coldness");
 		CSLang.addLocalizationDE("potion.coldness.postfix", "Trank der K\u00e4lte");
@@ -414,7 +415,7 @@ public class MorePotionsMod
 		CSLang.addLocalizationUS("potion.nightVision.description", "Lets you see everything in the dark.");
 		CSLang.addLocalizationDE("potion.nightVision.description", "L\u00e4sst dich im Dunkeln alles sehen.");
 		CSLang.addLocalizationUS("potion.invisibility.description", "Makes you invisible.");
-		CSLang.addLocalizationDE("potion.invisibility.description", "Macht dich unsichtbar für Spieler und Mobs.");
+		CSLang.addLocalizationDE("potion.invisibility.description", "Macht dich unsichtbar f\u00fcr Spieler und Mobs.");
 		CSLang.addLocalizationUS("potion.blindness.description", "Makes you blind.");
 		CSLang.addLocalizationDE("potion.blindness.description", "Macht dicht blind.");
 		CSLang.addLocalizationUS("potion.damageBoost.description", "Allows you to deal more damage.");

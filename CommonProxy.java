@@ -2,7 +2,7 @@ package clashsoft.mods.morepotions;
 
 import java.util.Random;
 
-import clashsoft.clashsoftapi.CSUtil;
+import clashsoft.clashsoftapi.util.CSUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.command.ServerCommandManager;
