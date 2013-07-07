@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.lwjgl.input.Keyboard;
 
+import clashsoft.clashsoftapi.CustomCreativeTab;
 import clashsoft.clashsoftapi.CustomItem;
 import clashsoft.clashsoftapi.CustomPotion;
 import clashsoft.clashsoftapi.util.CSArray;
@@ -14,6 +15,24 @@ import clashsoft.clashsoftapi.util.CSItems;
 import clashsoft.clashsoftapi.util.CSLang;
 import clashsoft.clashsoftapi.util.CSUtil;
 import clashsoft.clashsoftapi.util.EnumFontColor;
+import clashsoft.mods.morepotions.block.BlockBrewingStand2;
+import clashsoft.mods.morepotions.block.BlockCauldron2;
+import clashsoft.mods.morepotions.block.BlockMixer;
+import clashsoft.mods.morepotions.block.BlockUnbrewingStand;
+import clashsoft.mods.morepotions.brewing.Brewing;
+import clashsoft.mods.morepotions.brewing.BrewingAPI;
+import clashsoft.mods.morepotions.brewing.IIngredientHandler;
+import clashsoft.mods.morepotions.brewing.IPotionEffectHandler;
+import clashsoft.mods.morepotions.entity.EntityPotion2;
+import clashsoft.mods.morepotions.item.ItemBrewingStand2;
+import clashsoft.mods.morepotions.item.ItemGlassBottle2;
+import clashsoft.mods.morepotions.item.ItemMortar;
+import clashsoft.mods.morepotions.item.ItemPotion2;
+import clashsoft.mods.morepotions.lib.DispenserBehaviorPotion2;
+import clashsoft.mods.morepotions.tileentity.TileEntityBrewingStand2;
+import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
+import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
+import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -61,6 +80,7 @@ import net.minecraft.command.ServerCommandManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -97,19 +117,19 @@ public class MorePotionsMod
 
 	public static int PotionsTab_ID = CreativeTabs.getNextID();
 
-	public static CreativeTabs potions = new CreativeTabs(PotionsTab_ID, "morepotions");
+	public static CustomCreativeTab potions;
 
-	public static Potion fire = new CustomPotion("potion.fire", true, 0xFFE500, false, 0, 0);
-	public static Potion effectRemove = new CustomPotion("potion.effectRemove", false, 0xFFFFFF, false, 1, 0);
-	public static Potion waterWalking = new CustomPotion("potion.waterWalking", false, 0x124EFE, false, 2, 0);
-	public static Potion coldness = new CustomPotion("potion.coldness", false, 0x00DDFF, false, 3, 0);
-	public static Potion ironSkin = new CustomPotion("potion.ironSkin", false, 0xD8D8D8, false, 4, 0);
-	public static Potion obsidianSkin = new CustomPotion("potion.obsidianSkin", false, 0x101023, false, 5, 0);
-	public static Potion doubleJump = new CustomPotion("potion.doubleJump", false, 0x123456, false, 6, 0);
-	public static Potion doubleLife = new CustomPotion("potion.doubleLife", false, 0xFF2222, false, 7, 0, CSUtil.fontColorInt(0, 0, 1, 1));
-	public static Potion antiHunger = new CustomPotion("potion.antiHunger", false, 0xE3E3E3, false, 0, 1);
-	public static Potion explosiveness = new CustomPotion("potion.explosiveness", true, 0xCC0000, false, 1, 1);
-	public static Potion random = new CustomPotion("potion.random", false, 0x000000, randomMode == 0, 2, 1, CSUtil.fontColorInt(0, 1, 1, 1));
+	public static Potion fire = new CustomPotion("potion.fire", true, 0xFFE500, false, ClientProxy.customEffects, 0, 0);
+	public static Potion effectRemove = new CustomPotion("potion.effectRemove", false, 0xFFFFFF, false, ClientProxy.customEffects, 1, 0);
+	public static Potion waterWalking = new CustomPotion("potion.waterWalking", false, 0x124EFE, false, ClientProxy.customEffects, 2, 0);
+	public static Potion coldness = new CustomPotion("potion.coldness", false, 0x00DDFF, false, ClientProxy.customEffects, 3, 0);
+	public static Potion ironSkin = new CustomPotion("potion.ironSkin", false, 0xD8D8D8, false, ClientProxy.customEffects, 4, 0);
+	public static Potion obsidianSkin = new CustomPotion("potion.obsidianSkin", false, 0x101023, false, ClientProxy.customEffects, 5, 0);
+	public static Potion doubleJump = new CustomPotion("potion.doubleJump", false, 0x123456, false, ClientProxy.customEffects, 6, 0);
+	public static Potion doubleLife = new CustomPotion("potion.doubleLife", false, 0xFF2222, false, ClientProxy.customEffects, 7, 0, CSUtil.fontColorInt(0, 0, 1, 1));
+	public static Potion antiHunger = new CustomPotion("potion.antiHunger", false, 0xE3E3E3, false, ClientProxy.customEffects, 0, 1);
+	public static Potion explosiveness = new CustomPotion("potion.explosiveness", true, 0xCC0000, false, ClientProxy.customEffects, 1, 1);
+	public static Potion random = new CustomPotion("potion.random", false, 0x000000, randomMode == 0, ClientProxy.customEffects, 2, 1, CSUtil.fontColorInt(0, 1, 1, 1));
 
 	public static Block brewingStand2;
 	public static Block mixxer;
@@ -143,7 +163,7 @@ public class MorePotionsMod
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
-	{
+	{	
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 
@@ -171,6 +191,8 @@ public class MorePotionsMod
 	@Init
 	public void load(FMLInitializationEvent event)
 	{
+		if (multiPotions)
+			potions = new CustomCreativeTab("morepotions", null);
 		GameRegistry.registerTileEntity(TileEntityBrewingStand2.class, "BrewingStand2");
 		GameRegistry.registerTileEntity(TileEntityMixer.class, "Mixxer");
 		GameRegistry.registerTileEntity(TileEntityCauldron.class, "Cauldron2");
@@ -198,7 +220,7 @@ public class MorePotionsMod
 		ModLoader.addRecipe(new ItemStack(mixxer), new Object[] {"gSg", "g g", "SiS", 'g', Block.thinGlass, 'S', Block.stone, 'i', Item.ingotIron});
 
 		Item.itemsList[Item.brewingStand.itemID] = null;
-		brewingStand2Item = (new ItemReed(123, brewingStand2)).setUnlocalizedName("brewingStand").setCreativeTab(CreativeTabs.tabBrewing);
+		brewingStand2Item = (new ItemBrewingStand2(123)).setUnlocalizedName("brewingStand").setCreativeTab(CreativeTabs.tabBrewing);
 
 		//Item.itemsList[Item.cauldron.itemID] = null;
 		//brewingStand2Item = (new ItemReed(124, cauldron2)).setUnlocalizedName("cauldron").setCreativeTab(CreativeTabs.tabBrewing);
@@ -210,7 +232,7 @@ public class MorePotionsMod
 		Item.itemsList[Item.glassBottle.itemID - 256] = null;
 		glassBottle2 = (ItemGlassBottle2) (new ItemGlassBottle2(118)).setUnlocalizedName("glassBottle");
 
-		mortar = new Item(Mortar_ID).setCreativeTab(CreativeTabs.tabTools).setMaxDamage(32).setNoRepair().setMaxStackSize(1).setUnlocalizedName("mortar");
+		mortar = new ItemMortar(Mortar_ID).setCreativeTab(CreativeTabs.tabTools).setMaxDamage(32).setNoRepair().setMaxStackSize(1).setUnlocalizedName("mortar");
 		ModLoader.addRecipe(new ItemStack(mortar), new Object[]{"SfS", " S ", 'S', Block.stone, 'f', Item.flint});
 
 		dust = new CustomItem(Dust_ID,
@@ -233,19 +255,15 @@ public class MorePotionsMod
 		BrewingAPI.registerIngredientHandler(new MorePotionsModIngredientHandler());
 		Brewing.registerBrewings();
 		GameRegistry.registerCraftingHandler(new MorePotionsModCraftingHandler());
-		ModLoader.addDispenserBehavior(potion2, new DispenserBehaviorPotion());
+		ModLoader.addDispenserBehavior(potion2, new DispenserBehaviorPotion2());
+		
+		if (multiPotions)
+			potions.setIconItemStack(Brewing.damageBoost.addBrewingToItemStack(new ItemStack(potion2, 0, 1)));
 	}
 
 	@ServerStarting
 	public void serverStart(FMLServerStartingEvent event)
 	{
-		System.out.println("Registering Commands");
-		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-		ICommandManager command = server.getCommandManager();
-		if (command instanceof CommandHandler)
-		{
-			System.out.println(((CommandHandler)command).registerCommand(new CommandPotion()));
-		}
 	}
 
 	private void addLocalizations()
@@ -527,7 +545,7 @@ public class MorePotionsMod
 		private static boolean hasJumped = false;
 		private float tick = 0;
 
-		public void onPotionUpdate(EntityLiving living, PotionEffect effect)
+		public void onPotionUpdate(EntityLivingBase living, PotionEffect effect)
 		{
 			if (effect.getPotionID() == MorePotionsMod.fire.id)
 			{
@@ -588,27 +606,27 @@ public class MorePotionsMod
 			}
 			else if (effect.getPotionID() == MorePotionsMod.doubleJump.id)
 			{
-				if (living instanceof EntityPlayer)
-				{
-					boolean canJump = !living.isPlayerSleeping() && living.isJumping;
-					if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && living.motionY < 0.07 && !hasJumped && canJump)  //Waaaaaay more checks than necessary
-					{
-						double motionY = 0.41999998688697815D;
-
-						if (living.isPotionActive(Potion.jump))
-						{
-							motionY += (double)((float)(living.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
-						}
-						//checks for armour/abilities...
-						living.addVelocity(0, motionY, 0);
-						living.setAir(0);
-						hasJumped = true;
-					}
-					if(living.onGround)
-					{
-						hasJumped = false;
-					}
-				}
+//				if (living instanceof EntityPlayer)
+//				{
+//					boolean canJump = !living.isPlayerSleeping() && living.is;
+//					if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && living.motionY < 0.07 && !hasJumped && canJump)  //Waaaaaay more checks than necessary
+//					{
+//						double motionY = 0.41999998688697815D;
+//
+//						if (living.isPotionActive(Potion.jump))
+//						{
+//							motionY += (double)((float)(living.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
+//						}
+//						//checks for armour/abilities...
+//						living.addVelocity(0, motionY, 0);
+//						living.setAir(0);
+//						hasJumped = true;
+//					}
+//					if(living.onGround)
+//					{
+//						hasJumped = false;
+//					}
+//				}
 			}
 			else if (effect.getPotionID() == MorePotionsMod.antiHunger.id)
 			{
@@ -661,10 +679,10 @@ public class MorePotionsMod
 		{
 			if (event.entityLiving.isPotionActive(MorePotionsMod.doubleLife))
 			{
-				if (event.entityLiving.getHealth() - event.ammount <= 0)
+				if (event.entityLiving.func_110143_aJ() - event.ammount <= 0)
 				{
 					event.setCanceled(true);
-					event.entityLiving.setEntityHealth(event.entityLiving.getMaxHealth());
+					event.entityLiving.setEntityHealth(event.entityLiving.func_110138_aP());
 					event.entityLiving.removePotionEffect(MorePotionsMod.doubleLife.id);
 					if (event.entityLiving instanceof EntityPlayer)
 					{

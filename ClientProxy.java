@@ -2,6 +2,10 @@ package clashsoft.mods.morepotions;
 
 import java.util.Random;
 
+import clashsoft.mods.morepotions.entity.EntityPotion2;
+import clashsoft.mods.morepotions.entity.RenderPotion2;
+import clashsoft.mods.morepotions.item.ItemPotion2;
+import clashsoft.mods.morepotions.tileentity.CauldronRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.entity.RenderSnowball;
@@ -18,12 +22,12 @@ public class ClientProxy extends CommonProxy
 	public static int mixxerRenderType;
 	public static int cauldronRenderType;
 	public static int mixxerRenderPass;
-	public static String customEffects = "/MorePotionsMod/gui/potionIcons.png";
+	public static String customEffects = "gui/potionIcons.png";
 	public static int splashpotioncolor;
 	
 	public void registerRenderers()
 	{
-		RenderingRegistry.registerEntityRenderingHandler(EntityPotion2.class, new RenderSnowball(MorePotionsMod.potion2, 154));
+		RenderingRegistry.registerEntityRenderingHandler(EntityPotion2.class, new RenderPotion2(MorePotionsMod.potion2, 154));
 		setCustomRenderers();
 	}
 	
