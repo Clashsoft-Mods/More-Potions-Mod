@@ -13,7 +13,7 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import clashsoft.mods.morepotions.container.ContainerMixer;
+import clashsoft.mods.morepotions.inventory.ContainerMixer;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
 
 @SideOnly(Side.CLIENT)

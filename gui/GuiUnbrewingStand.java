@@ -11,7 +11,7 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import clashsoft.mods.morepotions.container.ContainerUnbrewingStand;
+import clashsoft.mods.morepotions.inventory.ContainerUnbrewingStand;
 import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
 
 @SideOnly(Side.CLIENT)

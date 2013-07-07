@@ -1,8 +1,8 @@
-package clashsoft.mods.morepotions.container;
+package clashsoft.mods.morepotions.inventory;
 
-import clashsoft.mods.morepotions.container.slot.SlotBrewingStandPotion2;
-import clashsoft.mods.morepotions.container.slot.SlotMixerOutput;
-import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
+import clashsoft.mods.morepotions.inventory.slot.SlotBrewingStandIngredient2;
+import clashsoft.mods.morepotions.inventory.slot.SlotBrewingStandPotion2;
+import clashsoft.mods.morepotions.tileentity.TileEntityBrewingStand2;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,21 +11,21 @@ import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityBrewingStand;
 
-public class ContainerMixer extends Container
+public class ContainerBrewingStand2 extends Container
 {
-    private TileEntityMixer mixer;
+    private TileEntityBrewingStand2 tileBrewingStand;
 
     /** Instance of Slot. */
     private final Slot theSlot;
     private int brewTime = 0;
 
-    public ContainerMixer(InventoryPlayer par1InventoryPlayer, TileEntityMixer par2TileEntityMixer)
+    public ContainerBrewingStand2(InventoryPlayer par1InventoryPlayer, TileEntityBrewingStand2 par2TileEntityBrewingStand)
     {
-        this.mixer = par2TileEntityMixer;
-        this.theSlot = this.addSlotToContainer(new SlotBrewingStandPotion2(par1InventoryPlayer.player, par2TileEntityMixer, 0, 56, 23));
-        this.addSlotToContainer(new SlotBrewingStandPotion2(par1InventoryPlayer.player, par2TileEntityMixer, 1, 79, 16));
-        this.addSlotToContainer(new SlotBrewingStandPotion2(par1InventoryPlayer.player, par2TileEntityMixer, 2, 102, 23));
-        this.addSlotToContainer(new SlotMixerOutput(par1InventoryPlayer.player, par2TileEntityMixer, 3, 79, 52));
+        this.tileBrewingStand = par2TileEntityBrewingStand;
+        this.addSlotToContainer(new SlotBrewingStandPotion2(par1InventoryPlayer.player, par2TileEntityBrewingStand, 0, 56, 46));
+        this.addSlotToContainer(new SlotBrewingStandPotion2(par1InventoryPlayer.player, par2TileEntityBrewingStand, 1, 79, 53));
+        this.addSlotToContainer(new SlotBrewingStandPotion2(par1InventoryPlayer.player, par2TileEntityBrewingStand, 2, 102, 46));
+        this.theSlot = this.addSlotToContainer(new SlotBrewingStandIngredient2(this, par2TileEntityBrewingStand, 3, 79, 17));
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
@@ -45,7 +45,7 @@ public class ContainerMixer extends Container
     public void addCraftingToCrafters(ICrafting par1ICrafting)
     {
         super.addCraftingToCrafters(par1ICrafting);
-        par1ICrafting.sendProgressBarUpdate(this, 0, this.mixer.getMixTime());
+        par1ICrafting.sendProgressBarUpdate(this, 0, this.tileBrewingStand.getBrewTime());
     }
 
     /**
@@ -59,13 +59,13 @@ public class ContainerMixer extends Container
         {
             ICrafting var2 = (ICrafting)this.crafters.get(var1);
 
-            if (this.brewTime != this.mixer.getMixTime())
+            if (this.brewTime != this.tileBrewingStand.getBrewTime())
             {
-                var2.sendProgressBarUpdate(this, 0, this.mixer.getMixTime());
+                var2.sendProgressBarUpdate(this, 0, this.tileBrewingStand.getBrewTime());
             }
         }
 
-        this.brewTime = this.mixer.getMixTime();
+        this.brewTime = this.tileBrewingStand.getBrewTime();
     }
 
     @SideOnly(Side.CLIENT)
@@ -73,13 +73,13 @@ public class ContainerMixer extends Container
     {
         if (par1 == 0)
         {
-            this.mixer.setBrewTime(par2);
+            this.tileBrewingStand.setBrewTime(par2);
         }
     }
 
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.mixer.isUseableByPlayer(par1EntityPlayer);
+        return this.tileBrewingStand.isUseableByPlayer(par1EntityPlayer);
     }
 
     /**
@@ -87,7 +87,7 @@ public class ContainerMixer extends Container
      */
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
-    	ItemStack var3 = null;
+        ItemStack var3 = null;
         Slot var4 = (Slot)this.inventorySlots.get(par2);
 
         if (var4 != null && var4.getHasStack())
@@ -95,18 +95,18 @@ public class ContainerMixer extends Container
             ItemStack var5 = var4.getStack();
             var3 = var5.copy();
 
-            if ((par2 < 0 || par2 > 3) && par2 != 3)
+            if ((par2 < 0 || par2 > 2) && par2 != 3)
             {
                 if (!this.theSlot.getHasStack() && this.theSlot.isItemValid(var5))
                 {
-                    if (!this.mergeItemStack(var5, 0, 4, false))
+                    if (!this.mergeItemStack(var5, 3, 4, false))
                     {
                         return null;
                     }
                 }
                 else if (SlotBrewingStandPotion2.canHoldPotion(var3))
                 {
-                    if (!this.mergeItemStack(var5, 1, 3, false))
+                    if (!this.mergeItemStack(var5, 0, 3, false))
                     {
                         return null;
                     }

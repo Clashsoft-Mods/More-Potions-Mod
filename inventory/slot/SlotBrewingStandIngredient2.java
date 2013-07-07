@@ -1,7 +1,7 @@
-package clashsoft.mods.morepotions.container.slot;
+package clashsoft.mods.morepotions.inventory.slot;
 
 import clashsoft.mods.morepotions.brewing.Brewing;
-import clashsoft.mods.morepotions.container.ContainerBrewingStand2;
+import clashsoft.mods.morepotions.inventory.ContainerBrewingStand2;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;

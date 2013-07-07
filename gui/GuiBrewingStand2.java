@@ -12,7 +12,7 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import clashsoft.mods.morepotions.container.ContainerBrewingStand2;
+import clashsoft.mods.morepotions.inventory.ContainerBrewingStand2;
 import clashsoft.mods.morepotions.tileentity.TileEntityBrewingStand2;
 
 @SideOnly(Side.CLIENT)
