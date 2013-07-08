@@ -105,6 +105,10 @@ public class Brewing
 	public static Brewing harm = new Brewing(new PotionEffect(Potion.harm.id, 1, 0), 1, 0, getBaseBrewing(thick));
 	public static Brewing heal = new Brewing(new PotionEffect(Potion.heal.id, 1, 0), 1, 0, harm, new ItemStack(Item.speckledMelon), getBaseBrewing(thick));
 	public static Brewing doubleLife = new Brewing(new PotionEffect(MorePotionsMod.doubleLife.id, 1625000, 0), 0, 0, harm, MorePotionsMod.dustNetherstar, getBaseBrewing(thick));
+	/** Health Boost added in 1.6 **/
+	public static Brewing healthBoost = new Brewing(new PotionEffect(Potion.field_76434_w.id, 45*20, 0), 4, 120*20, getBaseBrewing(thick));
+	/** Absorption added in 1.6 **/
+	public static Brewing absorption = new Brewing(new PotionEffect(Potion.field_76444_x.id, 45*20, 0), 4, 120*20, healthBoost, new ItemStack(Item.appleGold), getBaseBrewing(thick));
 	public static Brewing jump = new Brewing(new PotionEffect(Potion.jump.id, 20*180, 0), 4, 20*300, getBaseBrewing(dashing));
 	public static Brewing doubleJump = new Brewing(new PotionEffect(MorePotionsMod.doubleJump.id, 20*180, 0), 4, 20*3000, jump, new ItemStack(Item.feather), getBaseBrewing(dashing));
 	public static Brewing confusion = new Brewing(new PotionEffect(Potion.confusion.id, 20*90, 0), 2, 20*180, new ItemStack(Item.poisonousPotato), awkward);
@@ -121,7 +125,8 @@ public class Brewing
 	public static Brewing nightVision = new Brewing(new PotionEffect(Potion.nightVision.id, 20*180, 0), 0, 20*300, invisibility, new ItemStack(Item.goldenCarrot), getBaseBrewing(thin));
 	public static Brewing poison = new Brewing(new PotionEffect(Potion.poison.id, 20*45, 0), 2, 20*60, new ItemStack(Item.spiderEye), getBaseBrewing(acrid));
 	public static Brewing hunger = new Brewing(new PotionEffect(Potion.hunger.id, 20*45, 0), 3, 20*60, getBaseBrewing(acrid));
-	public static Brewing antiHunger = new Brewing(new PotionEffect(MorePotionsMod.antiHunger.id, 20*45, 0), 3, 20*60, hunger, new ItemStack(Item.bread), getBaseBrewing(awkward));
+	/** Replaced by Vanilla Saturation **/
+	public static Brewing antiHunger = new Brewing(new PotionEffect(Potion.field_76443_y.id, 20*45, 0), 3, 20*60, hunger, new ItemStack(Item.bread), getBaseBrewing(awkward));
 	public static Brewing wither = new Brewing(new PotionEffect(Potion.wither.id, 450, 0), 1, 20*60, MorePotionsMod.dustWither, getBaseBrewing(acrid));
 	public static Brewing explosiveness = new Brewing(new PotionEffect(MorePotionsMod.explosiveness.id, 20*10, 0), 4, 20*20, awkward);
 	public static Brewing fire = new Brewing(new PotionEffect(MorePotionsMod.fire.id, 20*10, 0), 0, 20*20, explosiveness, new ItemStack(Item.fireballCharge), awkward);
@@ -322,6 +327,8 @@ public class Brewing
 		doubleLife.register(); //
 		heal.register();
 		harm.register();
+		healthBoost.register();
+		absorption.register();
 		poison.register();
 		fire.register();
 		explosiveness.register();
@@ -664,5 +671,50 @@ public class Brewing
 			return awkward;
 		}
 		return par1BrewingBase;
+	}
+	
+	public long createDataLong()
+	{
+		long l = 0;
+		if (this.getEffect() != null)
+		{
+			l += this.getEffect().getPotionID();
+			l += this.getEffect().getAmplifier() << 10L;
+		}
+		l += this.getMaxAmplifier() << 18L;
+		if (this.getOpposite() != null)
+			l += brewingList.indexOf(this.getOpposite()) << 26L;
+		if (this.getEffect() != null)
+			l += this.getEffect().getDuration() << 34L;
+		l += this.getMaxDuration() << 42L;
+		return l;
+	}
+	
+	public static Brewing fromDataLong(long dataLong)
+	{
+		int potionId = 			(int) (dataLong 		& ((2 << 11) - 1));
+		int potionAmplifier =	(int) ((dataLong >> 11) & ((2 << 19) - 1));
+		int maxAmplifier =		(int) ((dataLong >> 19) & ((2 << 27) - 1));
+		int oppositeId =		(int) ((dataLong >> 27) & ((2 << 35) - 1));
+		int potionDuration =	(int) ((dataLong >> 35) & ((2 << 43) - 1));
+		int maxDuration =		(int) ((dataLong >> 43));
+		Brewing opposite = oppositeId < brewingList.size() ? brewingList.get(oppositeId) : null;
+		return new Brewing(new PotionEffect(potionId, potionDuration, potionAmplifier), maxAmplifier, maxDuration, opposite, null);
+	}
+	
+	public String toString()
+	{
+		String s = "Brewing{";
+		if (this.getEffect() != null)
+			s += "PotionEffect<" + this.getEffect().getPotionID() + " [" + this.getEffect().getDuration() + "] x " + this.getEffect().getAmplifier() + ">";
+		s += "MaxValues<[" + this.getMaxDuration() + "] x " + this.getMaxAmplifier() + ">";
+		if (this.getOpposite() != null)
+			s += "Opposite<" + this.getOpposite().toString() + ">";
+		if (this.getIngredient() != null)
+			s += "Ingredient<" + this.getIngredient().itemID + ":" + this.getIngredient().getItemDamage() + ">";
+		if (this.getBase() != null)
+			s += this.getBase().toString();
+		s += "}";
+		return s;
 	}
 }

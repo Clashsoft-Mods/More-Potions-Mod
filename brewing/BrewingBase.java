@@ -61,4 +61,15 @@ public class BrewingBase extends Brewing
 		int ingredientDamage = par1NBTTagCompound.hasKey("IngredientDamage") ? par1NBTTagCompound.getInteger("IngredientDamage") : 0;
 		return new BrewingBase(name, new ItemStack(ingredientID, ingredientAmount, ingredientDamage));
 	}
+	
+	public String toString()
+	{
+		String s = "BrewingBase{";
+		if (basename != null)
+			s += "Name<" + basename + ">";
+		if (this.getIngredient() != null)
+			s += "Ingredient<" + this.getIngredient().itemID + ":" + this.getIngredient().getItemDamage() + ">";
+		s  += "}";
+		return s;
+	}
 }

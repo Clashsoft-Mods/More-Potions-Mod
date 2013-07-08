@@ -261,11 +261,6 @@ public class MorePotionsMod
 			potions.setIconItemStack(Brewing.damageBoost.addBrewingToItemStack(new ItemStack(potion2, 0, 1)));
 	}
 
-	@ServerStarting
-	public void serverStart(FMLServerStartingEvent event)
-	{
-	}
-
 	private void addLocalizations()
 	{
 		CSLang.addLocalizationUS("itemGroup.morepotions", "Mixed Potions");
