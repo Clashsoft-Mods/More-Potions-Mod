@@ -208,7 +208,7 @@ public class TileEntityBrewingStand2 extends TileEntityBrewingStand implements I
 						}
 					}
 				}
-				else if (ingredient.getItem() == Item.lightStoneDust)
+				else if (ingredient.getItem() == Item.glowstone)
 				{
 					for (int var3 = 0; var3 < 3; var3++)
 					{
@@ -346,7 +346,7 @@ public class TileEntityBrewingStand2 extends TileEntityBrewingStand implements I
 					NBTTagCompound compound = this.brewingItemStacks[var2].stackTagCompound;
 					NBTTagList list = (compound != null) ? compound.getTagList("Brewing") : (NBTTagList)null;
 					Brewing[] brewings = new Brewing[list != null ? list.tagCount() : 1];
-					if (ingredient.getItem() == Item.lightStoneDust)
+					if (ingredient.getItem() == Item.glowstone)
 					{
 						if (brewingItemStacks[var2].getItemDamage() == 0)
 						{

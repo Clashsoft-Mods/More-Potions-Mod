@@ -93,6 +93,8 @@ public class MorePotionsMod
 
 	@SidedProxy(clientSide = "clashsoft.mods.morepotions.ClientProxy", serverSide = "clashsoft.mods.morepotions.CommonProxy")
 	public static CommonProxy proxy;
+	
+	public static String customEffects = "gui/potionIcons.png";
 
 	//Configurables
 	public static boolean multiPotions = false;
@@ -119,20 +121,21 @@ public class MorePotionsMod
 
 	public static CustomCreativeTab potions;
 
-	public static Potion fire = new CustomPotion("potion.fire", true, 0xFFE500, false, ClientProxy.customEffects, 0, 0);
-	public static Potion effectRemove = new CustomPotion("potion.effectRemove", false, 0xFFFFFF, false, ClientProxy.customEffects, 1, 0);
-	public static Potion waterWalking = new CustomPotion("potion.waterWalking", false, 0x124EFE, false, ClientProxy.customEffects, 2, 0);
-	public static Potion coldness = new CustomPotion("potion.coldness", false, 0x00DDFF, false, ClientProxy.customEffects, 3, 0);
-	public static Potion ironSkin = new CustomPotion("potion.ironSkin", false, 0xD8D8D8, false, ClientProxy.customEffects, 4, 0);
-	public static Potion obsidianSkin = new CustomPotion("potion.obsidianSkin", false, 0x101023, false, ClientProxy.customEffects, 5, 0);
-	public static Potion doubleJump = new CustomPotion("potion.doubleJump", false, 0x123456, false, ClientProxy.customEffects, 6, 0);
-	public static Potion doubleLife = new CustomPotion("potion.doubleLife", false, 0xFF2222, false, ClientProxy.customEffects, 7, 0, CSUtil.fontColorInt(0, 0, 1, 1));
-	public static Potion antiHunger = new CustomPotion("potion.antiHunger", false, 0xE3E3E3, false, ClientProxy.customEffects, 0, 1);
-	public static Potion explosiveness = new CustomPotion("potion.explosiveness", true, 0xCC0000, false, ClientProxy.customEffects, 1, 1);
-	public static Potion random = new CustomPotion("potion.random", false, 0x000000, randomMode == 0, ClientProxy.customEffects, 2, 1, CSUtil.fontColorInt(0, 1, 1, 1));
+	public static Potion fire = new CustomPotion("potion.fire", true, 0xFFE500, false,
+			customEffects, 0, 0);
+	public static Potion effectRemove = new CustomPotion("potion.effectRemove", false, 0xFFFFFF, false, customEffects, 1, 0);
+	public static Potion waterWalking = new CustomPotion("potion.waterWalking", false, 0x124EFE, false, customEffects, 2, 0);
+	public static Potion coldness = new CustomPotion("potion.coldness", false, 0x00DDFF, false, customEffects, 3, 0);
+	public static Potion ironSkin = new CustomPotion("potion.ironSkin", false, 0xD8D8D8, false, customEffects, 4, 0);
+	public static Potion obsidianSkin = new CustomPotion("potion.obsidianSkin", false, 0x101023, false, customEffects, 5, 0);
+	public static Potion doubleJump = new CustomPotion("potion.doubleJump", false, 0x123456, false, customEffects, 6, 0);
+	public static Potion doubleLife = new CustomPotion("potion.doubleLife", false, 0xFF2222, false, customEffects, 7, 0, CSUtil.fontColorInt(0, 0, 1, 1));
+	public static Potion antiHunger = new CustomPotion("potion.antiHunger", false, 0xE3E3E3, false, customEffects, 0, 1);
+	public static Potion explosiveness = new CustomPotion("potion.explosiveness", true, 0xCC0000, false, customEffects, 1, 1);
+	public static Potion random = new CustomPotion("potion.random", false, 0x000000, randomMode == 0, customEffects, 2, 1, CSUtil.fontColorInt(0, 1, 1, 1));
 
 	public static Block brewingStand2;
-	public static Block mixxer;
+	public static Block mixer;
 	public static Block cauldron2;
 	public static Block unbrewingStand;
 	public static Item brewingStand2Item;
@@ -206,18 +209,15 @@ public class MorePotionsMod
 		Block.blocksList[Block.cauldron.blockID] = null;
 		cauldron2 = (new BlockCauldron2(Block.cauldron.blockID)).setHardness(2.0F).setUnlocalizedName("cauldron");;
 
-		mixxer = (new BlockMixer(Mixer_ID)).setUnlocalizedName("mixer").setCreativeTab(CreativeTabs.tabBrewing);
-
-		//Block.blocksList[Block.cauldron.blockID] = null;
-		//cauldron2 = (new BlockCauldron2(Block.cauldron.blockID)).setHardness(2.0F).setUnlocalizedName("cauldron");;
+		mixer = (new BlockMixer(Mixer_ID)).setUnlocalizedName("mixer").setCreativeTab(CreativeTabs.tabBrewing);
 
 		unbrewingStand = (new BlockUnbrewingStand(UnbrewingStand_ID)).setUnlocalizedName("unbrewingstand").setCreativeTab(null);
 
 		ModLoader.registerBlock(brewingStand2);
-		ModLoader.registerBlock(mixxer);
+		ModLoader.registerBlock(mixer);
 		//ModLoader.registerBlock(cauldron2);
 		ModLoader.registerBlock(unbrewingStand);
-		ModLoader.addRecipe(new ItemStack(mixxer), new Object[] {"gSg", "g g", "SiS", 'g', Block.thinGlass, 'S', Block.stone, 'i', Item.ingotIron});
+		ModLoader.addRecipe(new ItemStack(mixer), new Object[] {"gSg", "g g", "SiS", 'g', Block.thinGlass, 'S', Block.stone, 'i', Item.ingotIron});
 
 		Item.itemsList[Item.brewingStand.itemID] = null;
 		brewingStand2Item = (new ItemBrewingStand2(123)).setUnlocalizedName("brewingStand").setCreativeTab(CreativeTabs.tabBrewing);

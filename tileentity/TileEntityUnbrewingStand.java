@@ -193,7 +193,7 @@ public class TileEntityUnbrewingStand extends TileEntityBrewingStand2 implements
 		{
 			amount += b.getEffect().getAmplifier();
 		}
-		return new ItemStack(Item.lightStoneDust, amount);
+		return new ItemStack(Item.glowstone, amount);
 	}
 
 	/**

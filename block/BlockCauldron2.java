@@ -31,11 +31,11 @@ import net.minecraft.world.World;
 public class BlockCauldron2 extends BlockContainer
 {
 	@SideOnly(Side.CLIENT)
-    public Icon field_94378_a;
+    public Icon inner;
     @SideOnly(Side.CLIENT)
-    public Icon field_94376_b;
+    public Icon top;
     @SideOnly(Side.CLIENT)
-    public Icon field_94377_c;
+    public Icon bottom;
 	
     public BlockCauldron2(int par1)
     {
@@ -49,36 +49,43 @@ public class BlockCauldron2 extends BlockContainer
     	return ClientProxy.cauldronRenderType;
     }
     
+    @Override
+    public boolean isOpaqueCube()
+    {
+    	return false;
+    }
+    
     @SideOnly(Side.CLIENT)
-
+    @Override
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public Icon getBlockTextureFromSideAndMetadata(int par1, int par2)
+    public Icon getIcon(int par1, int par2)
     {
-        return par1 == 1 ? this.field_94376_b : (par1 == 0 ? this.field_94377_c : this.blockIcon);
+        return par1 == 1 ? this.top : (par1 == 0 ? this.bottom : this.blockIcon);
     }
 
     @SideOnly(Side.CLIENT)
-
+    @Override
     /**
      * When this method is called, your block should register all the icons it needs with the given IconRegister. This
      * is the only chance you get to register icons.
      */
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94378_a = par1IconRegister.registerIcon("cauldron_inner");
-        this.field_94376_b = par1IconRegister.registerIcon("cauldron_top");
-        this.field_94377_c = par1IconRegister.registerIcon("cauldron_bottom");
+        this.inner = par1IconRegister.registerIcon("cauldron_inner");
+        this.top = par1IconRegister.registerIcon("cauldron_top");
+        this.bottom = par1IconRegister.registerIcon("cauldron_bottom");
         this.blockIcon = par1IconRegister.registerIcon("cauldron_side");
     }
     
     @SideOnly(Side.CLIENT)
     public static Icon func_94375_b(String par0Str)
     {
-        return par0Str == "cauldron_inner" ? ((BlockCauldron2)MorePotionsMod.cauldron2).field_94378_a : (par0Str == "cauldron_bottom" ? ((BlockCauldron2)MorePotionsMod.cauldron2).field_94377_c : null);
+        return par0Str == "cauldron_inner" ? ((BlockCauldron2)MorePotionsMod.cauldron2).inner : (par0Str == "cauldron_bottom" ? ((BlockCauldron2)MorePotionsMod.cauldron2).bottom : null);
     }
 
+    @Override
     /**
      * Adds all intersecting collision boxes to a list. (Be sure to only add boxes to the list if they intersect the
      * mask.) Parameters: World, X, Y, Z, mask, list, colliding entity
@@ -96,9 +103,11 @@ public class BlockCauldron2 extends BlockContainer
         super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
         this.setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
         super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+        this.setBlockBounds(0F, 0F, 0F, 1F, 1F, 1F);
         this.setBlockBoundsForItemRender();
     }
 
+    @Override
     /**
      * Called upon block activation (right click on the block.)
      */
@@ -118,6 +127,10 @@ public class BlockCauldron2 extends BlockContainer
             {
                 flag = false;
             }
+            else if (par5EntityPlayer.isSneaking())
+            {
+            	
+            }
             else
             {
                 int i1 = par1World.getBlockMetadata(par2, par3, par4);
@@ -134,7 +147,9 @@ public class BlockCauldron2 extends BlockContainer
                         par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
                     }
                     flag = true;
-                    te.addIngredient(itemstack);
+                    String s = te.addIngredient(itemstack);
+                    if (s != null && s != "")
+                    	par5EntityPlayer.addChatMessage(s);
                 }
                 else if (itemstack.itemID == Item.glassBottle.itemID)
                 {
@@ -157,13 +172,14 @@ public class BlockCauldron2 extends BlockContainer
                 		{
                 			par5EntityPlayer.inventory.setInventorySlotContents(par5EntityPlayer.inventory.currentItem, (ItemStack)null);
                 		}
-
+                		
+                		if (i1 - 1 == 0)
+                			te.brewings.clear();
                 		par1World.setBlockMetadataWithNotify(par2, par3, par4, i1 - 1, 2);
                 		flag = true;
                 	}
                 	else
                 	{
-                		te.water = true;
                 		te.brewings.clear();
                 	}
                 }
@@ -176,10 +192,11 @@ public class BlockCauldron2 extends BlockContainer
                 }
                 else
                 {
-                	if (te.isItemValid(itemstack))
+                	if (te.isItemValid(itemstack) && i1 > 0)
                 	{
-                		te.addIngredient(itemstack);
-                		te.water = false;
+                		String s = te.addIngredient(itemstack);
+                        if (s != null && s != "")
+                        	par5EntityPlayer.addChatMessage(s);
                 		flag = true;
                 	}
                 }
@@ -193,6 +210,7 @@ public class BlockCauldron2 extends BlockContainer
         }
     }
 
+    @Override
     /**
      * currently only used by BlockCauldron to incrament meta-data during rain
      */

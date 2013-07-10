@@ -25,7 +25,7 @@ public class BrewingBase extends Brewing
 		this(par1, new ItemStack(0, 0, 0));
 	}
 	
-	public static Brewing getBrewingBaseFromIngredient(ItemStack par1ItemStack)
+	public static BrewingBase getBrewingBaseFromIngredient(ItemStack par1ItemStack)
 	{
 		try
 		{

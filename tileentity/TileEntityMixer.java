@@ -160,11 +160,12 @@ public class TileEntityMixer extends TileEntity implements IInventory, ISidedInv
 		if (list != null && list.size() > 0)
 		{
 			List<Brewing> result = new ArrayList<Brewing>();
-			for (Brewing b : list) {
+			for (Brewing b : list)
+			{
 				boolean duplicate = false;
 				for (Brewing b2 : result)
 				{
-					if (b.getEffect().getPotionID() == b2.getEffect().getPotionID())
+					if (b.getEffect() != null && b2.getEffect() != null && b.getEffect().getPotionID() == b2.getEffect().getPotionID())
 					{
 						duplicate = true;
 						break;
@@ -454,7 +455,7 @@ public class TileEntityMixer extends TileEntity implements IInventory, ISidedInv
 	}
 	
 	@Override
-	public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
+	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
 	{
 		return (par2ItemStack.itemID == Item.potion.itemID || par2ItemStack.itemID == Item.glassBottle.itemID) && par1 != 3;
 	}

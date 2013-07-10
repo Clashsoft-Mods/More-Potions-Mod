@@ -14,36 +14,37 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 
 public class TileEntityCauldron extends TileEntity
 {
-	public boolean water;
-	public List<Brewing> brewings = new LinkedList<Brewing>();
-	
+	public List<Brewing> brewings;
+
 	public TileEntityCauldron()
 	{
+		brewings = new LinkedList<Brewing>();
 	}
-	
+
 	/**
-     * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
-     */
-    public boolean isItemValid(ItemStack par1ItemStack)
-    {
-        if (par1ItemStack != null)
-        {
-        	if (Item.itemsList[par1ItemStack.itemID].isPotionIngredient() || Brewing.getBrewingFromIngredient(par1ItemStack) != null && par1ItemStack.getItem() != Item.gunpowder)
-        	{
-        		return true;
-        	}
-        }
-        return false;
-    }
-	
-	public void addIngredient(ItemStack ingredient)
+	 * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
+	 */
+	public boolean isItemValid(ItemStack par1ItemStack)
+	{
+		if (par1ItemStack != null)
+		{
+			if (Item.itemsList[par1ItemStack.itemID].isPotionIngredient() || Brewing.getBrewingFromIngredient(par1ItemStack) != null && par1ItemStack.getItem() != Item.gunpowder)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public String addIngredient(ItemStack ingredient)
 	{
 		if (ingredient.getItem() == Item.bucketWater)
 		{
-			if (!water && brewings.size() > 0)
+			if (!water())
 			{
 				for (Brewing b : brewings)
 				{
@@ -52,127 +53,99 @@ public class TileEntityCauldron extends TileEntity
 						b.setEffect(new PotionEffect(b.getEffect().getPotionID(), Math.round(b.getEffect().getDuration() * 0.6F), Math.round(b.getEffect().getAmplifier() * 0.8F)));
 					}
 				}
+				return "Effects thinned";
 			}
-			else
-			{
-				water = true;
-			}
+			return "Cauldron filled with water";
 		}
-		else if (ingredient.getItem() == Item.lightStoneDust)
+		else if (ingredient.getItem() == Item.glowstone && !water()) //Improving
 		{
-			if (water)
+			for (int var3 = 0; var3 < brewings.size(); var3++)
 			{
-				if (brewings.size() != 0)
+				Brewing brewing = brewings.get(var3);
+				if (brewing != Brewing.awkward)
 				{
-					brewings.set(0, Brewing.thick);
-				}
-				else
-				{
-					brewings.add(Brewing.thick);
+					brewings.set(var3, brewing.onImproved());
 				}
 			}
-			else
-			{
-				for (int var3 = 0; var3 < brewings.size(); var3++)
-				{
-					Brewing brewing = brewings.get(var3);
-					if (brewing != Brewing.awkward)
-					{
-						brewings.set(var3, brewing.onImproved());
-					}
-				}
-			}
-			water = false;
+			return "Effect amplifiers increased";
 		}
-		else if (ingredient.getItem() == Item.redstone)
+		else if (ingredient.getItem() == Item.redstone && !water()) //Extension
 		{
-			if (water)
+			for (int var3 = 0; var3 < brewings.size(); var3++)
 			{
-				if (brewings.size() != 0)
+				Brewing brewing = brewings.get(var3);
+				if (brewing != Brewing.awkward)
 				{
-					brewings.set(0, Brewing.thin);
-				}
-				else
-				{
-					brewings.add(Brewing.thin);
+					brewings.set(var3, brewing.onExtended());
 				}
 			}
-			else
-			{
-				for (int var3 = 0; var3 < brewings.size(); var3++)
-				{
-					Brewing brewing = brewings.get(var3);
-					if (brewing != Brewing.awkward)
-					{
-						brewings.set(var3, brewing.onExtended());
-					}
-				}
-			}
-			water = false;
+			return "Effect durations extended";
 		}
-		else if (ingredient.getItem() == Item.fermentedSpiderEye)
+		else if (ingredient.getItem() == Item.fermentedSpiderEye && !water()) //Opposites
 		{
-			if (water)
+			for (int var3 = 0; var3 < brewings.size(); var3++)
 			{
-				if (brewings.size() != 0)
-				{
-					brewings.set(0, Brewing.getBrewingFromIngredient(ingredient));
-				}
-				else
-				{
-					brewings.add(Brewing.getBrewingFromItemStack(ingredient));
-				}
+				Brewing brewing = brewings.get(var3);
+				brewing = brewing.getOpposite() != null ? brewing.getOpposite() : brewing;
+				brewing.setOpposite(null);
+				brewings.set(var3, brewing);
 			}
-			else
-			{
-				for (int var3 = 0; var3 < brewings.size(); var3++)
-				{
-					Brewing brewing = brewings.get(var3);
-					brewing = brewing.getOpposite() != null ? brewing.getOpposite() : brewing;
-					brewing.setOpposite(null);
-					brewings.set(var3, brewing);
-				}
-			}
-			water = false;
+			return "Effects inverted";
 		}
-		else if (ingredient.getItem() == Item.netherStalkSeeds)
+		else if (water()) //Other Base Ingredients
 		{
-			if (brewings.size() != 0)
+			BrewingBase base = BrewingBase.getBrewingBaseFromIngredient(ingredient);
+			if (base != null)
 			{
-				brewings.set(0, Brewing.awkward);
+				setBaseBrewing(base);
+				return "Base Brewing set: \'" + base.basename + "\'";
 			}
-			else
-			{
-				brewings.add(Brewing.awkward);
-			}
-			water = false;
-		}
-		else if (water)
-		{
-			if (BrewingBase.getBrewingBaseFromIngredient(ingredient) != null)
-			{
-				brewings.add(BrewingBase.getBrewingBaseFromIngredient(ingredient));
-			}
-			water = false;
 		}
 		else
 		{
-			if (brewings.size() > 0 && Brewing.getBrewingFromIngredient(ingredient) != null)
+			Brewing b = Brewing.getBrewingFromIngredient(ingredient);
+			if (brewings.size() > 0 && b != null)
 			{
+				boolean contains = brewings.contains(b);
 				Brewing stackBase = brewings.get(0);
-				Brewing requiredBase = Brewing.getBrewingFromIngredient(ingredient).getBase();
-				if (((BrewingBase)stackBase).basename == ((BrewingBase)requiredBase).basename)
+				BrewingBase requiredBase = b.getBase();
+				if (requiredBase != null && stackBase != null && ((BrewingBase)stackBase).basename == requiredBase.basename && !contains)
 				{
-					brewings.add(Brewing.getBrewingFromIngredient(ingredient));
+					brewings.add(b);
+					if (b.getEffect() != null)
+					{
+						return "Effect added: \'" + StatCollector.translateToLocal(b.getEffect().getEffectName()) + "\'";
+					}
 				}
-				water = false;
+				if (contains)
+					return "Unable to add Effect, this Effect has already been added.";
+				if (requiredBase != null)
+					return "Unable to add Effect, required base \'" + requiredBase.basename + "\' is not found.";
 			}
+		}
+		return "";
+	}
+
+	public void setBaseBrewing(BrewingBase base)
+	{
+		if (brewings.size() != 0)
+		{
+			brewings.set(0, base);
+		}
+		else
+		{
+			brewings.add(base);
 		}
 	}
 	
+	public boolean water()
+	{
+		return brewings.size() <= 0;
+	}
+
 	public ItemStack brew()
 	{
-		if (water)
+		if (water())
 		{
 			return new ItemStack(MorePotionsMod.potion2, 1, 0);
 		}
@@ -181,6 +154,7 @@ public class TileEntityCauldron extends TileEntity
 		{
 			return brewings.get(0).addBrewingToItemStack(is);
 		}
+		this.brewings = (List<Brewing>) TileEntityMixer.removeDuplicates(brewings);
 		for (Brewing b : this.brewings)
 		{
 			if (b.getEffect() != null)
@@ -190,19 +164,18 @@ public class TileEntityCauldron extends TileEntity
 		}
 		return is;
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.readFromNBT(par1NBTTagCompound);
-		water = par1NBTTagCompound.getBoolean("Water");
-		
+
 		if (par1NBTTagCompound.hasKey("Brewing"))
 		{
 			List var6 = new ArrayList();
 			NBTTagList var3 = par1NBTTagCompound.getTagList("Brewing");
 			boolean var2 = true;
-			
+
 			for (int var4 = 0; var4 < var3.tagCount(); ++var4)
 			{
 				NBTTagCompound var5 = (NBTTagCompound)var3.tagAt(var4);
@@ -212,13 +185,12 @@ public class TileEntityCauldron extends TileEntity
 			brewings = var6;
 		}
 	}
-	
+
 	@Override
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
 	{
 		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setBoolean("Water", water);
-		
+
 		if (!par1NBTTagCompound.hasKey("Brewing"))
 		{
 			par1NBTTagCompound.setTag("Brewing", new NBTTagList("Brewing"));

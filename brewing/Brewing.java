@@ -77,7 +77,7 @@ public class Brewing
 	public static BrewingBase suave = new BrewingBase("suave", new ItemStack(Item.dyePowder, 1, 3));
 	public static BrewingBase debonair = new BrewingBase("debonair", new ItemStack(Item.dyePowder, 1, 2));
 	/** Needed for some higher tier improvable potions **/
-	public static BrewingBase thick = new BrewingBase("thick", new ItemStack(Item.lightStoneDust));
+	public static BrewingBase thick = new BrewingBase("thick", new ItemStack(Item.glowstone));
 	public static BrewingBase elegant = new BrewingBase("elegant", new ItemStack(Item.enderPearl));
 	public static BrewingBase fancy = new BrewingBase("fancy", new ItemStack(Item.flint));
 	public static BrewingBase charming = new BrewingBase("charming", new ItemStack(Block.plantRed));

@@ -6,6 +6,7 @@ import clashsoft.mods.morepotions.entity.EntityPotion2;
 import clashsoft.mods.morepotions.entity.RenderPotion2;
 import clashsoft.mods.morepotions.item.ItemPotion2;
 import clashsoft.mods.morepotions.tileentity.CauldronRenderer;
+import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.entity.RenderSnowball;
@@ -14,15 +15,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 
 public class ClientProxy extends CommonProxy
 {
-	public static int mixxerRenderType;
+	public static int mixerRenderType;
 	public static int cauldronRenderType;
-	public static int mixxerRenderPass;
-	public static String customEffects = "gui/potionIcons.png";
 	public static int splashpotioncolor;
 	
 	public void registerRenderers()
@@ -33,9 +33,10 @@ public class ClientProxy extends CommonProxy
 	
 	public static void setCustomRenderers()
     {
-        mixxerRenderType = RenderingRegistry.getNextAvailableRenderId();
+        mixerRenderType = RenderingRegistry.getNextAvailableRenderId();
         cauldronRenderType = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(new CauldronRenderer());
+        //ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCauldron.class, new CauldronRenderer());
+        RenderingRegistry.registerBlockHandler(cauldronRenderType, new CauldronRenderer());
     }
 	
 	@Override

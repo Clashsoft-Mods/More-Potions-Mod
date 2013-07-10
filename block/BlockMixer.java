@@ -59,7 +59,6 @@ public class BlockMixer extends BlockContainer
     @Override
     public boolean canRenderInPass(int pass)
     {
-    	ClientProxy.mixxerRenderPass = pass;
     	return true;
     }
     

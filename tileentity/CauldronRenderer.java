@@ -7,6 +7,7 @@ import clashsoft.mods.morepotions.item.ItemPotion2;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.BlockFluid;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -47,36 +48,29 @@ public class CauldronRenderer implements ISimpleBlockRenderingHandler
         tessellator.setColorOpaque_F(f * f1, f * f2, f * f3);
         Icon icon = par1BlockCauldron.getBlockTextureFromSide(2);
         f4 = 0.125F;
-        renderer.renderFaceZPos(par1BlockCauldron, (double)((float)par2 - 1.0F + f4), (double)par3, (double)par4, icon);
-        renderer.renderFaceZNeg(par1BlockCauldron, (double)((float)par2 + 1.0F - f4), (double)par3, (double)par4, icon);
-        renderer.renderFaceXNeg(par1BlockCauldron, (double)par2, (double)par3, (double)((float)par4 - 1.0F + f4), icon);
-        renderer.renderFaceXPos(par1BlockCauldron, (double)par2, (double)par3, (double)((float)par4 + 1.0F - f4), icon);
-        Icon icon1 = ((BlockCauldron2)MorePotionsMod.cauldron2).field_94378_a;
+        renderer.renderFaceXPos(par1BlockCauldron, (double)((float)par2 - 1.0F + f4), (double)par3, (double)par4, icon);
+        renderer.renderFaceXNeg(par1BlockCauldron, (double)((float)par2 + 1.0F - f4), (double)par3, (double)par4, icon);
+        renderer.renderFaceZPos(par1BlockCauldron, (double)par2, (double)par3, (double)((float)par4 - 1.0F + f4), icon);
+        renderer.renderFaceZNeg(par1BlockCauldron, (double)par2, (double)par3, (double)((float)par4 + 1.0F - f4), icon);
+        Icon icon1 = BlockCauldron2.func_94375_b("cauldron_inner");
         renderer.renderFaceYPos(par1BlockCauldron, (double)par2, (double)((float)par3 - 1.0F + 0.25F), (double)par4, icon1);
         renderer.renderFaceYNeg(par1BlockCauldron, (double)par2, (double)((float)par3 + 1.0F - 0.75F), (double)par4, icon1);
         int i1 = renderer.blockAccess.getBlockMetadata(par2, par3, par4);
 
         if (i1 > 0)
-        {	
-        	TileEntityCauldron te = (TileEntityCauldron)renderer.blockAccess.getBlockTileEntity(par2, par3, par4);
-        	System.out.println(te.water);
-        	int m = ItemPotion2.getColorFromItemStack2(te.brew(), 0);
-            Icon icon2 = te.water ? BlockFluid.func_94424_b("water") : BlockFluid.func_94424_b("lava");
+        {
+        	TileEntityCauldron te = (TileEntityCauldron) Minecraft.getMinecraft().theWorld.getBlockTileEntity(par2, par3, par4);
+        	System.out.println(te.water());
+            Icon icon2 = te.water() ? BlockFluid.func_94424_b("water_still") : BlockFluid.func_94424_b("lava_still");
 
             if (i1 > 3)
             {
                 i1 = 3;
             }
-            
-            
-            float f5 = (float)(m >> 16 & 255) / 255.0F;
-            float f6 = (float)(m >> 8 & 255) / 255.0F;
-            float f7 = (float)(m & 255) / 255.0F;
-            tessellator.setColorOpaque_F(f5, f6, f7);
-            
-            renderer.renderFaceYNeg(par1BlockCauldron, (double)par2, (double)((float)par3 - 1.0F + (6.0F + (float)i1 * 3.0F) / 16.0F), (double)par4, icon2);
+
+            renderer.renderFaceYPos(par1BlockCauldron, (double)par2, (double)((float)par3 - 1.0F + (6.0F + (float)i1 * 3.0F) / 16.0F), (double)par4, icon2);
         }
-        
+
         return true;
 	}
 
