@@ -7,8 +7,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import java.util.LinkedList;
 import java.util.List;
 
-import clashsoft.mods.morepotions.brewing.Brewing;
-import clashsoft.mods.morepotions.item.ItemPotion2;
+import clashsoft.brewingapi.brewing.Brewing;
+import clashsoft.brewingapi.item.ItemPotion2;
+import clashsoft.brewingapi.tileentity.TileEntityBrewingStand2;
 import clashsoft.mods.morepotions.lib.PacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -31,7 +32,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.ISidedInventory;
 import net.minecraftforge.common.ForgeDirection;
 
-public class TileEntityUnbrewingStand extends TileEntityBrewingStand2 implements IInventory, ISidedInventory
+public class TileEntityUnbrewingStand extends TileEntityBrewingStand2 implements IInventory
 {
 	public EntityPlayer thePlayer = null;
 
@@ -318,18 +319,6 @@ public class TileEntityUnbrewingStand extends TileEntityBrewingStand2 implements
 	public void openChest() {}
 
 	public void closeChest() {}
-
-	@Override
-	public int getStartInventorySide(ForgeDirection side)
-	{
-		return (side == ForgeDirection.UP ? 3 : 0);
-	}
-
-	@Override
-	public int getSizeInventorySide(ForgeDirection side)
-	{
-		return (side == ForgeDirection.UP ? 1 : 3);
-	}
 
 	@Override
 	public Packet getDescriptionPacket()

@@ -8,9 +8,10 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import clashsoft.brewingapi.BrewingAPI;
+import clashsoft.brewingapi.brewing.Brewing;
+import clashsoft.brewingapi.item.ItemPotion2;
 import clashsoft.mods.morepotions.MorePotionsMod;
-import clashsoft.mods.morepotions.brewing.Brewing;
-import clashsoft.mods.morepotions.item.ItemPotion2;
 import clashsoft.mods.morepotions.lib.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -23,7 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ISidedInventory;
 import net.minecraftforge.common.ForgeDirection;
 
-public class TileEntityMixer extends TileEntity implements IInventory, ISidedInventory
+public class TileEntityMixer extends TileEntity implements IInventory
 {
 	/** The itemstacks currently placed in the slots of the brewing stand */
 	private ItemStack[] mixxingItemStacks = new ItemStack[4];
@@ -139,12 +140,12 @@ public class TileEntityMixer extends TileEntity implements IInventory, ISidedInv
 		}
 		if (brewings != null && brewings.size() > 0)
 		{
-			brewings = (List<Brewing>) removeDuplicates(brewings);
+			brewings = (List<Brewing>) Brewing.removeDuplicates(brewings);
 			int damage = mixxingItemStacks[0] != null ? mixxingItemStacks[0].getItemDamage() : mixxingItemStacks[1] != null ? mixxingItemStacks[1].getItemDamage() : mixxingItemStacks[2] != null ? mixxingItemStacks[2].getItemDamage() : 0;
 			if (damage == 0)
 			{
 			}
-			ItemStack ret = new ItemStack(MorePotionsMod.potion2, 1, damage);
+			ItemStack ret = new ItemStack(BrewingAPI.potion2, 1, damage);
 			for (Brewing b : brewings)
 			{
 				ret = b.addBrewingToItemStack(ret);
@@ -153,63 +154,6 @@ public class TileEntityMixer extends TileEntity implements IInventory, ISidedInv
 		}
 
 		return null;
-	}
-
-	public static Collection<Brewing> removeDuplicates(Collection<Brewing> list)
-	{
-		if (list != null && list.size() > 0)
-		{
-			List<Brewing> result = new ArrayList<Brewing>();
-			for (Brewing b : list)
-			{
-				boolean duplicate = false;
-				for (Brewing b2 : result)
-				{
-					if (b.getEffect() != null && b2.getEffect() != null && b.getEffect().getPotionID() == b2.getEffect().getPotionID())
-					{
-						duplicate = true;
-						break;
-					}
-				}
-				if (!duplicate)
-				{
-					result.add(b);
-				}
-			}
-			return result;
-		}
-		return list;
-	}
-	
-	public static List<Brewing> removeDuplicates(Brewing[] list)
-	{
-		if (list != null && list.length > 0)
-		{
-			List<Brewing> result = new ArrayList<Brewing>();
-			for (Brewing b : list)
-			{
-				boolean duplicate = false;
-				for (Brewing b2 : result)
-				{
-					if (b.getEffect().getPotionID() == b2.getEffect().getPotionID())
-					{
-						duplicate = true;
-						break;
-					}
-				}
-				if (!duplicate)
-				{
-					result.add(b);
-				}
-			}
-			return result;
-		}
-		List<Brewing> ret = new ArrayList<Brewing>();
-		for (Brewing b : list)
-		{
-			ret.add(b);
-		}
-		return ret;
 	}
 
 	private boolean canMix()
@@ -397,18 +341,6 @@ public class TileEntityMixer extends TileEntity implements IInventory, ISidedInv
 			}
 		}
 		return var1;
-	}
-
-	@Override
-	public int getStartInventorySide(ForgeDirection side)
-	{
-		return (side == ForgeDirection.UP ? 3 : 0);
-	}
-
-	@Override
-	public int getSizeInventorySide(ForgeDirection side)
-	{
-		return (side == ForgeDirection.UP ? 1 : 3);
 	}
 
 	@Override

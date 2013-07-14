@@ -1,6 +1,6 @@
 package clashsoft.mods.morepotions.inventory;
 
-import clashsoft.mods.morepotions.inventory.slot.SlotBrewingStandPotion2;
+import clashsoft.brewingapi.inventory.slot.SlotBrewingStandPotion2;
 import clashsoft.mods.morepotions.inventory.slot.SlotMixerOutput;
 import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
 import cpw.mods.fml.relauncher.Side;

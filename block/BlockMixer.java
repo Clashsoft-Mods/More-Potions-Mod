@@ -6,9 +6,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
+import clashsoft.brewingapi.item.ItemPotion2;
 import clashsoft.mods.morepotions.ClientProxy;
 import clashsoft.mods.morepotions.MorePotionsMod;
-import clashsoft.mods.morepotions.item.ItemPotion2;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;

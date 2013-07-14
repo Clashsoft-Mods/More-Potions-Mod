@@ -9,8 +9,8 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import clashsoft.brewingapi.tileentity.TileEntityBrewingStand2;
 import clashsoft.mods.morepotions.MorePotionsMod;
-import clashsoft.mods.morepotions.tileentity.TileEntityBrewingStand2;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;

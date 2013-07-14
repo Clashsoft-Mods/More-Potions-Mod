@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import clashsoft.brewingapi.BrewingAPI;
+import clashsoft.brewingapi.BrewingLoader;
+import clashsoft.brewingapi.brewing.Brewing;
+import clashsoft.brewingapi.brewing.BrewingBase;
 import clashsoft.mods.morepotions.MorePotionsMod;
-import clashsoft.mods.morepotions.brewing.Brewing;
-import clashsoft.mods.morepotions.brewing.BrewingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -62,7 +64,7 @@ public class TileEntityCauldron extends TileEntity
 			for (int var3 = 0; var3 < brewings.size(); var3++)
 			{
 				Brewing brewing = brewings.get(var3);
-				if (brewing != Brewing.awkward)
+				if (brewing != BrewingLoader.awkward)
 				{
 					brewings.set(var3, brewing.onImproved());
 				}
@@ -74,7 +76,7 @@ public class TileEntityCauldron extends TileEntity
 			for (int var3 = 0; var3 < brewings.size(); var3++)
 			{
 				Brewing brewing = brewings.get(var3);
-				if (brewing != Brewing.awkward)
+				if (brewing != BrewingLoader.awkward)
 				{
 					brewings.set(var3, brewing.onExtended());
 				}
@@ -147,14 +149,14 @@ public class TileEntityCauldron extends TileEntity
 	{
 		if (water())
 		{
-			return new ItemStack(MorePotionsMod.potion2, 1, 0);
+			return new ItemStack(BrewingAPI.potion2, 1, 0);
 		}
-		ItemStack is = new ItemStack(MorePotionsMod.potion2, 1, 1);
+		ItemStack is = new ItemStack(BrewingAPI.potion2, 1, 1);
 		if (brewings.size() == 1)
 		{
 			return brewings.get(0).addBrewingToItemStack(is);
 		}
-		this.brewings = (List<Brewing>) TileEntityMixer.removeDuplicates(brewings);
+		this.brewings = (List<Brewing>) Brewing.removeDuplicates(brewings);
 		for (Brewing b : this.brewings)
 		{
 			if (b.getEffect() != null)
