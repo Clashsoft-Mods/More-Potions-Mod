@@ -11,7 +11,6 @@ import clashsoft.brewingapi.BrewingLoader;
 import clashsoft.brewingapi.IIngredientHandler;
 import clashsoft.brewingapi.IPotionEffectHandler;
 import clashsoft.brewingapi.brewing.Brewing;
-import clashsoft.clashsoftapi.CustomCreativeTab;
 import clashsoft.clashsoftapi.CustomItem;
 import clashsoft.clashsoftapi.CustomPotion;
 import clashsoft.clashsoftapi.util.CSArray;
@@ -142,9 +141,7 @@ public class MorePotionsMod
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event)
-	{
-		BrewingAPI.MORE_POTIONS_MOD = true;
-		
+	{	
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 

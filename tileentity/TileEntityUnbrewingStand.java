@@ -86,10 +86,10 @@ public class TileEntityUnbrewingStand extends TileEntityBrewingStand2 implements
 				this.onInventoryChanged();
 			}
 			else if (this.potion != this.slots[0])
-            {
-                this.brewTime = 0;
-                this.onInventoryChanged();
-            }
+			{
+				this.brewTime = 0;
+				this.onInventoryChanged();
+			}
 		}
 		else if (this.canUnbrew())
 		{
@@ -125,9 +125,9 @@ public class TileEntityUnbrewingStand extends TileEntityBrewingStand2 implements
 				break;
 			}
 		}
-		if (potion != null && outputsempty)
+		if (potion != null && potion.getItem() instanceof ItemPotion2 && outputsempty)
 		{
-			List effects = ItemPotion2.getEffects(potion);
+			List effects = ((ItemPotion2)potion.getItem()).getEffects(potion);
 			if (potion.stackSize > 0 && effects != null && effects.size() > 0)
 			{
 				return true;
@@ -159,14 +159,14 @@ public class TileEntityUnbrewingStand extends TileEntityBrewingStand2 implements
 	{
 		if (potion != null)
 		{
-		Brewing b = Brewing.getBrewingFromItemStack(potion);
-		for (Brewing b2 : Brewing.brewingList)
-		{
-			if (b != null && b2 != null && b.getEffect() != null && b2.getEffect() != null && b.getEffect().getPotionID() == b2.getEffect().getPotionID())
+			Brewing b = Brewing.getBrewingFromItemStack(potion);
+			for (Brewing b2 : Brewing.brewingList)
 			{
-				return b2.getIngredient();
+				if (b != null && b2 != null && b.getEffect() != null && b2.getEffect() != null && b.getEffect().getPotionID() == b2.getEffect().getPotionID())
+				{
+					return b2.getIngredient();
+				}
 			}
-		}
 		}
 		return null;
 	}
@@ -174,14 +174,18 @@ public class TileEntityUnbrewingStand extends TileEntityBrewingStand2 implements
 	private ItemStack getRedstone()
 	{
 		int amount = slots[3] != null ? slots[3].stackSize : 0;
-		for (Brewing b : ItemPotion2.getEffects(potion))
+		if (potion.getItem() instanceof ItemPotion2)
 		{
-			int normalDuration = b.getDefaultDuration();
-			int duration = b.getEffect().getDuration();
-			while (duration >= normalDuration)
+
+			for (Brewing b : ((ItemPotion2)potion.getItem()).getEffects(potion))
 			{
-				duration /= 2;
-				amount++;
+				int normalDuration = b.getDefaultDuration();
+				int duration = b.getEffect().getDuration();
+				while (duration >= normalDuration)
+				{
+					duration /= 2;
+					amount++;
+				}
 			}
 		}
 		return new ItemStack(Item.redstone, amount);
@@ -190,9 +194,12 @@ public class TileEntityUnbrewingStand extends TileEntityBrewingStand2 implements
 	private ItemStack getGlowstone()
 	{
 		int amount = slots[2] != null ? slots[2].stackSize : 0;
-		for (Brewing b : ItemPotion2.getEffects(potion))
+		if (potion.getItem() instanceof ItemPotion2)
 		{
-			amount += b.getEffect().getAmplifier();
+			for (Brewing b : ((ItemPotion2)potion.getItem()).getEffects(potion))
+			{
+				amount += b.getEffect().getAmplifier();
+			}
 		}
 		return new ItemStack(Item.glowstone, amount);
 	}

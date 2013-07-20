@@ -179,17 +179,6 @@ public class BlockMixer extends BlockContainer
 
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
     }
-
-	public int getLiquidColor(IBlockAccess world, int x, int y, int z)
-	{
-		TileEntityMixer mixxer = (TileEntityMixer)world.getBlockTileEntity(x, y, z);
-
-        if (mixxer != null)
-        {
-        	return ItemPotion2.getColorFromItemStack2(mixxer.getOutput(), 0);
-        }
-        return 0;
-	}
 	
 	@Override
     public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
