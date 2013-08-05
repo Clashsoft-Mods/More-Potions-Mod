@@ -6,8 +6,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-import clashsoft.brewingapi.item.ItemPotion2;
-import clashsoft.mods.morepotions.ClientProxy;
 import clashsoft.mods.morepotions.MorePotionsMod;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
 import net.minecraft.block.*;
@@ -19,9 +17,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.util.Icon;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockMixer extends BlockContainer

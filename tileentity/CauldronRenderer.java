@@ -1,11 +1,8 @@
 package clashsoft.mods.morepotions.tileentity;
 
-import clashsoft.brewingapi.item.ItemPotion2;
 import clashsoft.mods.morepotions.ClientProxy;
-import clashsoft.mods.morepotions.MorePotionsMod;
 import clashsoft.mods.morepotions.block.BlockCauldron2;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.BlockFluid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
