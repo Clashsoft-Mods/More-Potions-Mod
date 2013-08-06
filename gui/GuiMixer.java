@@ -50,7 +50,7 @@ public class GuiMixer extends GuiContainer
 		
 		if (var7 > 0)
 		{
-			int var8 = (int) (28.0F * (1.0F - (float) var7 / mixer.maxMixTime));
+			int var8 = (int) (28.0F * (1.0F - (float) var7 / TileEntityMixer.maxMixTime));
 			
 			if (var8 > 0)
 			{

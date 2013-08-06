@@ -2,8 +2,6 @@ package clashsoft.mods.morepotions;
 
 import clashsoft.brewingapi.BrewingAPI;
 import clashsoft.brewingapi.api.IIngredientHandler;
-import clashsoft.brewingapi.api.IPotionEffectHandler;
-import clashsoft.brewingapi.brewing.Brewing;
 import clashsoft.clashsoftapi.CustomItem;
 import clashsoft.clashsoftapi.CustomPotion;
 import clashsoft.clashsoftapi.util.CSArray;
@@ -17,33 +15,27 @@ import clashsoft.mods.morepotions.item.ItemMortar;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
 import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
-import cpw.mods.fml.common.ICraftingHandler;
-import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.EventPriority;
-import net.minecraftforge.event.ForgeSubscribe;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.*;
-import net.minecraft.potion.*;
-import net.minecraft.src.ModLoader;
-import net.minecraft.util.DamageSource;
-import net.minecraft.block.*;
+
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.src.ModLoader;
+import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 
 @Mod(modid = "MorePotionsMod", name = "More Potions Mod", version = CSUtil.CURRENT_VERION)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
@@ -441,184 +433,6 @@ public class MorePotionsMod
 		CSCrafting.addSmelting(dustClay, new ItemStack(Item.brick), 0.1F);
 		CSCrafting.addSmelting(dustBrick, new ItemStack(Item.brick), 0F);
 		CSCrafting.addSmelting(dustGlass, new ItemStack(Block.glass), 0F);
-	}
-	
-	public static class MorePotionsModEffectHandler implements IPotionEffectHandler
-	{
-		private static boolean	hasJumped	= false;
-		private float			tick		= 0;
-		
-		public void onPotionUpdate(EntityLivingBase living, PotionEffect effect)
-		{
-			if (effect.getPotionID() == MorePotionsMod.fire.id)
-			{
-				int x = (int) Math.floor(living.posX);
-				int y = (int) (living.posY - living.getYOffset());
-				int z = (int) Math.floor(living.posZ);
-				int id = living.worldObj.getBlockId(x, y - 1, z);
-				if (Block.blocksList[id] != null && Block.blocksList[id].isBlockSolidOnSide(living.worldObj, x, y - 1, z, ForgeDirection.UP) && living.worldObj.getBlockId(x, y, z) == 0)
-				{
-					living.worldObj.setBlock(x, y, z, Block.fire.blockID);
-				}
-				
-				living.setFire(1);
-			}
-			if (effect.getPotionID() == (MorePotionsMod.effectRemove.id))
-			{
-				for (int i = 0; i < Potion.potionTypes.length; i++)
-				{
-					if (i != MorePotionsMod.effectRemove.id)
-					{
-						living.removePotionEffect(i);
-					}
-				}
-			}
-			else if (effect.getPotionID() == (MorePotionsMod.waterWalking.id))
-			{
-				int x = (int) Math.floor(living.posX);
-				int y = (int) (living.posY - living.getYOffset());
-				int z = (int) Math.floor(living.posZ);
-				if (living.worldObj.getBlockId(x, y - 1, z) == 9 && living.worldObj.getBlockId(x, y, z) == 0)
-				{
-					if (living.motionY < 0 && living.boundingBox.minY < y)
-					{
-						living.motionY = 0;
-						living.fallDistance = 0;
-						living.onGround = true;
-						if (living.isSneaking())
-						{
-							living.motionY -= 0.1F;
-						}
-					}
-				}
-			}
-			else if (effect.getPotionID() == (MorePotionsMod.coldness.id))
-			{
-				int x = (int) Math.floor(living.posX);
-				int y = (int) (living.posY - living.getYOffset());
-				int z = (int) Math.floor(living.posZ);
-				int id = living.worldObj.getBlockId(x, y - 1, z);
-				if (id == Block.waterMoving.blockID || id == Block.waterStill.blockID)
-				{
-					living.worldObj.setBlock(x, y - 1, z, Block.ice.blockID);
-				}
-				if (living.getActivePotionEffect(MorePotionsMod.coldness).getAmplifier() > 0 && Block.blocksList[id] != null && Block.blocksList[id].isBlockSolidOnSide(living.worldObj, x, y - 1, z, ForgeDirection.UP) && living.worldObj.getBlockId(x, y, z) == 0)
-				{
-					living.worldObj.setBlock(x, y, z, Block.snow.blockID);
-				}
-			}
-			else if (effect.getPotionID() == MorePotionsMod.doubleJump.id)
-			{
-				// if (living instanceof EntityPlayer)
-				// {
-				// boolean canJump = !living.isPlayerSleeping() && living.is;
-				// if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && living.motionY <
-				// 0.07 && !hasJumped && canJump) //Waaaaaay more checks than
-				// necessary
-				// {
-				// double motionY = 0.41999998688697815D;
-				//
-				// if (living.isPotionActive(Potion.jump))
-				// {
-				// motionY +=
-				// (double)((float)(living.getActivePotionEffect(Potion.jump).getAmplifier()
-				// + 1) * 0.1F);
-				// }
-				// //checks for armour/abilities...
-				// living.addVelocity(0, motionY, 0);
-				// living.setAir(0);
-				// hasJumped = true;
-				// }
-				// if(living.onGround)
-				// {
-				// hasJumped = false;
-				// }
-				// }
-			}
-			else if (effect.getPotionID() == MorePotionsMod.antiHunger.id)
-			{
-				if (living instanceof EntityPlayer && ((int) tick) % 40 == 0) // True
-																				// every
-																				// 2
-																				// seconds
-				{
-					((EntityPlayer) living).getFoodStats().addStats(1, 0.1F);
-				}
-			}
-			else if (effect.getPotionID() == MorePotionsMod.explosiveness.id)
-			{
-				if (((int) tick) % 40 == 0)
-				{
-					living.worldObj.createExplosion(living, living.posX, living.posY, living.posZ, (effect.getAmplifier() + 1) * 2, true);
-				}
-			}
-			else if (effect.getPotionID() == MorePotionsMod.random.id)
-			{
-				if (randomMode == 0)
-				{
-					this.addEffectQueue.clear();
-					this.addEffectQueue.add(Brewing.effectBrewings.get(living.getRNG().nextInt(Brewing.effectBrewings.size() - 1)).getEffect());
-					this.removeEffectQueue.add(MorePotionsMod.random.id);
-				}
-				else
-				{
-					if (((int) tick) % 40 == 0)
-					{
-						PotionEffect pe = Brewing.combinableEffects.get(living.getRNG().nextInt(Brewing.effectBrewings.size() - 1)).getEffect();
-						if (pe.getDuration() >= 2)
-						{
-							pe = new PotionEffect(pe.getPotionID(), 2 * 20, pe.getAmplifier());
-						}
-						this.addEffectQueue.add(pe);
-					}
-				}
-			}
-			tick += 1F / ((float) living.getActivePotionEffects().size());
-		}
-		
-		public boolean canHandle(PotionEffect effect)
-		{
-			return true;
-		}
-	}
-	
-	public class MorePotionsModEventHandler
-	{
-		@ForgeSubscribe(priority = EventPriority.LOW)
-		public void onEntityDamaged(LivingAttackEvent event)
-		{
-			if (event.entityLiving.isPotionActive(MorePotionsMod.doubleLife))
-			{
-				if (event.entityLiving.func_110143_aJ() - event.ammount <= 0)
-				{
-					event.setCanceled(true);
-					event.entityLiving.setEntityHealth(event.entityLiving.func_110138_aP());
-					event.entityLiving.removePotionEffect(MorePotionsMod.doubleLife.id);
-					if (event.entityLiving instanceof EntityPlayer)
-					{
-						((EntityPlayer) event.entityLiving).addChatMessage("<\u00a7kCLASHSOFT\u00a7r>: \u00a7bYour life has just been saved by a magical power. Be careful next time, it wont help you again.");
-					}
-				}
-			}
-			if (event.entityLiving.isPotionActive(MorePotionsMod.ironSkin))
-			{
-				event.entityLiving.addPotionEffect(new PotionEffect(Potion.resistance.id, event.entityLiving.getActivePotionEffect(MorePotionsMod.ironSkin).getDuration(), 2));
-				if (event.source == DamageSource.inFire || event.source == DamageSource.onFire)
-				{
-					event.entityLiving.extinguish();
-					event.setCanceled(true);
-				}
-			}
-			if (event.entityLiving.isPotionActive(MorePotionsMod.obsidianSkin))
-			{
-				event.entityLiving.addPotionEffect(new PotionEffect(Potion.resistance.id, event.entityLiving.getActivePotionEffect(MorePotionsMod.obsidianSkin).getDuration(), 2));
-				if (event.source == DamageSource.lava || event.source == DamageSource.inFire || event.source == DamageSource.onFire)
-				{
-					event.entityLiving.extinguish();
-					event.setCanceled(true);
-				}
-			}
-		}
 	}
 	
 	public class MorePotionsModIngredientHandler implements IIngredientHandler
