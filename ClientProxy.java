@@ -5,9 +5,9 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy
 {
-	public static int mixerRenderType;
-	public static int cauldronRenderType;
-	public static int splashpotioncolor;
+	public static int	mixerRenderType;
+	public static int	cauldronRenderType;
+	public static int	splashpotioncolor;
 	
 	@Override
 	public void registerRenderers()
@@ -16,10 +16,11 @@ public class ClientProxy extends CommonProxy
 	}
 	
 	public static void setCustomRenderers()
-    {
-        mixerRenderType = RenderingRegistry.getNextAvailableRenderId();
-        cauldronRenderType = RenderingRegistry.getNextAvailableRenderId();
-        //ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCauldron.class, new CauldronRenderer());
-        RenderingRegistry.registerBlockHandler(cauldronRenderType, new CauldronRenderer());
-    }
+	{
+		mixerRenderType = RenderingRegistry.getNextAvailableRenderId();
+		cauldronRenderType = RenderingRegistry.getNextAvailableRenderId();
+		// ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCauldron.class,
+		// new CauldronRenderer());
+		RenderingRegistry.registerBlockHandler(cauldronRenderType, new CauldronRenderer());
+	}
 }

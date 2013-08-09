@@ -122,6 +122,8 @@ public class MorePotionsMod
 	@EventHandler
 	public void load(FMLInitializationEvent event)
 	{
+		BrewingAPI.expandPotionList();
+		
 		BrewingAPI.registerEffectHandler(new MorePotionsModEffectHandler());
 		BrewingAPI.registerIngredientHandler(new MorePotionsModIngredientHandler());
 		

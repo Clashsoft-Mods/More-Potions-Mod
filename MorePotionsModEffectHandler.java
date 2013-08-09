@@ -15,11 +15,12 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class MorePotionsModEffectHandler implements IPotionEffectHandler
 {
-	private float			tick		= 0;
+	private float				tick				= 0;
 	
-	private List<PotionEffect> addEffectQueue = new LinkedList<PotionEffect>();
-	private List<Integer> removeEffectQueue = new LinkedList<Integer>();
+	private List<PotionEffect>	addEffectQueue		= new LinkedList<PotionEffect>();
+	private List<Integer>		removeEffectQueue	= new LinkedList<Integer>();
 	
+	@Override
 	public void onPotionUpdate(EntityLivingBase living, PotionEffect effect)
 	{
 		if (effect.getPotionID() == MorePotionsMod.fire.id)
@@ -145,32 +146,33 @@ public class MorePotionsModEffectHandler implements IPotionEffectHandler
 				}
 			}
 		}
-		tick += 1F / ((float) living.getActivePotionEffects().size());
+		tick += 1F / (living.getActivePotionEffects().size());
 	}
 	
+	@Override
 	public boolean canHandle(PotionEffect effect)
 	{
 		return true;
 	}
-
+	
 	@Override
 	public List<PotionEffect> getAddQueue()
 	{
 		return addEffectQueue;
 	}
-
+	
 	@Override
 	public List<Integer> getRemoveQueue()
 	{
 		return removeEffectQueue;
 	}
-
+	
 	@Override
 	public void clearAddQueue()
 	{
 		addEffectQueue.clear();
 	}
-
+	
 	@Override
 	public void clearRemoveQueue()
 	{
