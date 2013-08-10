@@ -61,6 +61,11 @@ public class MorePotionsMod
 	public static int				Dust_ID				= 14000;
 	public static int				Mortar_ID			= 14001;
 	
+	static
+	{
+		BrewingAPI.expandPotionList();
+	}
+	
 	public static Potion			fire				= new CustomPotion("potion.fire", true, 0xFFE500, false, customEffects, 0, 0);
 	public static Potion			effectRemove		= new CustomPotion("potion.effectRemove", false, 0xFFFFFF, false, customEffects, 1, 0);
 	public static Potion			waterWalking		= new CustomPotion("potion.waterWalking", false, 0x124EFE, false, customEffects, 2, 0);
@@ -121,9 +126,7 @@ public class MorePotionsMod
 	
 	@EventHandler
 	public void load(FMLInitializationEvent event)
-	{
-		BrewingAPI.expandPotionList();
-		
+	{	
 		BrewingAPI.registerEffectHandler(new MorePotionsModEffectHandler());
 		BrewingAPI.registerIngredientHandler(new MorePotionsModIngredientHandler());
 		
