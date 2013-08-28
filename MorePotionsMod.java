@@ -4,7 +4,7 @@ import clashsoft.brewingapi.BrewingAPI;
 import clashsoft.brewingapi.api.IIngredientHandler;
 import clashsoft.clashsoftapi.CustomItem;
 import clashsoft.clashsoftapi.CustomPotion;
-import clashsoft.clashsoftapi.util.CSArray;
+import clashsoft.clashsoftapi.util.CSArrays;
 import clashsoft.clashsoftapi.util.CSCrafting;
 import clashsoft.clashsoftapi.util.CSLang;
 import clashsoft.clashsoftapi.util.CSUtil;
@@ -149,7 +149,7 @@ public class MorePotionsMod
 		mortar = new ItemMortar(Mortar_ID).setCreativeTab(CreativeTabs.tabTools).setMaxDamage(32).setNoRepair().setMaxStackSize(1).setUnlocalizedName("mortar");
 		ModLoader.addRecipe(new ItemStack(mortar), new Object[] { "SfS", " S ", 'S', Block.stone, 'f', Item.flint });
 		
-		dust = new CustomItem(Dust_ID, CSArray.addToAll(new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCharcoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, "item.", ".name"), new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, new String[] { "C2", "Fe", "Au", "C128", "Be3Al2Si6O18", "MgFeSi2O8", "SiO2", "\u00a7k???", "BeK4N5Cl6", "Na2LiAl2Si2", "Na2LiAl2Si2", "SiO2", "SiO4", "C", "", "", "", "", "", "" }).setCreativeTab(CreativeTabs.tabMaterials);
+		dust = new CustomItem(Dust_ID, CSArrays.addToAll(new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCharcoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, "item.", ".name"), new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, new String[] { "C2", "Fe", "Au", "C128", "Be3Al2Si6O18", "MgFeSi2O8", "SiO2", "\u00a7k???", "BeK4N5Cl6", "Na2LiAl2Si2", "Na2LiAl2Si2", "SiO2", "SiO4", "C", "", "", "", "", "", "" }).setCreativeTab(CreativeTabs.tabMaterials);
 		addDusts();
 		
 		BrewingAPI.load();
