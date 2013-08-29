@@ -29,12 +29,6 @@ public class TileEntityUnbrewingStand extends TileEntityBrewingStand2 implements
 	private ItemStack[]			slots			= new ItemStack[5];
 	private int					brewTime;
 	
-	/**
-	 * an integer with each bit specifying whether that slot of the stand
-	 * contains a potion
-	 */
-	private int					filledSlots;
-	
 	public static int			maxBrewTime		= 400;
 	
 	public TileEntityUnbrewingStand()
@@ -147,9 +141,10 @@ public class TileEntityUnbrewingStand extends TileEntityBrewingStand2 implements
 		if (potion != null)
 		{
 			Brewing b = Brewing.getBrewingFromItemStack(potion);
-			for (Brewing b2 : Brewing.brewingList)
+			if (b != null && b.getEffect() != null)
 			{
-				if (b != null && b2 != null && b.getEffect() != null && b2.getEffect() != null && b.getEffect().getPotionID() == b2.getEffect().getPotionID())
+				Brewing b2 = Brewing.brewingList.get(b.getEffect().getPotionID());
+				if (b2 != null && b2.getEffect() != null && b.getEffect().getPotionID() == b2.getEffect().getPotionID())
 				{
 					return b2.getIngredient();
 				}
@@ -163,7 +158,6 @@ public class TileEntityUnbrewingStand extends TileEntityBrewingStand2 implements
 		int amount = slots[3] != null ? slots[3].stackSize : 0;
 		if (potion.getItem() instanceof ItemPotion2)
 		{
-			
 			for (Brewing b : ((ItemPotion2) potion.getItem()).getEffects(potion))
 			{
 				int normalDuration = b.getDefaultDuration();
