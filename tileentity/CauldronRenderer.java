@@ -1,92 +1,118 @@
 package clashsoft.mods.morepotions.tileentity;
 
-import clashsoft.mods.morepotions.ClientProxy;
+import org.lwjgl.opengl.GL11;
+
+import clashsoft.mods.morepotions.MorePotionsMod;
 import clashsoft.mods.morepotions.block.BlockCauldron2;
-import net.minecraft.block.Block;
+
 import net.minecraft.block.BlockFluid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
-import net.minecraft.world.IBlockAccess;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-public class CauldronRenderer implements ISimpleBlockRenderingHandler
+public class CauldronRenderer extends TileEntitySpecialRenderer
 {
-	@Override
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
-	{
-		return renderCauldron(world, (BlockCauldron2)block, x, y, z, renderer);
+	public void renderBlockCauldron(RenderBlocks renderer, TileEntityCauldron tileentity, BlockCauldron2 cauldron, int x, int y, int z)
+	{	
+		Tessellator tessellator = Tessellator.instance;
+		
+		tessellator.setBrightness(cauldron.getMixedBrightnessForBlock(renderer.blockAccess, x, y, z));
+		
+		// Color
+		float f = 1.0F;
+		int l = cauldron.colorMultiplier(renderer.blockAccess, x, y, z);
+		float f1 = (l >> 16 & 255) / 255.0F;
+		float f2 = (l >> 8 & 255) / 255.0F;
+		float f3 = (l & 255) / 255.0F;
+		float f4;
+		
+		if (EntityRenderer.anaglyphEnable)
+		{
+			float f5 = (f1 * 30.0F + f2 * 59.0F + f3 * 11.0F) / 100.0F;
+			f4 = (f1 * 30.0F + f2 * 70.0F) / 100.0F;
+			float f6 = (f1 * 30.0F + f3 * 70.0F) / 100.0F;
+			f1 = f5;
+			f2 = f4;
+			f3 = f6;
+		}
+		
+		tessellator.setColorOpaque_F(f * f1, f * f2, f * f3);
+		
+		// Cauldron
+		Icon icon = cauldron.getBlockTextureFromSide(2);
+		f4 = 0.125F;
+		renderer.renderFaceXPos(cauldron, x - 1.0F + f4, y, z, icon);
+		renderer.renderFaceXNeg(cauldron, x + 1.0F - f4, y, z, icon);
+		renderer.renderFaceZPos(cauldron, x, y, z - 1.0F + f4, icon);
+		renderer.renderFaceZNeg(cauldron, x, y, z + 1.0F - f4, icon);
+		Icon icon1 = BlockCauldron2.func_94375_b("cauldron_inner");
+		renderer.renderFaceYPos(cauldron, x, y - 1.0F + 0.25F, z, icon1);
+		renderer.renderFaceYNeg(cauldron, x, y + 1.0F - 0.75F, z, icon1);
+		int i1 = renderer.blockAccess.getBlockMetadata(x, y, z);
+		
+		// Water/Liquid
+		if (i1 > 0)
+		{
+			Icon icon2 = tileentity.water() ? BlockFluid.getFluidIcon("water_still") : BlockFluid.getFluidIcon("lava_still");
+			
+			if (i1 > 3)
+			{
+				i1 = 3;
+			}
+			
+			renderer.renderFaceYPos(cauldron, x, y - 1.0F + (6.0F + i1 * 3.0F) / 16.0F, z, icon2);
+		}
 	}
 	
-	public boolean renderCauldron(IBlockAccess par0, BlockCauldron2 par1BlockCauldron, int par2, int par3, int par4, RenderBlocks renderer)
-	{
-		renderer.renderStandardBlock(par1BlockCauldron, par2, par3, par4);
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.setBrightness(par1BlockCauldron.getMixedBrightnessForBlock(renderer.blockAccess, par2, par3, par4));
-        float f = 1.0F;
-        int l = par1BlockCauldron.colorMultiplier(renderer.blockAccess, par2, par3, par4);
-        float f1 = (float)(l >> 16 & 255) / 255.0F;
-        float f2 = (float)(l >> 8 & 255) / 255.0F;
-        float f3 = (float)(l & 255) / 255.0F;
-        float f4;
-
-        if (EntityRenderer.anaglyphEnable)
-        {
-            float f5 = (f1 * 30.0F + f2 * 59.0F + f3 * 11.0F) / 100.0F;
-            f4 = (f1 * 30.0F + f2 * 70.0F) / 100.0F;
-            float f6 = (f1 * 30.0F + f3 * 70.0F) / 100.0F;
-            f1 = f5;
-            f2 = f4;
-            f3 = f6;
-        }
-
-        tessellator.setColorOpaque_F(f * f1, f * f2, f * f3);
-        Icon icon = par1BlockCauldron.getBlockTextureFromSide(2);
-        f4 = 0.125F;
-        renderer.renderFaceXPos(par1BlockCauldron, (double)((float)par2 - 1.0F + f4), (double)par3, (double)par4, icon);
-        renderer.renderFaceXNeg(par1BlockCauldron, (double)((float)par2 + 1.0F - f4), (double)par3, (double)par4, icon);
-        renderer.renderFaceZPos(par1BlockCauldron, (double)par2, (double)par3, (double)((float)par4 - 1.0F + f4), icon);
-        renderer.renderFaceZNeg(par1BlockCauldron, (double)par2, (double)par3, (double)((float)par4 + 1.0F - f4), icon);
-        Icon icon1 = BlockCauldron2.func_94375_b("cauldron_inner");
-        renderer.renderFaceYPos(par1BlockCauldron, (double)par2, (double)((float)par3 - 1.0F + 0.25F), (double)par4, icon1);
-        renderer.renderFaceYNeg(par1BlockCauldron, (double)par2, (double)((float)par3 + 1.0F - 0.75F), (double)par4, icon1);
-        int i1 = renderer.blockAccess.getBlockMetadata(par2, par3, par4);
-
-        if (i1 > 0)
-        {
-        	TileEntityCauldron te = (TileEntityCauldron) Minecraft.getMinecraft().theWorld.getBlockTileEntity(par2, par3, par4);
-        	System.out.println(te.water());
-            Icon icon2 = te.water() ? BlockFluid.func_94424_b("water_still") : BlockFluid.func_94424_b("lava_still");
-
-            if (i1 > 3)
-            {
-                i1 = 3;
-            }
-
-            renderer.renderFaceYPos(par1BlockCauldron, (double)par2, (double)((float)par3 - 1.0F + (6.0F + (float)i1 * 3.0F) / 16.0F), (double)par4, icon2);
-        }
-
-        return true;
-	}
-
 	@Override
-	public boolean shouldRender3DInInventory()
+	public void renderTileEntityAt(TileEntity tileentity, double d0, double d1, double d2, float f)
 	{
-		return true;
-	}
-
-	@Override
-	public int getRenderId()
-	{
-		return ClientProxy.cauldronRenderType;
-	}
-
-	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
-	{
+		TileEntityCauldron te = (TileEntityCauldron) tileentity;
 		
+		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+		
+		// Disable standard lighting. This is done the same as in
+		// TileEntityRendererPiston.
+		RenderHelper.disableStandardItemLighting();
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glEnable(GL11.GL_BLEND);
+		// GL11.glDisable(GL11.GL_CULL_FACE); This was initially part of the
+		// code that was taken from the piston, but it was causing some of the
+		// rendering to look of, e.g. with a cobweb (it would look thicker as
+		// both sides were rendering due to this being disabled).
+		
+		if (Minecraft.isAmbientOcclusionEnabled())
+		{
+			GL11.glShadeModel(GL11.GL_SMOOTH);
+		}
+		else
+		{
+			GL11.glShadeModel(GL11.GL_FLAT);
+		}
+		GL11.glPushMatrix();
+		GL11.glTranslated(d0, d1, d2);
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		RenderBlocks renderBlocks = new RenderBlocks(tileentity.worldObj);
+		
+		// To get the block to render in the right place, I had to pass in 0, 0,
+		// 0 as the coordinates for renderBlockByRenderType. This however means
+		// that it will use the properties of the block at 0, 0, 0 for some
+		// things. This translation allows for the actual block coordinates to
+		// be passed in.
+		tessellator.setTranslation(-te.xCoord, -te.yCoord, -te.zCoord);
+		renderBlockCauldron(renderBlocks, te, MorePotionsMod.cauldron2, tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
+		tessellator.draw();
+		tessellator.setTranslation(0, 0, 0);
+		GL11.glPopMatrix();
+		
+		// Reset to standard lighting
+		RenderHelper.enableStandardItemLighting();
 	}
-
 }

@@ -7,7 +7,6 @@ public class ItemMortar extends Item
 	public ItemMortar(int par1)
 	{
 		super(par1);
-		this.func_111206_d("mortar");
+		this.setTextureName("mortar");
 	}
-
 }

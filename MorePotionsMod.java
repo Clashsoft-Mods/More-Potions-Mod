@@ -10,11 +10,9 @@ import clashsoft.clashsoftapi.util.CSLang;
 import clashsoft.clashsoftapi.util.CSUtil;
 import clashsoft.mods.morepotions.block.BlockCauldron2;
 import clashsoft.mods.morepotions.block.BlockMixer;
-import clashsoft.mods.morepotions.block.BlockUnbrewingStand;
 import clashsoft.mods.morepotions.item.ItemMortar;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
-import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -47,40 +45,37 @@ public class MorePotionsMod
 	@SidedProxy(clientSide = "clashsoft.mods.morepotions.ClientProxy", serverSide = "clashsoft.mods.morepotions.CommonProxy")
 	public static CommonProxy		proxy;
 	
-	public static String			customEffects		= "gui/potionIcons.png";
+	public static String			customEffects	= "gui/potionIcons.png";
 	
 	// Configurables
-	public static int				randomMode			= 0;
+	public static int				randomMode		= 0;
 	
-	public static int				Mixer_TEID			= 12;
-	public static int				Cauldron2_TEID		= 13;
-	public static int				UnbrewingStand_TEID	= 14;
+	public static int				Mixer_TEID		= 12;
+	public static int				Cauldron2_TEID	= 13;
 	
-	public static int				Mixer_ID			= 190;
-	public static int				UnbrewingStand_ID	= 191;
-	public static int				Dust_ID				= 14000;
-	public static int				Mortar_ID			= 14001;
+	public static int				Mixer_ID		= 190;
+	public static int				Dust_ID			= 14000;
+	public static int				Mortar_ID		= 14001;
 	
 	static
 	{
 		BrewingAPI.expandPotionList();
 	}
 	
-	public static Potion			fire				= new CustomPotion("potion.fire", true, 0xFFE500, false, customEffects, 0, 0);
-	public static Potion			effectRemove		= new CustomPotion("potion.effectRemove", false, 0xFFFFFF, false, customEffects, 1, 0);
-	public static Potion			waterWalking		= new CustomPotion("potion.waterWalking", false, 0x124EFE, false, customEffects, 2, 0);
-	public static Potion			coldness			= new CustomPotion("potion.coldness", false, 0x00DDFF, false, customEffects, 3, 0);
-	public static Potion			ironSkin			= new CustomPotion("potion.ironSkin", false, 0xD8D8D8, false, customEffects, 4, 0);
-	public static Potion			obsidianSkin		= new CustomPotion("potion.obsidianSkin", false, 0x101023, false, customEffects, 5, 0);
-	public static Potion			doubleJump			= new CustomPotion("potion.doubleJump", false, 0x123456, false, customEffects, 6, 0);
-	public static Potion			doubleLife			= new CustomPotion("potion.doubleLife", false, 0xFF2222, false, customEffects, 7, 0, CSUtil.fontColorInt(0, 0, 1, 1));
-	public static Potion			antiHunger			= new CustomPotion("potion.antiHunger", false, 0xE3E3E3, false, customEffects, 0, 1);
-	public static Potion			explosiveness		= new CustomPotion("potion.explosiveness", true, 0xCC0000, false, customEffects, 1, 1);
-	public static Potion			random				= new CustomPotion("potion.random", false, 0x000000, randomMode == 0, customEffects, 2, 1, CSUtil.fontColorInt(0, 1, 1, 1));
+	public static Potion			fire			= new CustomPotion("potion.fire", true, 0xFFE500, false, customEffects, 0, 0);
+	public static Potion			effectRemove	= new CustomPotion("potion.effectRemove", false, 0xFFFFFF, false, customEffects, 1, 0);
+	public static Potion			waterWalking	= new CustomPotion("potion.waterWalking", false, 0x124EFE, false, customEffects, 2, 0);
+	public static Potion			coldness		= new CustomPotion("potion.coldness", false, 0x00DDFF, false, customEffects, 3, 0);
+	public static Potion			ironSkin		= new CustomPotion("potion.ironSkin", false, 0xD8D8D8, false, customEffects, 4, 0);
+	public static Potion			obsidianSkin	= new CustomPotion("potion.obsidianSkin", false, 0x101023, false, customEffects, 5, 0);
+	public static Potion			doubleJump		= new CustomPotion("potion.doubleJump", false, 0x123456, false, customEffects, 6, 0);
+	public static Potion			doubleLife		= new CustomPotion("potion.doubleLife", false, 0xFF2222, false, customEffects, 7, 0, CSUtil.fontColorInt(0, 0, 1, 1));
+	public static Potion			antiHunger		= new CustomPotion("potion.antiHunger", false, 0xE3E3E3, false, customEffects, 0, 1);
+	public static Potion			explosiveness	= new CustomPotion("potion.explosiveness", true, 0xCC0000, false, customEffects, 1, 1);
+	public static Potion			random			= new CustomPotion("potion.random", false, 0x000000, randomMode == 0, customEffects, 2, 1, CSUtil.fontColorInt(0, 1, 1, 1));
 	
-	public static Block				mixer;
-	public static Block				cauldron2;
-	public static Block				unbrewingStand;
+	public static BlockMixer		mixer;
+	public static BlockCauldron2	cauldron2;
 	public static Item				dust;
 	public static ItemStack			dustCoal;
 	public static ItemStack			dustIron;
@@ -102,7 +97,7 @@ public class MorePotionsMod
 	public static ItemStack			dustWoodJungle;
 	public static ItemStack			dustNetherstar;
 	public static ItemStack			dustNetherbrick;
-	public static Item				mortar;
+	public static ItemMortar		mortar;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -112,10 +107,8 @@ public class MorePotionsMod
 		
 		Mixer_TEID = config.get("TileEntityIDs", "MixerTEID", 12).getInt();
 		Cauldron2_TEID = config.get("TileEntityIDs", "Cauldron2TEID", 13).getInt();
-		UnbrewingStand_TEID = config.get("TileEntityIDs", "UnbrewingStandTEID", 14).getInt();
 		
 		Mixer_ID = config.getBlock("MixerID", 190).getInt();
-		UnbrewingStand_ID = config.getBlock("UnbrewingStandID", 191).getInt();
 		Dust_ID = config.getItem("DustID", 14000).getInt();
 		Mortar_ID = config.getItem("MortarID", 14001).getInt();
 		
@@ -132,23 +125,15 @@ public class MorePotionsMod
 		
 		GameRegistry.registerTileEntity(TileEntityMixer.class, "Mixxer");
 		GameRegistry.registerTileEntity(TileEntityCauldron.class, "Cauldron2");
-		GameRegistry.registerTileEntity(TileEntityUnbrewingStand.class, "UnbrewingStand");
 		
 		Block.blocksList[Block.cauldron.blockID] = null;
-		cauldron2 = (new BlockCauldron2(Block.cauldron.blockID)).setHardness(2.0F).setUnlocalizedName("cauldron");
+		cauldron2 = (BlockCauldron2) (new BlockCauldron2(Block.cauldron.blockID)).setHardness(2.0F).setUnlocalizedName("cauldron");
 		
-		mixer = (new BlockMixer(Mixer_ID)).setUnlocalizedName("mixer").setCreativeTab(CreativeTabs.tabBrewing);
-		
-		unbrewingStand = (new BlockUnbrewingStand(UnbrewingStand_ID)).setUnlocalizedName("unbrewingstand").setCreativeTab(null);
+		mixer = (BlockMixer) (new BlockMixer(Mixer_ID)).setUnlocalizedName("mixer").setCreativeTab(CreativeTabs.tabBrewing);
 		
 		ModLoader.registerBlock(mixer);
 		ModLoader.registerBlock(cauldron2);
-		ModLoader.registerBlock(unbrewingStand);
-		ModLoader.addRecipe(new ItemStack(mixer), new Object[] { "gSg", "g g", "SiS", 'g', Block.thinGlass, 'S', Block.stone, 'i', Item.ingotIron });
-		
-		mortar = new ItemMortar(Mortar_ID).setCreativeTab(CreativeTabs.tabTools).setMaxDamage(32).setNoRepair().setMaxStackSize(1).setUnlocalizedName("mortar");
-		ModLoader.addRecipe(new ItemStack(mortar), new Object[] { "SfS", " S ", 'S', Block.stone, 'f', Item.flint });
-		
+		mortar = (ItemMortar) new ItemMortar(Mortar_ID).setCreativeTab(CreativeTabs.tabTools).setMaxDamage(32).setNoRepair().setMaxStackSize(1).setUnlocalizedName("mortar");
 		dust = new CustomItem(Dust_ID, CSArrays.addToAll(new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCharcoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, "item.", ".name"), new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, new String[] { "C2", "Fe", "Au", "C128", "Be3Al2Si6O18", "MgFeSi2O8", "SiO2", "\u00a7k???", "BeK4N5Cl6", "Na2LiAl2Si2", "Na2LiAl2Si2", "SiO2", "SiO4", "C", "", "", "", "", "", "" }).setCreativeTab(CreativeTabs.tabMaterials);
 		addDusts();
 		
@@ -156,6 +141,9 @@ public class MorePotionsMod
 		
 		Item.sugar.setCreativeTab(CreativeTabs.tabBrewing);
 		Item.netherStalkSeeds.setCreativeTab(CreativeTabs.tabBrewing);
+		
+		ModLoader.addRecipe(new ItemStack(mortar), new Object[] { "SfS", " S ", 'S', Block.stone, 'f', Item.flint });
+		ModLoader.addRecipe(new ItemStack(mixer), new Object[] { "gSg", "g g", "SiS", 'g', Block.thinGlass, 'S', Block.stone, 'i', Item.ingotIron });
 		
 		addLocalizations();
 		
@@ -169,13 +157,6 @@ public class MorePotionsMod
 	private void addLocalizations()
 	{
 		CSLang.addLocalizationUS("itemGroup.morepotions", "Mixed Potions");
-		
-		CSLang.addLocalizationUS("potion.potency.4", "V");
-		CSLang.addLocalizationUS("potion.potency.5", "VI");
-		CSLang.addLocalizationUS("potion.potency.6", "VII");
-		CSLang.addLocalizationUS("potion.potency.7", "VIII");
-		CSLang.addLocalizationUS("potion.potency.8", "IX");
-		CSLang.addLocalizationUS("potion.potency.9", "X");
 		
 		CSLang.addLocalizationUS("tile.mixer.name", "Mixer");
 		CSLang.addLocalization("tile.mixer.name", "de_DE", "Mischer");

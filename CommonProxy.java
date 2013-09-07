@@ -3,11 +3,8 @@ package clashsoft.mods.morepotions;
 import clashsoft.brewingapi.inventory.ContainerBrewingStand2;
 import clashsoft.brewingapi.tileentity.TileEntityBrewingStand2;
 import clashsoft.mods.morepotions.gui.GuiMixer;
-import clashsoft.mods.morepotions.gui.GuiUnbrewingStand;
 import clashsoft.mods.morepotions.inventory.ContainerMixer;
-import clashsoft.mods.morepotions.inventory.ContainerUnbrewingStand;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
-import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,10 +25,6 @@ public class CommonProxy implements IGuiHandler
 		{
 			return new GuiMixer(player.inventory, (TileEntityMixer) world.getBlockTileEntity(x, y, z));
 		}
-		else if (ID == MorePotionsMod.UnbrewingStand_TEID)
-		{
-			return new GuiUnbrewingStand(player.inventory, (TileEntityUnbrewingStand) world.getBlockTileEntity(x, y, z));
-		}
 		return null;
 	}
 	
@@ -48,11 +41,6 @@ public class CommonProxy implements IGuiHandler
 		{
 			TileEntityMixer m = (TileEntityMixer) te;
 			return new ContainerMixer(player.inventory, m);
-		}
-		else if (te != null && te instanceof TileEntityUnbrewingStand)
-		{
-			TileEntityUnbrewingStand ubs = (TileEntityUnbrewingStand) te;
-			return new ContainerUnbrewingStand(player.inventory, ubs);
 		}
 		else
 		{

@@ -15,10 +15,10 @@ public class MorePotionsModEventHandler
 	{
 		if (event.entityLiving.isPotionActive(MorePotionsMod.doubleLife))
 		{
-			if (event.entityLiving.func_110143_aJ() - event.ammount <= 0)
+			if (event.entityLiving.getHealth() - event.ammount <= 0)
 			{
 				event.setCanceled(true);
-				event.entityLiving.setEntityHealth(event.entityLiving.func_110138_aP());
+				event.entityLiving.setHealth(event.entityLiving.getMaxHealth());
 				event.entityLiving.removePotionEffect(MorePotionsMod.doubleLife.id);
 				if (event.entityLiving instanceof EntityPlayer)
 				{

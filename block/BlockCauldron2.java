@@ -1,14 +1,14 @@
 package clashsoft.mods.morepotions.block;
 
+import java.util.List;
+
+import clashsoft.mods.morepotions.MorePotionsMod;
+import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import java.util.List;
-import clashsoft.mods.morepotions.ClientProxy;
-import clashsoft.mods.morepotions.MorePotionsMod;
-import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.BlockCauldron;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -23,7 +23,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
-public class BlockCauldron2 extends BlockContainer
+public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 {
 	@SideOnly(Side.CLIENT)
 	public Icon	inner;
@@ -34,14 +34,14 @@ public class BlockCauldron2 extends BlockContainer
 	
 	public BlockCauldron2(int par1)
 	{
-		super(par1, Material.iron);
+		super(par1);
 		this.setBlockBounds(0F, 0F, 0F, 1F, 1F, 1F);
 	}
 	
 	@Override
 	public int getRenderType()
 	{
-		return ClientProxy.cauldronRenderType;
+		return -1;
 	}
 	
 	@Override
@@ -77,7 +77,7 @@ public class BlockCauldron2 extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	public static Icon func_94375_b(String par0Str)
 	{
-		return par0Str == "cauldron_inner" ? ((BlockCauldron2) MorePotionsMod.cauldron2).inner : (par0Str == "cauldron_bottom" ? ((BlockCauldron2) MorePotionsMod.cauldron2).bottom : null);
+		return par0Str == "cauldron_inner" ? MorePotionsMod.cauldron2.inner : (par0Str == "cauldron_bottom" ? MorePotionsMod.cauldron2.bottom : null);
 	}
 	
 	@Override
@@ -154,7 +154,7 @@ public class BlockCauldron2 extends BlockContainer
 						
 						if (!par5EntityPlayer.inventory.addItemStackToInventory(itemstack1))
 						{
-							par1World.spawnEntityInWorld(new EntityItem(par1World, (double) par2 + 0.5D, (double) par3 + 1.5D, (double) par4 + 0.5D, itemstack1));
+							par1World.spawnEntityInWorld(new EntityItem(par1World, par2 + 0.5D, par3 + 1.5D, par4 + 0.5D, itemstack1));
 						}
 						else if (par5EntityPlayer instanceof EntityPlayerMP)
 						{
@@ -220,6 +220,30 @@ public class BlockCauldron2 extends BlockContainer
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, l + 1, 2);
 			}
 		}
+	}
+	
+	/**
+	 * ejects contained items into the world, and notifies neighbours of an
+	 * update, as appropriate
+	 */
+	@Override
+	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
+	{
+		super.breakBlock(par1World, par2, par3, par4, par5, par6);
+		par1World.removeBlockTileEntity(par2, par3, par4);
+	}
+	
+	/**
+	 * Called when the block receives a BlockEvent - see World.addBlockEvent. By
+	 * default, passes it on to the tile entity at this location. Args: world,
+	 * x, y, z, blockID, EventID, event parameter
+	 */
+	@Override
+	public boolean onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6)
+	{
+		super.onBlockEventReceived(par1World, par2, par3, par4, par5, par6);
+		TileEntity tileentity = par1World.getBlockTileEntity(par2, par3, par4);
+		return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
 	}
 	
 	@Override

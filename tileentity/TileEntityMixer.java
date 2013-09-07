@@ -1,8 +1,5 @@
 package clashsoft.mods.morepotions.tileentity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,6 +7,9 @@ import clashsoft.brewingapi.BrewingAPI;
 import clashsoft.brewingapi.brewing.Brewing;
 import clashsoft.brewingapi.item.ItemPotion2;
 import clashsoft.mods.morepotions.lib.PacketHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
