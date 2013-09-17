@@ -68,9 +68,7 @@ public class MorePotionsMod
 	public static Potion			coldness		= new CustomPotion("potion.coldness", false, 0x00DDFF, false, customEffects, 3, 0);
 	public static Potion			ironSkin		= new CustomPotion("potion.ironSkin", false, 0xD8D8D8, false, customEffects, 4, 0);
 	public static Potion			obsidianSkin	= new CustomPotion("potion.obsidianSkin", false, 0x101023, false, customEffects, 5, 0);
-	public static Potion			doubleJump		= new CustomPotion("potion.doubleJump", false, 0x123456, false, customEffects, 6, 0);
 	public static Potion			doubleLife		= new CustomPotion("potion.doubleLife", false, 0xFF2222, false, customEffects, 7, 0, CSUtil.fontColorInt(0, 0, 1, 1));
-	public static Potion			antiHunger		= new CustomPotion("potion.antiHunger", false, 0xE3E3E3, false, customEffects, 0, 1);
 	public static Potion			explosiveness	= new CustomPotion("potion.explosiveness", true, 0xCC0000, false, customEffects, 1, 1);
 	public static Potion			random			= new CustomPotion("potion.random", false, 0x000000, randomMode == 0, customEffects, 2, 1, CSUtil.fontColorInt(0, 1, 1, 1));
 	
@@ -152,6 +150,14 @@ public class MorePotionsMod
 		proxy.registerRenderers();
 		MinecraftForge.EVENT_BUS.register(new MorePotionsModEventHandler());
 		GameRegistry.registerCraftingHandler(new MorePotionsModCraftingHandler());
+		
+		System.out.println("Initializing MorePotionsMod Brewings");
+		MorePotionsModBrewingList.initializeBaseBrewings_MorePotionsMod();
+		MorePotionsModBrewingList.initializeBrewings_MorePotionsMod();
+		
+		System.out.println("Registering MorePotionsMod Brewings");
+		MorePotionsModBrewingList.registerBaseBrewings_MorePotionsMod();
+		MorePotionsModBrewingList.registerBrewings_MorePotionsMod();
 	}
 	
 	private void addLocalizations()
@@ -243,13 +249,6 @@ public class MorePotionsMod
 		CSLang.addLocalizationUS("potion.ironSkin.description", "Gives you resistance against fire and other damage sources.");
 		CSLang.addLocalizationDE("potion.ironSkin.description", "Bietet Resistenz gegen Feuer und andere Schadensquellen.");
 		
-		CSLang.addLocalizationUS("potion.doubleJump", "Double Jump");
-		CSLang.addLocalizationDE("potion.doubleJump", "Doppelsprung");
-		CSLang.addLocalizationUS("potion.doubleJump.postfix", "Potion of Double Jump");
-		CSLang.addLocalizationDE("potion.doubleJump.postfix", "Trank des Doppelsprungs");
-		CSLang.addLocalizationUS("potion.doubleJump.description", "Allows you to jump in mid-air.");
-		CSLang.addLocalizationDE("potion.doubleJump.description", "Erlaubt es, in der Luft ein zweites Mal zu springen.");
-		
 		CSLang.addLocalizationUS("potion.obsidianSkin.postfix", "Potion of Obsidian Skin");
 		CSLang.addLocalizationDE("potion.obsidianSkin.postfix", "Trank der Obsidianhaut");
 		CSLang.addLocalizationUS("potion.obsidianSkin", "Obsidian Skin");
@@ -263,13 +262,6 @@ public class MorePotionsMod
 		CSLang.addLocalizationDE("potion.doubleLife", "Doppelleben");
 		CSLang.addLocalizationUS("potion.doubleLife.description", "Lasts forever, resurrects you once.");
 		CSLang.addLocalizationDE("potion.doubleLife.description", "H\u00e4lt f\u00fcr immer, wiederbelebt dich beim Tod ein Mal.");
-		
-		CSLang.addLocalizationUS("potion.antiHunger.postfix", "Potion of Anti Hunger");
-		CSLang.addLocalizationDE("potion.antiHunger.postfix", "Trank des Antihungers");
-		CSLang.addLocalizationUS("potion.antiHunger", "Anti Hunger");
-		CSLang.addLocalizationDE("potion.antiHunger", "Antihunger");
-		CSLang.addLocalizationUS("potion.antiHunger.description", "Makes your hunger bar regenerate.");
-		CSLang.addLocalizationDE("potion.antiHunger.description", "L\u00e4sst deine Hungerleiste regenerieren.");
 		
 		CSLang.addLocalizationUS("potion.explosiveness.postfix", "Potion of Explosion");
 		CSLang.addLocalizationDE("potion.explosiveness.postfix", "Trank der Explosion");
@@ -303,6 +295,10 @@ public class MorePotionsMod
 		CSLang.addLocalizationDE("potion.heal.description", "Gibt dir ein paar Leben.");
 		CSLang.addLocalizationUS("potion.harm.description", "Deals some damage.");
 		CSLang.addLocalizationDE("potion.harm.description", "F\u00fcgt dir Schaden zu.");
+		CSLang.addLocalizationUS("potion.healthBoost.description", "Gives you some extra hearts.");
+		CSLang.addLocalizationDE("potion.healthBoost.description", "Gibt dir ein paar Extraherzen.");
+		CSLang.addLocalizationUS("potion.absorption.description", "Gives you some extra hearts.");
+		CSLang.addLocalizationDE("potion.absorption.description", "Gibt dir ein paar Extraherzen.");
 		CSLang.addLocalizationUS("potion.poison.description", "Poisons you.");
 		CSLang.addLocalizationDE("potion.poison.description", "Vergiftet dich.");
 		CSLang.addLocalizationUS("potion.hunger.description", "Makes your hunger bar go down faster.");
@@ -325,6 +321,8 @@ public class MorePotionsMod
 		CSLang.addLocalizationDE("potion.jump.description", "L\u00e4sst dich h\u00f6her springen.");
 		CSLang.addLocalizationUS("potion.resistance.description", "Makes you get less damage when getting hit.");
 		CSLang.addLocalizationDE("potion.resistance.description", "Verringert den Schaden, den du bekommst.");
+		CSLang.addLocalizationUS("potion.saturation.description", "Fills up your hunger bar.");
+		CSLang.addLocalizationDE("potion.saturation.description", "F\u00fcllt deine Hungerleiste auf.");
 		
 		CSLang.addLocalizationUS("potion.goodeffects", "Good Effects");
 		CSLang.addLocalization("potion.goodeffects", "de_DE", "Gute Effekte");
@@ -345,6 +343,8 @@ public class MorePotionsMod
 		CSLang.addLocalization("potion.useto", "de_DE", "Benutzt f\u00fcr");
 		CSLang.addLocalizationUS("potion.infinite", "Infinite");
 		CSLang.addLocalizationDE("potion.infinite", "Unendlich");
+		CSLang.addLocalizationUS("potion.description.missing", "Description not available");
+		CSLang.addLocalizationDE("potion.description.missing", "Keine Beschreibung gefunden");
 		
 		CSLang.addLocalizationUS("potion.highestamplifier", "Highest Amplifier");
 		CSLang.addLocalization("potion.highestamplifier", "de_DE", "Gr\u00f6\u00dftes Level");
@@ -392,26 +392,26 @@ public class MorePotionsMod
 		dustNetherstar = CSCrafting.registerOre("dustNetherstar", new ItemStack(dust, 1, 18));
 		dustNetherbrick = CSCrafting.registerOre("dustNetherbrick", new ItemStack(dust, 1, 19));
 		
-		ModLoader.addShapelessRecipe(dustCoal, new Object[] { Item.coal, mortarStack });
-		ModLoader.addShapelessRecipe(dustIron, new Object[] { Item.ingotIron, mortarStack });
-		ModLoader.addShapelessRecipe(dustGold, new Object[] { Item.ingotGold, mortarStack });
-		ModLoader.addShapelessRecipe(dustDiamond, new Object[] { Item.diamond, mortarStack });
-		ModLoader.addShapelessRecipe(dustEmerald, new Object[] { Item.emerald, mortarStack });
-		ModLoader.addShapelessRecipe(dustObsidian, new Object[] { Block.obsidian, mortarStack });
-		ModLoader.addShapelessRecipe(dustQuartz, new Object[] { Item.netherQuartz, mortarStack });
-		ModLoader.addShapelessRecipe(dustWither, new Object[] { new ItemStack(Item.skull, 1, 1), dustCoal, dustQuartz });
-		ModLoader.addShapelessRecipe(dustEnderpearl, new Object[] { Item.enderPearl, mortarStack });
-		ModLoader.addShapelessRecipe(dustClay, new Object[] { Item.clay, mortarStack });
-		ModLoader.addShapelessRecipe(dustBrick, new Object[] { Item.brick, mortarStack });
-		ModLoader.addShapelessRecipe(dustFlint, new Object[] { Item.flint, mortarStack });
-		ModLoader.addShapelessRecipe(dustGlass, new Object[] { Block.glass, mortarStack });
-		ModLoader.addShapelessRecipe(dustCharcoal, new Object[] { new ItemStack(Item.coal, 1, 1), mortarStack });
-		ModLoader.addShapelessRecipe(dustWoodOak, new Object[] { new ItemStack(Block.wood, 1, 0), mortarStack });
-		ModLoader.addShapelessRecipe(dustWoodBirch, new Object[] { new ItemStack(Block.wood, 1, 2), mortarStack });
-		ModLoader.addShapelessRecipe(dustWoodSpruce, new Object[] { new ItemStack(Block.wood, 1, 1), mortarStack });
-		ModLoader.addShapelessRecipe(dustWoodJungle, new Object[] { new ItemStack(Block.wood, 1, 3), mortarStack });
-		ModLoader.addShapelessRecipe(dustNetherstar, new Object[] { Item.netherStar, mortarStack });
-		ModLoader.addShapelessRecipe(dustNetherbrick, new Object[] { Item.netherrackBrick, mortarStack });
+		GameRegistry.addShapelessRecipe(dustCoal, new Object[] { Item.coal, mortarStack });
+		GameRegistry.addShapelessRecipe(dustIron, new Object[] { Item.ingotIron, mortarStack });
+		GameRegistry.addShapelessRecipe(dustGold, new Object[] { Item.ingotGold, mortarStack });
+		GameRegistry.addShapelessRecipe(dustDiamond, new Object[] { Item.diamond, mortarStack });
+		GameRegistry.addShapelessRecipe(dustEmerald, new Object[] { Item.emerald, mortarStack });
+		GameRegistry.addShapelessRecipe(dustObsidian, new Object[] { Block.obsidian, mortarStack });
+		GameRegistry.addShapelessRecipe(dustQuartz, new Object[] { Item.netherQuartz, mortarStack });
+		GameRegistry.addShapelessRecipe(dustWither, new Object[] { new ItemStack(Item.skull, 1, 1), dustCoal, dustQuartz });
+		GameRegistry.addShapelessRecipe(dustEnderpearl, new Object[] { Item.enderPearl, mortarStack });
+		GameRegistry.addShapelessRecipe(dustClay, new Object[] { Item.clay, mortarStack });
+		GameRegistry.addShapelessRecipe(dustBrick, new Object[] { Item.brick, mortarStack });
+		GameRegistry.addShapelessRecipe(dustFlint, new Object[] { Item.flint, mortarStack });
+		GameRegistry.addShapelessRecipe(dustGlass, new Object[] { Block.glass, mortarStack });
+		GameRegistry.addShapelessRecipe(dustCharcoal, new Object[] { new ItemStack(Item.coal, 1, 1), mortarStack });
+		GameRegistry.addShapelessRecipe(dustWoodOak, new Object[] { new ItemStack(Block.wood, 1, 0), mortarStack });
+		GameRegistry.addShapelessRecipe(dustWoodBirch, new Object[] { new ItemStack(Block.wood, 1, 2), mortarStack });
+		GameRegistry.addShapelessRecipe(dustWoodSpruce, new Object[] { new ItemStack(Block.wood, 1, 1), mortarStack });
+		GameRegistry.addShapelessRecipe(dustWoodJungle, new Object[] { new ItemStack(Block.wood, 1, 3), mortarStack });
+		GameRegistry.addShapelessRecipe(dustNetherstar, new Object[] { Item.netherStar, mortarStack });
+		GameRegistry.addShapelessRecipe(dustNetherbrick, new Object[] { Item.netherrackBrick, mortarStack });
 		
 		CSCrafting.addSmelting(dustIron, new ItemStack(Item.ingotIron), 0F);
 		CSCrafting.addSmelting(dustGold, new ItemStack(Item.ingotGold), 0F);
