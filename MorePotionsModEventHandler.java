@@ -1,15 +1,29 @@
 package clashsoft.mods.morepotions;
 
+import clashsoft.clashsoftapi.util.CSUtil;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.EventPriority;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
 public class MorePotionsModEventHandler
 {
+	@ForgeSubscribe
+	public void playerJoined(EntityJoinWorldEvent event)
+	{
+		if (event.entity instanceof EntityPlayer)
+		{
+			String nextVersion = CSUtil.checkForUpdate("mpm", CSUtil.CLASHSOFT_ADFLY, MorePotionsMod.VERSION);
+			if (nextVersion != MorePotionsMod.VERSION)
+				((EntityPlayer) event.entity).addChatMessage("A new More Potions Mod version is available: " + nextVersion + ". You are using " + MorePotionsMod.VERSION);
+		}
+	}
+	
 	@ForgeSubscribe(priority = EventPriority.LOW)
 	public void onEntityDamaged(LivingAttackEvent event)
 	{

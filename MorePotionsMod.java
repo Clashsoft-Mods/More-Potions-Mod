@@ -35,10 +35,13 @@ import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 
-@Mod(modid = "MorePotionsMod", name = "More Potions Mod", version = CSUtil.CURRENT_VERION)
+@Mod(modid = "MorePotionsMod", name = "More Potions Mod", version = MorePotionsMod.VERSION)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class MorePotionsMod
 {
+	public static final int			REVISION		= 1;
+	public static final String		VERSION			= CSUtil.CURRENT_VERION + "-" + REVISION;
+	
 	@Instance("MorePotionsMod")
 	public static MorePotionsMod	INSTANCE;
 	

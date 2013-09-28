@@ -47,7 +47,7 @@ public class MorePotionsModBrewingList
 		BrewingList.gross = new BrewingBase("gross", new ItemStack(Item.pumpkinSeeds));
 		BrewingList.stinky = new BrewingBase("stinky", new ItemStack(Item.fishRaw));
 	}
-
+	
 	public static void initializeBrewings_MorePotionsMod()
 	{
 		BrewingList.moveSlowdown = new Brewing(new PotionEffect(Potion.moveSlowdown.id, 20 * 90, 0), 4, 20 * 240, Brewing.getBaseBrewing(BrewingList.dashing));
@@ -83,7 +83,7 @@ public class MorePotionsModBrewingList
 		BrewingList.random = new Brewing(new PotionEffect(clashsoft.mods.morepotions.MorePotionsMod.random.id, clashsoft.mods.morepotions.MorePotionsMod.randomMode == 0 ? 1 : 20 * 45, 0), 0, clashsoft.mods.morepotions.MorePotionsMod.randomMode == 0 ? 1 : 20 * 90, BrewingList.awkward);
 		BrewingList.effectRemove = new Brewing(new PotionEffect(clashsoft.mods.morepotions.MorePotionsMod.effectRemove.id, 20 * 45, 0), 0, 20 * 90, BrewingList.random, new ItemStack(Item.bucketMilk), BrewingList.awkward);
 	}
-
+	
 	public static void registerBrewings_MorePotionsMod()
 	{
 		BrewingList.regeneration.register();
@@ -119,7 +119,7 @@ public class MorePotionsModBrewingList
 		BrewingList.effectRemove.register(); //
 		BrewingList.random.register();
 	}
-
+	
 	public static void registerBaseBrewings_MorePotionsMod()
 	{
 		BrewingList.awkward.register();
