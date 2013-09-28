@@ -39,7 +39,7 @@ import net.minecraftforge.oredict.OreDictionary;
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class MorePotionsMod
 {
-	public static final int			REVISION		= 1;
+	public static final int			REVISION		= 2;
 	public static final String		VERSION			= CSUtil.CURRENT_VERION + "-" + REVISION;
 	
 	@Instance("MorePotionsMod")
