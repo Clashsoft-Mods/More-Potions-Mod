@@ -71,6 +71,7 @@ public class MorePotionsMod
 	public static Potion			doubleLife		= new CustomPotion("potion.doubleLife", false, 0xFF2222, false, customEffects, 7, 0, CSUtil.fontColorInt(0, 0, 1, 1));
 	public static Potion			explosiveness	= new CustomPotion("potion.explosiveness", true, 0xCC0000, false, customEffects, 1, 1);
 	public static Potion			random			= new CustomPotion("potion.random", false, 0x000000, randomMode == 0, customEffects, 2, 1, CSUtil.fontColorInt(0, 1, 1, 1));
+	public static Potion			thorns			= new CustomPotion("potion.thorns", false, 0x008100, false, customEffects, 3, 1);
 	
 	public static BlockMixer		mixer;
 	public static BlockCauldron2	cauldron2;
@@ -276,6 +277,12 @@ public class MorePotionsMod
 		CSLang.addLocalizationDE("potion.random", "Zuf\u00e4lliger Effekt");
 		CSLang.addLocalizationUS("potion.random.description", randomMode == 0 ? "Gives you a random effect." : "Gives you a new random effect every 2 seconds.");
 		CSLang.addLocalizationDE("potion.random.description", randomMode == 0 ? "Gibt dir einen zuf\u00e4lligen Trankeffekt." : "Gibt dir einen neuen zuf\u00e4lligen Trankeffekt alle 2 Sekunden.");
+		CSLang.addLocalizationUS("potion.thorns.postfix", "Thorns Potion");
+		CSLang.addLocalizationDE("potion.thorns.postfix", "Stacheltrank");
+		CSLang.addLocalizationUS("potion.thorns", "Thorns");
+		CSLang.addLocalizationDE("potion.thorns", "Stacheln");
+		CSLang.addLocalizationUS("potion.thorns.description", "Damages entitys hitting you.");
+		CSLang.addLocalizationDE("potion.thorns.description", "Sch\u00e4digt Lebewesen, die dich angreifen.");
 		
 		CSLang.addLocalizationUS("potion.regeneration.description", "Regenerates life.");
 		CSLang.addLocalizationDE("potion.regeneration.description", "Regeneriert Leben.");
