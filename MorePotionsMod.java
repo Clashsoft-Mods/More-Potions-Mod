@@ -4,10 +4,7 @@ import clashsoft.brewingapi.BrewingAPI;
 import clashsoft.brewingapi.api.IIngredientHandler;
 import clashsoft.clashsoftapi.CustomItem;
 import clashsoft.clashsoftapi.CustomPotion;
-import clashsoft.clashsoftapi.util.CSArrays;
-import clashsoft.clashsoftapi.util.CSCrafting;
-import clashsoft.clashsoftapi.util.CSLang;
-import clashsoft.clashsoftapi.util.CSUtil;
+import clashsoft.clashsoftapi.util.*;
 import clashsoft.mods.morepotions.block.BlockCauldron2;
 import clashsoft.mods.morepotions.block.BlockMixer;
 import clashsoft.mods.morepotions.item.ItemMortar;
@@ -40,7 +37,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class MorePotionsMod
 {
 	public static final int			REVISION		= 2;
-	public static final String		VERSION			= CSUtil.CURRENT_VERION + "-" + REVISION;
+	public static final String		VERSION			= CSUpdate.CURRENT_VERION + "-" + REVISION;
 	
 	@Instance("MorePotionsMod")
 	public static MorePotionsMod	INSTANCE;
