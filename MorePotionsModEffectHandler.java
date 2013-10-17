@@ -1,6 +1,6 @@
 package clashsoft.mods.morepotions;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import clashsoft.brewingapi.api.IPotionEffectHandler;
@@ -16,8 +16,8 @@ public class MorePotionsModEffectHandler implements IPotionEffectHandler
 {
 	private float				tick				= 0;
 	
-	private List<PotionEffect>	addEffectQueue		= new LinkedList<PotionEffect>();
-	private List<Integer>		removeEffectQueue	= new LinkedList<Integer>();
+	private List<PotionEffect>	addEffectQueue		= new ArrayList<PotionEffect>();
+	private List<Integer>		removeEffectQueue	= new ArrayList<Integer>();
 	
 	@Override
 	public void onPotionUpdate(EntityLivingBase living, PotionEffect effect)

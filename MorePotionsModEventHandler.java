@@ -5,6 +5,8 @@ import clashsoft.clashsoftapi.util.update.ModUpdate;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -12,6 +14,8 @@ import net.minecraftforge.event.EventPriority;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 public class MorePotionsModEventHandler
 {
@@ -20,7 +24,7 @@ public class MorePotionsModEventHandler
 	{
 		if (event.entity instanceof EntityPlayer)
 		{
-			ModUpdate update = CSUpdate.checkForUpdate("More Potions Mod", MorePotionsMod.VERSION);
+			ModUpdate update = CSUpdate.checkForUpdate("More Potions Mod", "mpm", MorePotionsMod.VERSION);
 			CSUpdate.notifyUpdate((EntityPlayer) event.entity, "More Potions Mod", update);
 		}
 	}
@@ -64,6 +68,21 @@ public class MorePotionsModEventHandler
 			Entity attacker = event.source.getSourceOfDamage();
 			if (attacker != null)
 				attacker.attackEntityFrom(DamageSource.cactus, event.entityLiving.getActivePotionEffect(MorePotionsMod.thorns).getAmplifier() / 3F);
+		}
+	}
+	
+	@ForgeSubscribe
+	public void playerRightClick(PlayerInteractEvent event)
+	{
+		if (event.action == Action.RIGHT_CLICK_BLOCK && event.entityLiving.isPotionActive(MorePotionsMod.greenThumb))
+		{
+			if (event.entityPlayer.getCurrentEquippedItem() == null)
+			{
+				int amplifier = event.entityPlayer.getActivePotionEffect(MorePotionsMod.greenThumb).getAmplifier();
+				
+				for (int i = 0; i < amplifier + 1; i++)
+					Item.dyePowder.onItemUse(new ItemStack(Item.dyePowder, 1, 15), event.entityPlayer, event.entityPlayer.worldObj, event.x, event.y, event.z, event.face, 0F, 0F, 0F);
+			}
 		}
 	}
 }

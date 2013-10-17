@@ -2,7 +2,6 @@ package clashsoft.mods.morepotions.block;
 
 import java.util.List;
 
-import clashsoft.mods.morepotions.MorePotionsMod;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -41,7 +40,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	@Override
 	public int getRenderType()
 	{
-		return -1;
+		return 24;
 	}
 	
 	@Override
@@ -68,16 +67,10 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	 */
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		this.inner = par1IconRegister.registerIcon("cauldron_inner");
-		this.top = par1IconRegister.registerIcon("cauldron_top");
-		this.bottom = par1IconRegister.registerIcon("cauldron_bottom");
-		this.blockIcon = par1IconRegister.registerIcon("cauldron_side");
-	}
-	
-	@SideOnly(Side.CLIENT)
-	public static Icon func_94375_b(String par0Str)
-	{
-		return par0Str == "cauldron_inner" ? MorePotionsMod.cauldron2.inner : (par0Str == "cauldron_bottom" ? MorePotionsMod.cauldron2.bottom : null);
+		this.inner = par1IconRegister.registerIcon(this.getTextureName() + "_inner");
+		this.top = par1IconRegister.registerIcon(this.getTextureName() + "_top");
+		this.bottom = par1IconRegister.registerIcon(this.getTextureName() + "_bottom");
+		this.blockIcon = par1IconRegister.registerIcon(this.getTextureName() + "_side");
 	}
 	
 	@Override

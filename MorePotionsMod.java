@@ -1,7 +1,6 @@
 package clashsoft.mods.morepotions;
 
 import clashsoft.brewingapi.BrewingAPI;
-import clashsoft.brewingapi.api.IIngredientHandler;
 import clashsoft.clashsoftapi.CustomItem;
 import clashsoft.clashsoftapi.CustomPotion;
 import clashsoft.clashsoftapi.util.*;
@@ -21,13 +20,11 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
-import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
@@ -37,7 +34,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class MorePotionsMod
 {
 	public static final int			REVISION		= 3;
-	public static final String		VERSION			= CSUpdate.CURRENT_VERION + "-" + REVISION;
+	public static final String		VERSION			= CSUpdate.CURRENT_VERSION + "-" + REVISION;
 	
 	@Instance("MorePotionsMod")
 	public static MorePotionsMod	INSTANCE;
@@ -71,7 +68,8 @@ public class MorePotionsMod
 	public static Potion			doubleLife		= new CustomPotion("potion.doubleLife", false, 0xFF2222, false, customEffects, 7, 0, CSUtil.fontColorInt(0, 0, 1, 1));
 	public static Potion			explosiveness	= new CustomPotion("potion.explosiveness", true, 0xCC0000, false, customEffects, 1, 1);
 	public static Potion			random			= new CustomPotion("potion.random", false, 0x000000, randomMode == 0, customEffects, 2, 1, CSUtil.fontColorInt(0, 1, 1, 1));
-	public static Potion			thorns			= new CustomPotion("potion.thorns", false, 0x008100, false, customEffects, 3, 1);
+	public static Potion			thorns			= new CustomPotion("potion.thorns", false, 0x810081, false, customEffects, 3, 1);
+	public static Potion			greenThumb		= new CustomPotion("potion.greenThumb", false, 0x008100, false, customEffects, 4, 1);
 	
 	public static BlockMixer		mixer;
 	public static BlockCauldron2	cauldron2;
@@ -126,12 +124,12 @@ public class MorePotionsMod
 		GameRegistry.registerTileEntity(TileEntityCauldron.class, "Cauldron2");
 		
 		Block.blocksList[Block.cauldron.blockID] = null;
-		cauldron2 = (BlockCauldron2) (new BlockCauldron2(Block.cauldron.blockID)).setHardness(2.0F).setUnlocalizedName("cauldron");
+		cauldron2 = (BlockCauldron2) (new BlockCauldron2(Block.cauldron.blockID)).setHardness(2.0F).setUnlocalizedName("cauldron").setTextureName("cauldron");
 		
 		mixer = (BlockMixer) (new BlockMixer(Mixer_ID)).setUnlocalizedName("mixer").setCreativeTab(CreativeTabs.tabBrewing);
 		
-		ModLoader.registerBlock(mixer);
-		ModLoader.registerBlock(cauldron2);
+		CSBlocks.addBlock(mixer, "Mixer");
+		CSBlocks.addBlock(cauldron2, "Cauldron");
 		mortar = (ItemMortar) new ItemMortar(Mortar_ID).setCreativeTab(CreativeTabs.tabTools).setMaxDamage(32).setNoRepair().setMaxStackSize(1).setUnlocalizedName("mortar");
 		dust = new CustomItem(Dust_ID, CSArrays.addToAll(new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCharcoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, "item.", ".name"), new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, new String[] { "C2", "Fe", "Au", "C128", "Be3Al2Si6O18", "MgFeSi2O8", "SiO2", "\u00a7k???", "BeK4N5Cl6", "Na2LiAl2Si2", "Na2LiAl2Si2", "SiO2", "SiO4", "C", "", "", "", "", "", "" }).setCreativeTab(CreativeTabs.tabMaterials);
 		addDusts();
@@ -141,8 +139,8 @@ public class MorePotionsMod
 		Item.sugar.setCreativeTab(CreativeTabs.tabBrewing);
 		Item.netherStalkSeeds.setCreativeTab(CreativeTabs.tabBrewing);
 		
-		ModLoader.addRecipe(new ItemStack(mortar), new Object[] { "SfS", " S ", 'S', Block.stone, 'f', Item.flint });
-		ModLoader.addRecipe(new ItemStack(mixer), new Object[] { "gSg", "g g", "SiS", 'g', Block.thinGlass, 'S', Block.stone, 'i', Item.ingotIron });
+		CSCrafting.addCrafting(new ItemStack(mortar), new Object[] { "SfS", " S ", 'S', Block.stone, 'f', Item.flint });
+		CSCrafting.addCrafting(new ItemStack(mixer), new Object[] { "gSg", "g g", "SiS", 'g', Block.thinGlass, 'S', Block.stone, 'i', Item.ingotIron });
 		
 		addLocalizations();
 		
@@ -277,12 +275,20 @@ public class MorePotionsMod
 		CSLang.addLocalizationDE("potion.random", "Zuf\u00e4lliger Effekt");
 		CSLang.addLocalizationUS("potion.random.description", randomMode == 0 ? "Gives you a random effect." : "Gives you a new random effect every 2 seconds.");
 		CSLang.addLocalizationDE("potion.random.description", randomMode == 0 ? "Gibt dir einen zuf\u00e4lligen Trankeffekt." : "Gibt dir einen neuen zuf\u00e4lligen Trankeffekt alle 2 Sekunden.");
+		
 		CSLang.addLocalizationUS("potion.thorns.postfix", "Thorns Potion");
 		CSLang.addLocalizationDE("potion.thorns.postfix", "Stacheltrank");
 		CSLang.addLocalizationUS("potion.thorns", "Thorns");
 		CSLang.addLocalizationDE("potion.thorns", "Stacheln");
 		CSLang.addLocalizationUS("potion.thorns.description", "Damages entitys hitting you.");
 		CSLang.addLocalizationDE("potion.thorns.description", "Sch\u00e4digt Lebewesen, die dich angreifen.");
+		
+		CSLang.addLocalizationUS("potion.greenThumb.postfix", "Green Thumb Potion");
+		CSLang.addLocalizationDE("potion.greenThumb.postfix", "Trank des Gr\u00fcnen Daumens");
+		CSLang.addLocalizationUS("potion.greenThumb", "Green Thumb");
+		CSLang.addLocalizationDE("potion.greenThumb", "Gr\u00fcner Daumen");
+		CSLang.addLocalizationUS("potion.greenThumb.description", "Plants grow when right-clicking.");
+		CSLang.addLocalizationDE("potion.greenThumb.description", "Planzen wachsen mit Rechts-Klick.");
 		
 		CSLang.addLocalizationUS("potion.regeneration.description", "Regenerates life.");
 		CSLang.addLocalizationDE("potion.regeneration.description", "Regeneriert Leben.");
@@ -426,36 +432,6 @@ public class MorePotionsMod
 		CSCrafting.addSmelting(dustClay, new ItemStack(Item.brick), 0.1F);
 		CSCrafting.addSmelting(dustBrick, new ItemStack(Item.brick), 0F);
 		CSCrafting.addSmelting(dustGlass, new ItemStack(Block.glass), 0F);
-	}
-	
-	public class MorePotionsModIngredientHandler implements IIngredientHandler
-	{
-		@Override
-		public boolean canHandleIngredient(ItemStack ingredient)
-		{
-			return ingredient.itemID == Block.pistonBase.blockID;
-		}
-		
-		@Override
-		public boolean canApplyIngredient(ItemStack ingredient, ItemStack potion)
-		{
-			if (ingredient != null && ingredient.itemID == Block.pistonBase.blockID && potion.getItemDamage() != 12)
-			{
-				return true;
-			}
-			return false;
-		}
-		
-		@Override
-		public ItemStack applyIngredient(ItemStack ingredient, ItemStack potion)
-		{
-			if (ingredient.itemID == Block.pistonBase.blockID)
-			{
-				potion.setItemDamage(12);
-				potion.addEnchantment(Enchantment.infinity, 27);
-			}
-			return potion;
-		}
 	}
 	
 	public class MorePotionsModCraftingHandler implements ICraftingHandler

@@ -13,6 +13,7 @@ import net.minecraft.potion.PotionEffect;
 public class MorePotionsModBrewingList
 {
 	public static Brewing	thorns;
+	public static Brewing	greenThumb;
 	
 	public static void initializeBaseBrewings_MorePotionsMod()
 	{
@@ -86,6 +87,7 @@ public class MorePotionsModBrewingList
 		effectRemove = new Brewing(new PotionEffect(clashsoft.mods.morepotions.MorePotionsMod.effectRemove.id, 20 * 45, 0), 0, 20 * 90, BrewingList.random, new ItemStack(Item.bucketMilk), BrewingList.awkward);
 		
 		thorns = new Brewing(new PotionEffect(MorePotionsMod.thorns.id, 20 * 60, 0), 3, 20 * 120, null, new ItemStack(Block.cactus), BrewingList.awkward);
+		greenThumb = new Brewing(new PotionEffect(MorePotionsMod.greenThumb.id, 20 * 60, 0), 2, 20 * 120, null, new ItemStack(Block.leaves), BrewingList.awkward);
 	}
 	
 	public static void registerBrewings_MorePotionsMod()
@@ -119,6 +121,7 @@ public class MorePotionsModBrewingList
 		jump.register();
 		resistance.register();
 		thorns.register();
+		greenThumb.register();
 		ironSkin.register(); //
 		obsidianSkin.register(); //
 		effectRemove.register(); //
