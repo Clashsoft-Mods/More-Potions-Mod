@@ -59,7 +59,7 @@ potion.explosiveness.description=Makes you explode every 2 seconds.
 
 potion.random.postfix=Random Potion
 potion.random=Random Effect
-potion.random.description", randomMode == 0 ? "Gives you a random effect." : "Gives you a new random effect every 2 seconds.
+potion.random.description=Gives you a random effect
 
 potion.thorns.postfix=Thorns Potion
 potion.thorns=Thorns
@@ -68,6 +68,10 @@ potion.thorns.description=Damages entitys hitting you.
 potion.greenThumb.postfix=Green Thumb Potion
 potion.greenThumb=Green Thumb
 potion.greenThumb.description=Plants grow when right-clicking.
+
+potion.projectile.postfix=Projectile Potion
+potion.projectile=Projectile Shooting
+potion.projectile.description=Shoots a projectile.
 
 potion.regeneration.description=Regenerates life.
 potion.moveSpeed.description=Allows you to move Faster.
