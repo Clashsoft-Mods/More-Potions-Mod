@@ -14,6 +14,7 @@ public class MorePotionsModBrewingList
 {
 	public static Brewing	thorns;
 	public static Brewing	greenThumb;
+	public static Brewing	projectile;
 	
 	public static void initializeBaseBrewings_MorePotionsMod()
 	{
@@ -88,6 +89,8 @@ public class MorePotionsModBrewingList
 		
 		thorns = new Brewing(new PotionEffect(MorePotionsMod.thorns.id, 20 * 60, 0), 3, 20 * 120, null, new ItemStack(Block.cactus), BrewingList.awkward);
 		greenThumb = new Brewing(new PotionEffect(MorePotionsMod.greenThumb.id, 20 * 60, 0), 2, 20 * 120, null, new ItemStack(Block.leaves), BrewingList.awkward);
+		projectile = new Brewing(new PotionEffect(MorePotionsMod.projectile.id, 20 * 60, 0), 2, 20 * 120, null, new ItemStack(Item.arrow), BrewingList.awkward);
+		
 	}
 	
 	public static void registerBrewings_MorePotionsMod()
@@ -120,8 +123,9 @@ public class MorePotionsModBrewingList
 		weakness.register();
 		jump.register();
 		resistance.register();
-		thorns.register();
-		greenThumb.register();
+		thorns.register(); //
+		projectile.register();
+		greenThumb.register(); //
 		ironSkin.register(); //
 		obsidianSkin.register(); //
 		effectRemove.register(); //

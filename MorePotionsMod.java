@@ -1,5 +1,8 @@
 package clashsoft.mods.morepotions;
 
+import java.io.IOException;
+import java.util.Properties;
+
 import clashsoft.brewingapi.BrewingAPI;
 import clashsoft.clashsoftapi.CustomItem;
 import clashsoft.clashsoftapi.CustomPotion;
@@ -17,6 +20,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -70,6 +74,7 @@ public class MorePotionsMod
 	public static Potion			random			= new CustomPotion("potion.random", false, 0x000000, randomMode == 0, customEffects, 2, 1, CSUtil.fontColorInt(0, 1, 1, 1));
 	public static Potion			thorns			= new CustomPotion("potion.thorns", false, 0x810081, false, customEffects, 3, 1);
 	public static Potion			greenThumb		= new CustomPotion("potion.greenThumb", false, 0x008100, false, customEffects, 4, 1);
+	public static Potion			projectile		= new CustomPotion("potion.projectile", false, 0x101010, false, customEffects, 5, 1);
 	
 	public static BlockMixer		mixer;
 	public static BlockCauldron2	cauldron2;
@@ -161,13 +166,30 @@ public class MorePotionsMod
 	
 	private void addLocalizations()
 	{
+		Properties langPack_en = new Properties();
+		Properties langPack_de = new Properties();
+		
+		try
+		{
+			langPack_en.load(this.getClass().getResourceAsStream("mpm_en.lang"));
+			langPack_de.load(this.getClass().getResourceAsStream("mpm_de.lang"));
+			
+			LanguageRegistry.instance().addStringLocalization(langPack_en, "en_US");
+			LanguageRegistry.instance().addStringLocalization(langPack_de, "de_DE");
+		}
+		catch (IOException ex)
+		{
+			addLocalizations2();
+		}
+	}
+	
+	public void addLocalizations2()
+	{
 		CSLang.addLocalizationUS("itemGroup.morepotions", "Mixed Potions");
+		CSLang.addLocalizationDE("itemGroup.morepotions", "Vermischte Tr\u00e4nke");
 		
 		CSLang.addLocalizationUS("tile.mixer.name", "Mixer");
-		CSLang.addLocalization("tile.mixer.name", "de_DE", "Mischer");
-		CSLang.addLocalization("tile.mixer.name", "es_ES", "Mezclador");
-		CSLang.addLocalizationUS("tile.unbrewingstand.name", "Unbrewing Stand");
-		CSLang.addLocalization("tile.unbrewingstand.name", "de_DE", "Entbrau-Maschine");
+		CSLang.addLocalizationDE("tile.mixer.name", "Mischer");
 		
 		CSLang.addLocalizationUS("item.dustCoal.name", "Coal Dust");
 		CSLang.addLocalizationDE("item.dustCoal.name", "Kohlestaub");
@@ -338,46 +360,35 @@ public class MorePotionsMod
 		CSLang.addLocalizationDE("potion.saturation.description", "F\u00fcllt deine Hungerleiste auf.");
 		
 		CSLang.addLocalizationUS("potion.goodeffects", "Good Effects");
-		CSLang.addLocalization("potion.goodeffects", "de_DE", "Gute Effekte");
-		CSLang.addLocalization("potion.goodeffects", "es_ES", "Buenos Effectos");
+		CSLang.addLocalizationDE("potion.goodeffects", "Gute Effekte");
 		CSLang.addLocalizationUS("potion.negativeEffects", "Bad Effects");
-		CSLang.addLocalization("potion.negativeEffects", "de_DE", "Schlechte Effekte");
-		CSLang.addLocalization("potion.negativeEffects", "es_ES", "Malos Effectos");
+		CSLang.addLocalizationDE("potion.negativeEffects", "Schlechte Effekte");
 		CSLang.addLocalizationUS("potion.potionof", "Potion of");
-		CSLang.addLocalization("potion.potionof", "de_DE", "Trank von");
-		CSLang.addLocalization("potion.potionof", "es_ES", "Poci\u00F3n del");
+		CSLang.addLocalizationDE("potion.potionof", "Trank von");
 		CSLang.addLocalizationUS("potion.effects", "Effects");
-		CSLang.addLocalization("potion.effects", "de_DE", "Effekten");
-		CSLang.addLocalization("potion.effects", "es_ES", "Effectos");
+		CSLang.addLocalizationDE("potion.effects", "Effekten");
 		CSLang.addLocalizationUS("potion.and", "and");
-		CSLang.addLocalization("potion.and", "de_DE", "und");
-		CSLang.addLocalization("potion.and", "es_ES", "y");
+		CSLang.addLocalizationDE("potion.and", "und");
 		CSLang.addLocalizationUS("potion.useto", "Used to make");
-		CSLang.addLocalization("potion.useto", "de_DE", "Benutzt f\u00fcr");
+		CSLang.addLocalizationDE("potion.useto", "Benutzt f\u00fcr");
 		CSLang.addLocalizationUS("potion.infinite", "Infinite");
 		CSLang.addLocalizationDE("potion.infinite", "Unendlich");
 		CSLang.addLocalizationUS("potion.description.missing", "Description not available");
 		CSLang.addLocalizationDE("potion.description.missing", "Keine Beschreibung gefunden");
 		
 		CSLang.addLocalizationUS("potion.highestamplifier", "Highest Amplifier");
-		CSLang.addLocalization("potion.highestamplifier", "de_DE", "Gr\u00f6\u00dftes Level");
-		CSLang.addLocalization("potion.highestamplifier", "es_ES", "Alto Nivel");
+		CSLang.addLocalizationDE("potion.highestamplifier", "Gr\u00f6\u00dftes Level");
 		CSLang.addLocalizationUS("potion.averageamplifier", "Average Amplifier");
-		CSLang.addLocalization("potion.averageamplifier", "de_DE", "Durchschnittliches Level");
-		CSLang.addLocalization("potion.averageamplifier", "es_ES", "Nivel promedio");
+		CSLang.addLocalizationDE("potion.averageamplifier", "Durchschnittliches Level");
 		CSLang.addLocalizationUS("potion.highestduration", "Highest Duration");
-		CSLang.addLocalization("potion.highestduration", "de_DE", "H\u00f6chste Dauer");
-		CSLang.addLocalization("potion.highestduration", "es_ES", "Alto Duraci\u00F3n");
+		CSLang.addLocalizationDE("potion.highestduration", "H\u00f6chste Dauer");
 		CSLang.addLocalizationUS("potion.averageduration", "Average Duration");
-		CSLang.addLocalization("potion.averageduration", "de_DE", "Durchschnittliche Dauer");
-		CSLang.addLocalization("potion.averageduration", "es_ES", "Duraci\u00f3n promedio");
+		CSLang.addLocalizationDE("potion.averageduration", "Durchschnittliche Dauer");
 		CSLang.addLocalizationUS("potion.value", "Value");
-		CSLang.addLocalization("potion.value", "de_DE", "Wert");
-		CSLang.addLocalization("potion.value", "es_ES", "Valor");
+		CSLang.addLocalizationDE("potion.value", "Wert");
 		
 		CSLang.addLocalizationUS("potion.alleffects.postfix", "Potion of all Effects");
-		CSLang.addLocalization("potion.alleffects.postfix", "de_DE", "Trank aller Effekte");
-		CSLang.addLocalization("potion.alleffects.postfix", "es_ES", "Poci\u00F3n de todos los efectos");
+		CSLang.addLocalizationDE("potion.alleffects.postfix", "Trank aller Effekte");
 	}
 	
 	private void addDusts()

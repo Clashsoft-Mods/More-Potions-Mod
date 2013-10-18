@@ -1,0 +1,123 @@
+
+itemGroup.morepotions=Vermischte Tränke
+
+
+tile.mixer.name=Mischer
+
+item.dustCoal.name=Kohlestaub
+item.dustIron.name=Eisenstaub
+item.dustGold.name=Goldstaub
+item.dustDiamond.name=Diamantstaub
+item.dustEmerald.name=Smaragdstaub
+item.dustObsidian.name=Obsidianstaub
+item.dustQuartz.name=Netherquarzstaub
+item.dustWither.name=Witherstaub
+item.dustEnderpearl.name=Enderperlenstaub
+item.dustClay.name=Lehmstaub
+item.dustBrick.name=Ziegelstaub
+item.dustFlint.name=Feuersteinstaub
+item.dustGlass.name=Glasstaub
+item.dustCharcoal.name=Holzkohlestaub
+item.dustWoodOak.name=Eichenholzstaub
+item.dustWoodBirch.name=Birkenholzstaub
+item.dustWoodSpruce.name=Fichtenholzstaub
+item.dustWoodJungle.name=Tropenholzstaub
+item.dustNetherstar.name=Sternenstaub
+item.dustNetherbrick.name=Netherziegelstaub
+
+item.mortar.name=Mörser
+
+potion.fire.postfix=Trank des Feuers
+potion.fire=Feuer
+potion.fire.description=Lässt dich brennen.
+
+potion.effectRemove.postfix=Trank der Effektentfernung
+potion.effectRemove=Effektentfernung
+potion.effectRemove.description=Verhindert alle Effekte.
+
+
+potion.waterWalking.postfix=Trank des Überwasserlaufens
+potion.waterWalking=Überwasserlaufen
+potion.waterWalking.description=Lässt dich über Wasser laufen.
+
+
+potion.coldness.postfix=Trank der Kälte
+potion.coldness=Kälte
+potion.coldness.description=Macht dich sehr kalt, gefriert Wasser und generiert Schnee in deiner Nähe.
+
+
+potion.ironSkin.postfix=Trank der Eisenhaut
+potion.ironSkin=Eisenhaut
+potion.ironSkin.description=Bietet Resistenz gegen Feuer und andere Schadensquellen.
+
+
+potion.obsidianSkin.postfix=Trank der Obsidianhaut
+potion.obsidianSkin=Obsidianhaut
+potion.obsidianSkin.description=Bietet Resistenz gegen Feuer, Lava und andere Schadesquellen.
+
+
+potion.doubleLife.postfix=Trank des Doppellebens
+potion.doubleLife=Doppelleben
+potion.doubleLife.description=Hält für immer, wiederbelebt dich beim Tod ein Mal.
+
+
+potion.explosiveness.postfix=Trank der Explosion
+potion.explosiveness=Explosion
+potion.explosiveness.description=Lässt dich alle 2 Sekunden explodieren.
+
+
+potion.random.postfix=Zufallstrank
+potion.random=Zufälliger Effekt
+potion.random.description=Gibt dir einen zufälligen Trankeffekt.
+
+potion.thorns.postfix=Stacheltrank
+potion.thorns=Stacheln
+potion.thorns.description=Schädigt Lebewesen, die dich angreifen.
+
+potion.greenThumb.postfix=Trank des Grünen Daumens
+potion.greenThumb=Grüner Daumen
+potion.greenThumb.description=Planzen wachsen mit Rechts-Klick.
+
+potion.regeneration.description=Regeneriert Leben.
+potion.moveSpeed.description=Erlaubt es, sich schneller zu bewegen.
+potion.moveSlowdown.description=Verlangsamt.
+
+potion.digSpeed.description=Erlaubt es, die Arme schneller zu bewegen und schneller zu graben.
+potion.digSlowDown.description=Verlangsamt Arme und Graben.
+potion.fireResistance.description=Verhindert Feuer- und Lavaschaden.
+potion.waterBreathing.description=Lässt dich unter Wasser atmen.
+potion.heal.description=Gibt dir ein paar Leben.
+potion.harm.description=Fügt dir Schaden zu.
+potion.healthBoost.description=Gibt dir ein paar Extraherzen.
+potion.absorption.description=Gibt dir ein paar Extraherzen.
+potion.poison.description=Vergiftet dich.
+potion.hunger.description=Lässt deine Hungeranzeige schneller sinken.
+potion.wither.description=Withert dich als würdest du von einem Witherskelett geschlagen werden.
+potion.confusion.description=Macht dich schwindelig.
+potion.nightVision.description=Lässt dich im Dunkeln alles sehen.
+potion.invisibility.description=Macht dich unsichtbar für Spieler und Mobs.
+potion.blindness.description=Macht dicht blind.
+potion.damageBoost.description=Lässt dich mehr Schaden austeilen.
+potion.weakness.description=Verringert den Schaden, den du machst.
+potion.jump.description=Lässt dich höher springen.
+potion.resistance.description=Verringert den Schaden, den du bekommst.
+potion.saturation.description=Füllt deine Hungerleiste auf.
+
+potion.goodeffects=Gute Effekte
+potion.negativeEffects=Schlechte Effekte
+potion.potionof=Trank von
+potion.effects=Effekten
+potion.and=und
+potion.useto=Benutzt für
+potion.infinite=Unendlich
+potion.description.missing=Keine Beschreibung gefunden
+
+
+potion.highestamplifier=Größtes Level
+potion.averageamplifier=Durchschnittliches Level
+potion.highestduration=Höchste Dauer
+potion.averageduration=Durchschnittliche Dauer
+potion.value=Wert
+
+
+potion.alleffects.postfix=Trank aller Effekte

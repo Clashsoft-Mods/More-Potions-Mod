@@ -5,11 +5,16 @@ import clashsoft.clashsoftapi.util.update.ModUpdate;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntitySnowball;
+import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemSnowball;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.World;
 import net.minecraftforge.event.EventPriority;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -82,6 +87,26 @@ public class MorePotionsModEventHandler
 				
 				for (int i = 0; i < amplifier + 1; i++)
 					Item.dyePowder.onItemUse(new ItemStack(Item.dyePowder, 1, 15), event.entityPlayer, event.entityPlayer.worldObj, event.x, event.y, event.z, event.face, 0F, 0F, 0F);
+			}
+		}
+		if (event.action == Action.RIGHT_CLICK_AIR && event.entityLiving.isPotionActive(MorePotionsMod.projectile))
+		{
+			if (event.entityPlayer.getCurrentEquippedItem() == null)
+			{
+				int amplifier = event.entityPlayer.getActivePotionEffect(MorePotionsMod.projectile).getAmplifier();
+				World world = event.entityPlayer.worldObj;
+				
+				if (amplifier == 0)
+					world.spawnEntityInWorld(new EntitySnowball(world, event.entityPlayer));
+				else
+				{
+					EntityArrow projectile = new EntityArrow(world, event.entityPlayer, 1F + 0.5F * amplifier);
+					projectile.canBePickedUp = 2;
+					projectile.setDamage(projectile.getDamage() + 0.5D * amplifier);
+					projectile.setKnockbackStrength(1);
+					
+					world.spawnEntityInWorld(projectile);
+				}
 			}
 		}
 	}
