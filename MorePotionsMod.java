@@ -1,9 +1,9 @@
 package clashsoft.mods.morepotions;
 
-import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Properties;
-
-import org.apache.commons.io.Charsets;
 
 import clashsoft.brewingapi.BrewingAPI;
 import clashsoft.clashsoftapi.CustomItem;
@@ -14,6 +14,9 @@ import clashsoft.mods.morepotions.block.BlockMixer;
 import clashsoft.mods.morepotions.item.ItemMortar;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
+
+import com.google.common.base.Charsets;
+
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -177,25 +180,29 @@ public class MorePotionsMod
 		{
 			public void run()
 			{
-				Properties langPack_en = new Properties();
-				Properties langPack_de = new Properties();
-				
-				try
-				{
-					ResourceLocation en_US = new ResourceLocation("lang/mpm_en_US.lang");
-					langPack_de.load(Minecraft.getMinecraft().getResourceManager().getResource(en_US).getInputStream());
-					LanguageRegistry.instance().addStringLocalization(langPack_en, "en_US");
-					
-					ResourceLocation de_DE = new ResourceLocation("lang/mpm_de_DE.lang");
-					langPack_en.load(Minecraft.getMinecraft().getResourceManager().getResource(de_DE).getInputStream());
-					LanguageRegistry.instance().addStringLocalization(langPack_de, "de_DE");
-				}
-				catch (Exception ex)
-				{
-					ex.printStackTrace();
-				}
+				loadLanguageFile("lang/mpm_en_US", "en_US");
+				loadLanguageFile("lang/mpm_de_DE", "de_DE");
 			}
 		}).start();
+	}
+	
+	public void loadLanguageFile(String fileName, String language)
+	{
+		try
+		{
+			Properties langPack = new Properties();
+			ResourceLocation de = new ResourceLocation(fileName);
+			
+			InputStream stream = Minecraft.getMinecraft().getResourceManager().getResource(de).getInputStream();
+			Reader reader = new InputStreamReader(stream, Charsets.UTF_8);
+			langPack.load(reader);
+			
+			LanguageRegistry.instance().addStringLocalization(langPack, language);
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
 	}
 	
 	private void addDusts()

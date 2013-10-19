@@ -181,11 +181,12 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 						
 						--i1;
 						
-						if (i1 == 0)
-							te.brewings.clear();
 						par1World.setBlockMetadataWithNotify(par2, par3, par4, i1, 2);
 						flag = true;
 					}
+					
+					if (i1 == 0)
+						te.brewings.clear();
 				}
 				else if (i1 > 0 && itemstack.getItem() instanceof ItemArmor && ((ItemArmor) itemstack.getItem()).getArmorMaterial() == EnumArmorMaterial.CLOTH)
 				{
