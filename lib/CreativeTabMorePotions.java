@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 
 public class CreativeTabMorePotions extends CreativeTabs
 {
-
+	
 	public CreativeTabMorePotions(int par1, String par2Str)
 	{
 		super(par1, par2Str);
@@ -15,7 +15,7 @@ public class CreativeTabMorePotions extends CreativeTabs
 	@Override
 	public ItemStack getIconItemStack()
 	{
-	    return new ItemStack(Item.eyeOfEnder);
+		return new ItemStack(Item.eyeOfEnder);
 	}
-
+	
 }

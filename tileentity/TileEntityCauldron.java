@@ -1,7 +1,6 @@
 package clashsoft.mods.morepotions.tileentity;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import clashsoft.brewingapi.BrewingAPI;
@@ -21,9 +20,11 @@ public class TileEntityCauldron extends TileEntity
 {
 	public List<Brewing>	brewings;
 	
+	public ItemStack		output;
+	
 	public TileEntityCauldron()
 	{
-		brewings = new LinkedList<Brewing>();
+		brewings = new ArrayList<Brewing>();
 	}
 	
 	/**
@@ -34,16 +35,15 @@ public class TileEntityCauldron extends TileEntity
 	{
 		if (par1ItemStack != null)
 		{
-			if (Item.itemsList[par1ItemStack.itemID].isPotionIngredient() || Brewing.getBrewingFromIngredient(par1ItemStack) != null && par1ItemStack.getItem() != Item.gunpowder)
-			{
+			if (Item.itemsList[par1ItemStack.itemID].isPotionIngredient() || Brewing.getBrewingFromIngredient(par1ItemStack) != null && par1ItemStack.itemID != Item.gunpowder.itemID)
 				return true;
-			}
 		}
 		return false;
 	}
 	
 	public String addIngredient(ItemStack ingredient)
 	{
+		String out = "";
 		if (ingredient.getItem() == Item.bucketWater)
 		{
 			if (!water())
@@ -55,9 +55,10 @@ public class TileEntityCauldron extends TileEntity
 						b.setEffect(new PotionEffect(b.getEffect().getPotionID(), Math.round(b.getEffect().getDuration() * 0.6F), Math.round(b.getEffect().getAmplifier() * 0.8F)));
 					}
 				}
-				return "Effects thinned";
+				out = "Effects thinned";
 			}
-			return "Cauldron filled with water";
+			else
+				out = "Filled with water";
 		}
 		else if (ingredient.getItem() == Item.glowstone && !water()) // Improving
 		{
@@ -69,7 +70,7 @@ public class TileEntityCauldron extends TileEntity
 					brewings.set(var3, brewing.onImproved());
 				}
 			}
-			return "Effect amplifiers increased";
+			out = "Effect amplifiers increased.";
 		}
 		else if (ingredient.getItem() == Item.redstone && !water()) // Extension
 		{
@@ -81,7 +82,7 @@ public class TileEntityCauldron extends TileEntity
 					brewings.set(var3, brewing.onExtended());
 				}
 			}
-			return "Effect durations extended";
+			out = "Effect durations extended.";
 		}
 		else if (ingredient.getItem() == Item.fermentedSpiderEye && !water()) // Opposites
 		{
@@ -92,7 +93,7 @@ public class TileEntityCauldron extends TileEntity
 				brewing.setOpposite(null);
 				brewings.set(var3, brewing);
 			}
-			return "Effects inverted";
+			out = "Effects inverted.";
 		}
 		else if (water()) // Other Base Ingredients
 		{
@@ -100,7 +101,7 @@ public class TileEntityCauldron extends TileEntity
 			if (base != null)
 			{
 				setBaseBrewing(base);
-				return "Base Brewing set: \'" + base.basename + "\'";
+				out = "Base ingredient set to " + base.basename + ".";
 			}
 		}
 		else
@@ -116,16 +117,19 @@ public class TileEntityCauldron extends TileEntity
 					brewings.add(b);
 					if (b.getEffect() != null)
 					{
-						return "Effect added: \'" + StatCollector.translateToLocal(b.getEffect().getEffectName()) + "\'";
+						out = StatCollector.translateToLocal(b.getEffect().getEffectName()) + " added.";
 					}
 				}
-				if (contains)
-					return "Unable to add Effect, this Effect has already been added.";
-				if (requiredBase != null)
-					return "Unable to add Effect, required base \'" + requiredBase.basename + "\' is not found.";
+				else if (contains)
+					out = "Unable to add ingredient, this ingredient's effect has already been added.";
+				else if (requiredBase != null)
+					out = "Unable to add ingredient, " + requiredBase.basename + " is required to brew this ingredient.";
 			}
 		}
-		return "";
+		
+		this.output = brew(true);
+		
+		return out;
 	}
 	
 	public void setBaseBrewing(BrewingBase base)
@@ -145,26 +149,28 @@ public class TileEntityCauldron extends TileEntity
 		return brewings.size() <= 0;
 	}
 	
-	public ItemStack brew()
+	private ItemStack brew(boolean removeDuplicates)
 	{
 		if (water())
-		{
 			return new ItemStack(BrewingAPI.potion2, 1, 0);
-		}
+		
 		ItemStack is = new ItemStack(BrewingAPI.potion2, 1, 1);
+		this.brewings = removeDuplicates ? (List<Brewing>) Brewing.removeDuplicates(brewings) : brewings;
+		
 		if (brewings.size() == 1)
-		{
-			return brewings.get(0).addBrewingToItemStack(is);
-		}
-		this.brewings = (List<Brewing>) Brewing.removeDuplicates(brewings);
-		for (Brewing b : this.brewings)
-		{
-			if (b.getEffect() != null)
-			{
-				b.addBrewingToItemStack(is);
-			}
-		}
+			brewings.get(0).addBrewingToItemStack(is);
+		else
+			for (int i = 1; i < brewings.size(); i++)
+				brewings.get(i).addBrewingToItemStack(is);
+		
 		return is;
+	}
+	
+	public int getColor()
+	{
+		if (output == null)
+			output = brew(true);
+		return (water() || output == null) ? -1 : output.getItem().getColorFromItemStack(output, 0);
 	}
 	
 	@Override
@@ -186,6 +192,8 @@ public class TileEntityCauldron extends TileEntity
 			}
 			brewings = var6;
 		}
+		
+		this.output = brew(false);
 	}
 	
 	@Override

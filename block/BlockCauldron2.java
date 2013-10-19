@@ -19,6 +19,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
@@ -67,10 +68,10 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	 */
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		this.inner = par1IconRegister.registerIcon(this.getTextureName() + "_inner");
-		this.top = par1IconRegister.registerIcon(this.getTextureName() + "_top");
-		this.bottom = par1IconRegister.registerIcon(this.getTextureName() + "_bottom");
-		this.blockIcon = par1IconRegister.registerIcon(this.getTextureName() + "_side");
+		this.inner = par1IconRegister.registerIcon("cauldron_inner");
+		this.top = par1IconRegister.registerIcon("cauldron_top");
+		this.bottom = par1IconRegister.registerIcon("cauldron_bottom");
+		this.blockIcon = par1IconRegister.registerIcon("cauldron_side");
 	}
 	
 	@Override
@@ -96,80 +97,96 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	}
 	
 	@Override
-	/**
-	 * Called upon block activation (right click on the block.)
-	 */
+	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
+	{
+		if (par5Entity instanceof EntityItem)
+		{
+			EntityItem item = (EntityItem) par5Entity;
+			
+			// Makes sure the item is *in* the cauldron
+			if (item.posX >= par2 + 0.125D && item.posX <= par2 + 0.875D && item.posY >= par3 + 0.125D && item.posY <= par3 + 1D && item.posZ >= par4 + 0.125D && item.posZ <= par4 + 0.875D)
+			{
+				if (this.onItemAdded(par1World, par2, par3, par4, null, item.getEntityItem()))
+					item.setDead();
+			}
+		}
+	}
+	
+	@Override
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
 	{
-		if (par1World.isRemote)
+		return onItemAdded(par1World, par2, par3, par4, par5EntityPlayer, par5EntityPlayer.getCurrentEquippedItem());
+	}
+	
+	public boolean onItemAdded(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, ItemStack itemstack)
+	{
+		if (par1World.getBlockTileEntity(par2, par3, par4) instanceof TileEntityCauldron)
 		{
-			return true;
-		}
-		else if (par1World.getBlockTileEntity(par2, par3, par4) != null && par1World.getBlockTileEntity(par2, par3, par4) instanceof TileEntityCauldron)
-		{
-			ItemStack itemstack = par5EntityPlayer.inventory.getCurrentItem();
 			TileEntityCauldron te = (TileEntityCauldron) par1World.getBlockTileEntity(par2, par3, par4);
 			boolean flag = false;
+			boolean itemDrop = par5EntityPlayer == null;
+			String message = "";
 			
 			if (itemstack == null)
-			{
-				flag = false;
-			}
-			else if (par5EntityPlayer.isSneaking())
-			{
-				
-			}
+				return false;
 			else
 			{
 				int i1 = par1World.getBlockMetadata(par2, par3, par4);
 				
-				if (itemstack.itemID == Item.bucketWater.itemID)
+				if (itemstack.itemID == Item.bucketWater.itemID && !itemDrop)
 				{
 					if (i1 < 3)
 					{
-						if (!par5EntityPlayer.capabilities.isCreativeMode)
+						if (itemDrop)
+						{
+							par1World.spawnEntityInWorld(new EntityItem(par1World, par2 + 0.5D, par3 + 0.5D, par4 + 1.5D, new ItemStack(Item.bucketEmpty)));
+						}
+						else if (!par5EntityPlayer.capabilities.isCreativeMode)
 						{
 							par5EntityPlayer.inventory.setInventorySlotContents(par5EntityPlayer.inventory.currentItem, new ItemStack(Item.bucketEmpty));
 						}
 						
 						par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
+						
+						message = te.addIngredient(itemstack);
+						flag = true;
 					}
-					flag = true;
-					String s = te.addIngredient(itemstack);
-					if (s != null && s != "")
-						par5EntityPlayer.addChatMessage(s);
+					else
+						flag = false;
 				}
 				else if (itemstack.itemID == Item.glassBottle.itemID)
 				{
 					if (i1 > 0)
 					{
-						ItemStack itemstack1 = te.brew();
+						ItemStack itemstack1 = te.output;
+						itemstack1.stackSize = 1;
 						
-						if (!par5EntityPlayer.inventory.addItemStackToInventory(itemstack1))
+						if (itemDrop || !par5EntityPlayer.inventory.addItemStackToInventory(itemstack1))
 						{
-							par1World.spawnEntityInWorld(new EntityItem(par1World, par2 + 0.5D, par3 + 1.5D, par4 + 0.5D, itemstack1));
+							par5EntityPlayer.dropPlayerItem(itemstack1);
 						}
-						else if (par5EntityPlayer instanceof EntityPlayerMP)
+						
+						if (par5EntityPlayer instanceof EntityPlayerMP)
 						{
 							((EntityPlayerMP) par5EntityPlayer).sendContainerToPlayer(par5EntityPlayer.inventoryContainer);
 						}
 						
 						--itemstack.stackSize;
 						
-						if (itemstack.stackSize <= 0)
+						if (!itemDrop && itemstack.stackSize <= 0)
 						{
 							par5EntityPlayer.inventory.setInventorySlotContents(par5EntityPlayer.inventory.currentItem, (ItemStack) null);
 						}
 						
-						if (i1 - 1 == 0)
+						--i1;
+						
+						if (i1 == 0)
 							te.brewings.clear();
-						par1World.setBlockMetadataWithNotify(par2, par3, par4, i1 - 1, 2);
+						par1World.setBlockMetadataWithNotify(par2, par3, par4, i1, 2);
 						flag = true;
 					}
 					else
-					{
 						te.brewings.clear();
-					}
 				}
 				else if (i1 > 0 && itemstack.getItem() instanceof ItemArmor && ((ItemArmor) itemstack.getItem()).getArmorMaterial() == EnumArmorMaterial.CLOTH)
 				{
@@ -182,20 +199,20 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 				{
 					if (te.isItemValid(itemstack) && i1 > 0)
 					{
-						String s = te.addIngredient(itemstack);
-						if (s != null && s != "")
-							par5EntityPlayer.addChatMessage(s);
+						message = te.addIngredient(itemstack);
 						flag = true;
 					}
 				}
 			}
 			par1World.setBlockTileEntity(par2, par3, par4, te);
-			return true;
+			
+			if (!itemDrop && !par1World.isRemote && flag && message != null && !message.isEmpty())
+				par5EntityPlayer.addChatMessage(EnumChatFormatting.DARK_AQUA + "Cauldron" + EnumChatFormatting.RESET + ": " + message);
+			
+			return flag;
 		}
 		else
-		{
 			return false;
-		}
 	}
 	
 	@Override

@@ -1,7 +1,6 @@
 package clashsoft.mods.morepotions;
 
 import clashsoft.clashsoftapi.util.CSUpdate;
-import clashsoft.clashsoftapi.util.update.ModUpdate;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,8 +26,7 @@ public class MorePotionsModEventHandler
 	{
 		if (event.entity instanceof EntityPlayer)
 		{
-			ModUpdate update = CSUpdate.checkForUpdate("More Potions Mod", "mpm", MorePotionsMod.VERSION);
-			CSUpdate.notifyUpdate((EntityPlayer) event.entity, "More Potions Mod", update);
+			CSUpdate.doClashsoftUpdateCheck((EntityPlayer) event.entity, "More Potions Mod", "mpm", MorePotionsMod.VERSION);
 		}
 	}
 	
