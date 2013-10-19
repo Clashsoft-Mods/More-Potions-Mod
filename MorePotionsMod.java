@@ -51,12 +51,14 @@ public class MorePotionsMod
 	// Configurables
 	public static int				randomMode		= 0;
 	
-	public static int				Mixer_TEID		= 12;
-	public static int				Cauldron2_TEID	= 13;
+	public static int				MixerTEID		= 12;
+	public static int				Cauldron2TEID	= 13;
 	
-	public static int				Mixer_ID		= 190;
-	public static int				Dust_ID			= 14000;
-	public static int				Mortar_ID		= 14001;
+	public static int				MixerID			= 190;
+	public static int				DustID			= 14000;
+	public static int				MortarID		= 14001;
+	
+	public static boolean			cauldronInfo	= false;
 	
 	static
 	{
@@ -107,14 +109,15 @@ public class MorePotionsMod
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 		
-		Mixer_TEID = config.get("TileEntityIDs", "MixerTEID", 12).getInt();
-		Cauldron2_TEID = config.get("TileEntityIDs", "Cauldron2TEID", 13).getInt();
+		MixerTEID = config.get("TileEntityIDs", "MixerTEID", 12).getInt();
+		Cauldron2TEID = config.get("TileEntityIDs", "Cauldron2TEID", 13).getInt();
 		
-		Mixer_ID = config.getBlock("MixerID", 190).getInt();
-		Dust_ID = config.getItem("DustID", 14000).getInt();
-		Mortar_ID = config.getItem("MortarID", 14001).getInt();
+		MixerID = config.getBlock("MixerID", 190).getInt();
+		DustID = config.getItem("DustID", 14000).getInt();
+		MortarID = config.getItem("MortarID", 14001).getInt();
 		
 		randomMode = config.get("Potions", "RandomPotionMode", 0, "Determines how the random potion works, if this is 0 the effect is instant and you get a random potion effect when you drink the potion, 1 will give you a new effect every 2 seconds.").getInt();
+		cauldronInfo = config.get("Cauldrons", "CauldronInfo", true).getBoolean(false);
 		
 		config.save();
 	}
@@ -131,12 +134,12 @@ public class MorePotionsMod
 		Block.blocksList[Block.cauldron.blockID] = null;
 		cauldron2 = (BlockCauldron2) (new BlockCauldron2(Block.cauldron.blockID)).setHardness(2.0F).setUnlocalizedName("cauldron").setTextureName("cauldron");
 		
-		mixer = (BlockMixer) (new BlockMixer(Mixer_ID)).setUnlocalizedName("mixer").setCreativeTab(CreativeTabs.tabBrewing);
+		mixer = (BlockMixer) (new BlockMixer(MixerID)).setUnlocalizedName("mixer").setCreativeTab(CreativeTabs.tabBrewing);
 		
 		CSBlocks.addBlock(mixer, "Mixer");
 		CSBlocks.addBlock(cauldron2, "Cauldron");
-		mortar = (ItemMortar) new ItemMortar(Mortar_ID).setCreativeTab(CreativeTabs.tabTools).setMaxDamage(32).setNoRepair().setMaxStackSize(1).setUnlocalizedName("mortar");
-		dust = new CustomItem(Dust_ID, CSArrays.addToAll(new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCharcoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, "item.", ".name"), new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, new String[] { "C2", "Fe", "Au", "C128", "Be3Al2Si6O18", "MgFeSi2O8", "SiO2", "\u00a7k???", "BeK4N5Cl6", "Na2LiAl2Si2", "Na2LiAl2Si2", "SiO2", "SiO4", "C", "", "", "", "", "", "" }).setCreativeTab(CreativeTabs.tabMaterials);
+		mortar = (ItemMortar) new ItemMortar(MortarID).setCreativeTab(CreativeTabs.tabTools).setMaxDamage(32).setNoRepair().setMaxStackSize(1).setUnlocalizedName("mortar");
+		dust = new CustomItem(DustID, CSArrays.addToAll(new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCharcoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, "item.", ".name"), new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, new String[] { "C2", "Fe", "Au", "C128", "Be3Al2Si6O18", "MgFeSi2O8", "SiO2", "\u00a7k???", "BeK4N5Cl6", "Na2LiAl2Si2", "Na2LiAl2Si2", "SiO2", "SiO4", "C", "", "", "", "", "", "" }).setCreativeTab(CreativeTabs.tabMaterials);
 		addDusts();
 		
 		BrewingAPI.load();

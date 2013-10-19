@@ -2,6 +2,7 @@ package clashsoft.mods.morepotions.block;
 
 import java.util.List;
 
+import clashsoft.mods.morepotions.MorePotionsMod;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -206,8 +207,12 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 			}
 			par1World.setBlockTileEntity(par2, par3, par4, te);
 			
-			if (!itemDrop && !par1World.isRemote && flag && message != null && !message.isEmpty())
-				par5EntityPlayer.addChatMessage(EnumChatFormatting.DARK_AQUA + "Cauldron" + EnumChatFormatting.RESET + ": " + message);
+			if (flag)
+			{
+				par1World.playSound(par2, par3, par4, "random.pop", 1F, 1F, true);
+				if (MorePotionsMod.cauldronInfo && !itemDrop && !par1World.isRemote && message != null && !message.isEmpty())
+					par5EntityPlayer.addChatMessage(EnumChatFormatting.DARK_AQUA + "Cauldron" + EnumChatFormatting.RESET + ": " + message);
+			}
 			
 			return flag;
 		}

@@ -21,7 +21,7 @@ public class CommonProxy implements IGuiHandler
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		if (ID == MorePotionsMod.Mixer_TEID)
+		if (ID == MorePotionsMod.MixerTEID)
 		{
 			return new GuiMixer(player.inventory, (TileEntityMixer) world.getBlockTileEntity(x, y, z));
 		}

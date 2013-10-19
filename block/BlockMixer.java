@@ -126,7 +126,7 @@ public class BlockMixer extends BlockContainer
 			
 			if (var10 != null)
 			{
-				FMLNetworkHandler.openGui(par5EntityPlayer, MorePotionsMod.INSTANCE, MorePotionsMod.Mixer_TEID, par1World, par2, par3, par4);
+				FMLNetworkHandler.openGui(par5EntityPlayer, MorePotionsMod.INSTANCE, MorePotionsMod.MixerTEID, par1World, par2, par3, par4);
 			}
 			
 			return true;
