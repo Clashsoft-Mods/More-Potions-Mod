@@ -3,6 +3,8 @@ package clashsoft.mods.morepotions;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.commons.io.Charsets;
+
 import clashsoft.brewingapi.BrewingAPI;
 import clashsoft.clashsoftapi.CustomItem;
 import clashsoft.clashsoftapi.CustomPotion;
@@ -23,12 +25,14 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
@@ -169,229 +173,29 @@ public class MorePotionsMod
 	
 	private void addLocalizations()
 	{
-		Properties langPack_en = new Properties();
-		Properties langPack_de = new Properties();
-		
-		try
+		new Thread(new Runnable()
 		{
-			langPack_en.load(this.getClass().getResourceAsStream("mpm_en.lang"));
-			langPack_de.load(this.getClass().getResourceAsStream("mpm_de.lang"));
-			
-			LanguageRegistry.instance().addStringLocalization(langPack_en, "en_US");
-			LanguageRegistry.instance().addStringLocalization(langPack_de, "de_DE");
-		}
-		catch (IOException ex)
-		{
-			addLocalizations2();
-		}
-	}
-	
-	public void addLocalizations2()
-	{
-		CSLang.addLocalizationUS("itemGroup.morepotions", "Mixed Potions");
-		CSLang.addLocalizationDE("itemGroup.morepotions", "Vermischte Tr\u00e4nke");
-		
-		CSLang.addLocalizationUS("tile.mixer.name", "Mixer");
-		CSLang.addLocalizationDE("tile.mixer.name", "Mischer");
-		
-		CSLang.addLocalizationUS("item.dustCoal.name", "Coal Dust");
-		CSLang.addLocalizationDE("item.dustCoal.name", "Kohlestaub");
-		CSLang.addLocalizationUS("item.dustIron.name", "Iron Dust");
-		CSLang.addLocalizationDE("item.dustIron.name", "Eisenstaub");
-		CSLang.addLocalizationUS("item.dustGold.name", "Gold Dust");
-		CSLang.addLocalizationDE("item.dustGold.name", "Goldstaub");
-		CSLang.addLocalizationUS("item.dustDiamond.name", "Diamond Dust");
-		CSLang.addLocalizationDE("item.dustDiamond.name", "Diamantstaub");
-		CSLang.addLocalizationUS("item.dustEmerald.name", "Emerald Dust");
-		CSLang.addLocalizationDE("item.dustEmerald.name", "Smaragdstaub");
-		CSLang.addLocalizationUS("item.dustObsidian.name", "Obsidian Dust");
-		CSLang.addLocalizationDE("item.dustObsidian.name", "Obsidianstaub");
-		CSLang.addLocalizationUS("item.dustQuartz.name", "Nether Quartz Dust");
-		CSLang.addLocalizationDE("item.dustQuartz.name", "Netherquarzstaub");
-		CSLang.addLocalizationUS("item.dustWither.name", "Wither Dust");
-		CSLang.addLocalizationDE("item.dustWither.name", "Witherstaub");
-		CSLang.addLocalizationUS("item.dustEnderpearl.name", "Enderpearl Dust");
-		CSLang.addLocalizationDE("item.dustEnderpearl.name", "Enderperlenstaub");
-		CSLang.addLocalizationUS("item.dustClay.name", "Clay Dust");
-		CSLang.addLocalizationDE("item.dustClay.name", "Lehmstaub");
-		CSLang.addLocalizationUS("item.dustBrick.name", "Brick Dust");
-		CSLang.addLocalizationDE("item.dustBrick.name", "Ziegelstaub");
-		CSLang.addLocalizationUS("item.dustFlint.name", "Flint Dust");
-		CSLang.addLocalizationDE("item.dustFlint.name", "Feuersteinstaub");
-		CSLang.addLocalizationUS("item.dustGlass.name", "Glass Dust");
-		CSLang.addLocalizationDE("item.dustGlass.name", "Glasstaub");
-		CSLang.addLocalizationUS("item.dustCharcoal.name", "Charcoal Dust");
-		CSLang.addLocalizationDE("item.dustCharcoal.name", "Holzkohlestaub");
-		CSLang.addLocalizationUS("item.dustWoodOak.name", "Oak Wood Dust");
-		CSLang.addLocalizationDE("item.dustWoodOak.name", "Eichenholzstaub");
-		CSLang.addLocalizationUS("item.dustWoodBirch.name", "Birch Wood Dust");
-		CSLang.addLocalizationDE("item.dustWoodBirch.name", "Birkenholzstaub");
-		CSLang.addLocalizationUS("item.dustWoodSpruce.name", "Spruce Wood Dust");
-		CSLang.addLocalizationDE("item.dustWoodSpruce.name", "Fichtenholzstaub");
-		CSLang.addLocalizationUS("item.dustWoodJungle.name", "Jungle Wood Dust");
-		CSLang.addLocalizationDE("item.dustWoodJungle.name", "Tropenholzstaub");
-		CSLang.addLocalizationUS("item.dustNetherstar.name", "Star Dust");
-		CSLang.addLocalizationDE("item.dustNetherstar.name", "Sternenstaub");
-		CSLang.addLocalizationUS("item.dustNetherbrick.name", "Nether Brick Dust");
-		CSLang.addLocalizationDE("item.dustNetherbrick.name", "Netherziegelstaub");
-		
-		CSLang.addLocalizationUS("item.mortar.name", "Mortar");
-		CSLang.addLocalizationDE("item.mortar.name", "M\u00f6rser");
-		
-		CSLang.addLocalizationUS("potion.fire.postfix", "Potion of Fire");
-		CSLang.addLocalizationDE("potion.fire.postfix", "Trank des Feuers");
-		CSLang.addLocalizationUS("potion.fire", "Fire");
-		CSLang.addLocalizationDE("potion.fire", "Feuer");
-		CSLang.addLocalizationUS("potion.fire.description", "Makes you burn.");
-		CSLang.addLocalizationDE("potion.fire.description", "L\u00e4sst dich brennen.");
-		
-		CSLang.addLocalizationUS("potion.effectRemove.postfix", "Potion of Effect Removing");
-		CSLang.addLocalizationDE("potion.effectRemove.postfix", "Trank der Effektentfernung");
-		CSLang.addLocalizationUS("potion.effectRemove", "Effect Removing");
-		CSLang.addLocalizationDE("potion.effectRemove", "Effektentfernung");
-		CSLang.addLocalizationUS("potion.effectRemove.description", "Prevents any effects.");
-		CSLang.addLocalizationDE("potion.effectRemove.description", "Verhindert alle Effekte.");
-		
-		CSLang.addLocalizationUS("potion.waterWalking.postfix", "Potion of Water Walking");
-		CSLang.addLocalizationDE("potion.waterWalking.postfix", "Trank des \u00dcberwasserlaufens");
-		CSLang.addLocalizationUS("potion.waterWalking", "Water Walking");
-		CSLang.addLocalizationDE("potion.waterWalking", "\u00dcberwasserlaufen");
-		CSLang.addLocalizationUS("potion.waterWalking.description", "Lets you walk over water.");
-		CSLang.addLocalizationDE("potion.waterWalking.description", "L\u00e4sst dich \u00fcber Wasser laufen.");
-		
-		CSLang.addLocalizationUS("potion.coldness.postfix", "Potion of Coldness");
-		CSLang.addLocalizationDE("potion.coldness.postfix", "Trank der K\u00e4lte");
-		CSLang.addLocalizationUS("potion.coldness", "Coldness");
-		CSLang.addLocalizationDE("potion.coldness", "K\u00e4lte");
-		CSLang.addLocalizationUS("potion.coldness.description", "Makes you really cold, freezing water and generating snow around you.");
-		CSLang.addLocalizationDE("potion.coldness.description", "Macht dich sehr kalt, gefriert Wasser und generiert Schnee in deiner N\u00e4he.");
-		
-		CSLang.addLocalizationUS("potion.ironSkin.postfix", "Potion of Iron Skin");
-		CSLang.addLocalizationDE("potion.ironSkin.postfix", "Trank der Eisenhaut");
-		CSLang.addLocalizationUS("potion.ironSkin", "Iron Skin");
-		CSLang.addLocalizationDE("potion.ironSkin", "Eisenhaut");
-		CSLang.addLocalizationUS("potion.ironSkin.description", "Gives you resistance against fire and other damage sources.");
-		CSLang.addLocalizationDE("potion.ironSkin.description", "Bietet Resistenz gegen Feuer und andere Schadensquellen.");
-		
-		CSLang.addLocalizationUS("potion.obsidianSkin.postfix", "Potion of Obsidian Skin");
-		CSLang.addLocalizationDE("potion.obsidianSkin.postfix", "Trank der Obsidianhaut");
-		CSLang.addLocalizationUS("potion.obsidianSkin", "Obsidian Skin");
-		CSLang.addLocalizationDE("potion.obsidianSkin", "Obsidianhaut");
-		CSLang.addLocalizationUS("potion.obsidianSkin.description", "Gives you resistance against fire, lava and other damage sources.");
-		CSLang.addLocalizationDE("potion.obsidianSkin.description", "Bietet Resistenz gegen Feuer, Lava und andere Schadesquellen.");
-		
-		CSLang.addLocalizationUS("potion.doubleLife.postfix", "Potion of Double Life");
-		CSLang.addLocalizationDE("potion.doubleLife.postfix", "Trank des Doppellebens");
-		CSLang.addLocalizationUS("potion.doubleLife", "Double Life");
-		CSLang.addLocalizationDE("potion.doubleLife", "Doppelleben");
-		CSLang.addLocalizationUS("potion.doubleLife.description", "Lasts forever, resurrects you once.");
-		CSLang.addLocalizationDE("potion.doubleLife.description", "H\u00e4lt f\u00fcr immer, wiederbelebt dich beim Tod ein Mal.");
-		
-		CSLang.addLocalizationUS("potion.explosiveness.postfix", "Potion of Explosion");
-		CSLang.addLocalizationDE("potion.explosiveness.postfix", "Trank der Explosion");
-		CSLang.addLocalizationUS("potion.explosiveness", "Explosion");
-		CSLang.addLocalizationDE("potion.explosiveness", "Explosion");
-		CSLang.addLocalizationUS("potion.explosiveness.description", "Makes you explode every 2 seconds.");
-		CSLang.addLocalizationDE("potion.explosiveness.description", "L\u00e4sst dich alle 2 Sekunden explodieren.");
-		
-		CSLang.addLocalizationUS("potion.random.postfix", "Random Potion");
-		CSLang.addLocalizationDE("potion.random.postfix", "Zufallstrank");
-		CSLang.addLocalizationUS("potion.random", "Random Effect");
-		CSLang.addLocalizationDE("potion.random", "Zuf\u00e4lliger Effekt");
-		CSLang.addLocalizationUS("potion.random.description", randomMode == 0 ? "Gives you a random effect." : "Gives you a new random effect every 2 seconds.");
-		CSLang.addLocalizationDE("potion.random.description", randomMode == 0 ? "Gibt dir einen zuf\u00e4lligen Trankeffekt." : "Gibt dir einen neuen zuf\u00e4lligen Trankeffekt alle 2 Sekunden.");
-		
-		CSLang.addLocalizationUS("potion.thorns.postfix", "Thorns Potion");
-		CSLang.addLocalizationDE("potion.thorns.postfix", "Stacheltrank");
-		CSLang.addLocalizationUS("potion.thorns", "Thorns");
-		CSLang.addLocalizationDE("potion.thorns", "Stacheln");
-		CSLang.addLocalizationUS("potion.thorns.description", "Damages entitys hitting you.");
-		CSLang.addLocalizationDE("potion.thorns.description", "Sch\u00e4digt Lebewesen, die dich angreifen.");
-		
-		CSLang.addLocalizationUS("potion.greenThumb.postfix", "Green Thumb Potion");
-		CSLang.addLocalizationDE("potion.greenThumb.postfix", "Trank des Gr\u00fcnen Daumens");
-		CSLang.addLocalizationUS("potion.greenThumb", "Green Thumb");
-		CSLang.addLocalizationDE("potion.greenThumb", "Gr\u00fcner Daumen");
-		CSLang.addLocalizationUS("potion.greenThumb.description", "Plants grow when right-clicking.");
-		CSLang.addLocalizationDE("potion.greenThumb.description", "Planzen wachsen mit Rechts-Klick.");
-		
-		CSLang.addLocalizationUS("potion.regeneration.description", "Regenerates life.");
-		CSLang.addLocalizationDE("potion.regeneration.description", "Regeneriert Leben.");
-		CSLang.addLocalizationUS("potion.moveSpeed.description", "Allows you to move Faster.");
-		CSLang.addLocalizationDE("potion.moveSpeed.description", "Erlaubt es, sich schneller zu bewegen.");
-		CSLang.addLocalizationUS("potion.moveSlowdown.description", "Slows you down.");
-		CSLang.addLocalizationDE("potion.moveSlowdown.description", "Verlangsamt.");
-		CSLang.addLocalizationUS("potion.digSpeed.description", "Allows you to move your arms faster and dig faster.");
-		CSLang.addLocalizationDE("potion.digSpeed.description", "Erlaubt es, die Arme schneller zu bewegen und schneller zu graben.");
-		CSLang.addLocalizationUS("potion.digSlowDown.description", "Slows down your arms and your digging.");
-		CSLang.addLocalizationDE("potion.digSlowDown.description", "Verlangsamt Arme und Graben.");
-		CSLang.addLocalizationUS("potion.fireResistance.description", "Prevents you from getting fire and lava damage.");
-		CSLang.addLocalizationDE("potion.fireResistance.description", "Verhindert Feuer- und Lavaschaden.");
-		CSLang.addLocalizationUS("potion.waterBreathing.description", "Lets you breathe underwater.");
-		CSLang.addLocalizationDE("potion.waterBreathing.description", "L\u00e4sst dich unter Wasser atmen.");
-		CSLang.addLocalizationUS("potion.heal.description", "Gives you some hearts.");
-		CSLang.addLocalizationDE("potion.heal.description", "Gibt dir ein paar Leben.");
-		CSLang.addLocalizationUS("potion.harm.description", "Deals some damage.");
-		CSLang.addLocalizationDE("potion.harm.description", "F\u00fcgt dir Schaden zu.");
-		CSLang.addLocalizationUS("potion.healthBoost.description", "Gives you some extra hearts.");
-		CSLang.addLocalizationDE("potion.healthBoost.description", "Gibt dir ein paar Extraherzen.");
-		CSLang.addLocalizationUS("potion.absorption.description", "Gives you some extra hearts.");
-		CSLang.addLocalizationDE("potion.absorption.description", "Gibt dir ein paar Extraherzen.");
-		CSLang.addLocalizationUS("potion.poison.description", "Poisons you.");
-		CSLang.addLocalizationDE("potion.poison.description", "Vergiftet dich.");
-		CSLang.addLocalizationUS("potion.hunger.description", "Makes your hunger bar go down faster.");
-		CSLang.addLocalizationDE("potion.hunger.description", "L\u00e4sst deine Hungeranzeige schneller sinken.");
-		CSLang.addLocalizationUS("potion.wither.description", "Withers you as you would be hit by a wither skeleton.");
-		CSLang.addLocalizationDE("potion.wither.description", "Withert dich als w\u00fcrdest du von einem Witherskelett geschlagen werden.");
-		CSLang.addLocalizationUS("potion.confusion.description", "Makes you dizzy.");
-		CSLang.addLocalizationDE("potion.confusion.description", "Macht dich schwindelig.");
-		CSLang.addLocalizationUS("potion.nightVision.description", "Lets you see everything in the dark.");
-		CSLang.addLocalizationDE("potion.nightVision.description", "L\u00e4sst dich im Dunkeln alles sehen.");
-		CSLang.addLocalizationUS("potion.invisibility.description", "Makes you invisible.");
-		CSLang.addLocalizationDE("potion.invisibility.description", "Macht dich unsichtbar f\u00fcr Spieler und Mobs.");
-		CSLang.addLocalizationUS("potion.blindness.description", "Makes you blind.");
-		CSLang.addLocalizationDE("potion.blindness.description", "Macht dicht blind.");
-		CSLang.addLocalizationUS("potion.damageBoost.description", "Allows you to deal more damage.");
-		CSLang.addLocalizationDE("potion.damageBoost.description", "L\u00e4sst dich mehr Schaden austeilen.");
-		CSLang.addLocalizationUS("potion.weakness.description", "Decreases your delt damage.");
-		CSLang.addLocalizationDE("potion.weakness.description", "Verringert den Schaden, den du machst.");
-		CSLang.addLocalizationUS("potion.jump.description", "Lets you jump higher.");
-		CSLang.addLocalizationDE("potion.jump.description", "L\u00e4sst dich h\u00f6her springen.");
-		CSLang.addLocalizationUS("potion.resistance.description", "Makes you get less damage when getting hit.");
-		CSLang.addLocalizationDE("potion.resistance.description", "Verringert den Schaden, den du bekommst.");
-		CSLang.addLocalizationUS("potion.saturation.description", "Fills up your hunger bar.");
-		CSLang.addLocalizationDE("potion.saturation.description", "F\u00fcllt deine Hungerleiste auf.");
-		
-		CSLang.addLocalizationUS("potion.goodeffects", "Good Effects");
-		CSLang.addLocalizationDE("potion.goodeffects", "Gute Effekte");
-		CSLang.addLocalizationUS("potion.negativeEffects", "Bad Effects");
-		CSLang.addLocalizationDE("potion.negativeEffects", "Schlechte Effekte");
-		CSLang.addLocalizationUS("potion.potionof", "Potion of");
-		CSLang.addLocalizationDE("potion.potionof", "Trank von");
-		CSLang.addLocalizationUS("potion.effects", "Effects");
-		CSLang.addLocalizationDE("potion.effects", "Effekten");
-		CSLang.addLocalizationUS("potion.and", "and");
-		CSLang.addLocalizationDE("potion.and", "und");
-		CSLang.addLocalizationUS("potion.useto", "Used to make");
-		CSLang.addLocalizationDE("potion.useto", "Benutzt f\u00fcr");
-		CSLang.addLocalizationUS("potion.infinite", "Infinite");
-		CSLang.addLocalizationDE("potion.infinite", "Unendlich");
-		CSLang.addLocalizationUS("potion.description.missing", "Description not available");
-		CSLang.addLocalizationDE("potion.description.missing", "Keine Beschreibung gefunden");
-		
-		CSLang.addLocalizationUS("potion.highestamplifier", "Highest Amplifier");
-		CSLang.addLocalizationDE("potion.highestamplifier", "Gr\u00f6\u00dftes Level");
-		CSLang.addLocalizationUS("potion.averageamplifier", "Average Amplifier");
-		CSLang.addLocalizationDE("potion.averageamplifier", "Durchschnittliches Level");
-		CSLang.addLocalizationUS("potion.highestduration", "Highest Duration");
-		CSLang.addLocalizationDE("potion.highestduration", "H\u00f6chste Dauer");
-		CSLang.addLocalizationUS("potion.averageduration", "Average Duration");
-		CSLang.addLocalizationDE("potion.averageduration", "Durchschnittliche Dauer");
-		CSLang.addLocalizationUS("potion.value", "Value");
-		CSLang.addLocalizationDE("potion.value", "Wert");
-		
-		CSLang.addLocalizationUS("potion.alleffects.postfix", "Potion of all Effects");
-		CSLang.addLocalizationDE("potion.alleffects.postfix", "Trank aller Effekte");
+			public void run()
+			{
+				Properties langPack_en = new Properties();
+				Properties langPack_de = new Properties();
+				
+				try
+				{
+					ResourceLocation en_US = new ResourceLocation("lang/mpm_en_US.lang");
+					langPack_de.load(Minecraft.getMinecraft().getResourceManager().getResource(en_US).getInputStream());
+					LanguageRegistry.instance().addStringLocalization(langPack_en, "en_US");
+					
+					ResourceLocation de_DE = new ResourceLocation("lang/mpm_de_DE.lang");
+					langPack_en.load(Minecraft.getMinecraft().getResourceManager().getResource(de_DE).getInputStream());
+					LanguageRegistry.instance().addStringLocalization(langPack_de, "de_DE");
+				}
+				catch (Exception ex)
+				{
+					ex.printStackTrace();
+				}
+			}
+		}).start();
 	}
 	
 	private void addDusts()

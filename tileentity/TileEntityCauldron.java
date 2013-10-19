@@ -8,13 +8,13 @@ import clashsoft.brewingapi.brewing.Brewing;
 import clashsoft.brewingapi.brewing.BrewingBase;
 import clashsoft.brewingapi.brewing.BrewingList;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 
 public class TileEntityCauldron extends TileEntity
 {
@@ -55,10 +55,10 @@ public class TileEntityCauldron extends TileEntity
 						b.setEffect(new PotionEffect(b.getEffect().getPotionID(), Math.round(b.getEffect().getDuration() * 0.6F), Math.round(b.getEffect().getAmplifier() * 0.8F)));
 					}
 				}
-				out = "Effects thinned";
+				out = I18n.getString("cauldron.effects.durations.decrease");
 			}
 			else
-				out = "Filled with water";
+				out = I18n.getString("cauldron.addwater");
 		}
 		else if (ingredient.getItem() == Item.glowstone && !water()) // Improving
 		{
@@ -70,9 +70,9 @@ public class TileEntityCauldron extends TileEntity
 					brewings.set(var3, brewing.onImproved());
 				}
 			}
-			out = "Effect amplifiers increased.";
+			out = I18n.getString("cauldron.effects.amplifiers.increase");
 		}
-		else if (ingredient.getItem() == Item.redstone && !water()) // Extension
+		else if (ingredient.getItem() == Item.redstone && !water()) // Extending
 		{
 			for (int var3 = 0; var3 < brewings.size(); var3++)
 			{
@@ -82,9 +82,9 @@ public class TileEntityCauldron extends TileEntity
 					brewings.set(var3, brewing.onExtended());
 				}
 			}
-			out = "Effect durations extended.";
+			out = I18n.getString("cauldron.effects.durations.increase");
 		}
-		else if (ingredient.getItem() == Item.fermentedSpiderEye && !water()) // Opposites
+		else if (ingredient.getItem() == Item.fermentedSpiderEye && !water()) // Inverting
 		{
 			for (int var3 = 0; var3 < brewings.size(); var3++)
 			{
@@ -93,7 +93,7 @@ public class TileEntityCauldron extends TileEntity
 				brewing.setOpposite(null);
 				brewings.set(var3, brewing);
 			}
-			out = "Effects inverted.";
+			out = I18n.getString("cauldron.effects.invert");
 		}
 		else if (water()) // Other Base Ingredients
 		{
@@ -101,10 +101,10 @@ public class TileEntityCauldron extends TileEntity
 			if (base != null)
 			{
 				setBaseBrewing(base);
-				out = "Base ingredient set to " + base.basename + ".";
+				out = I18n.getStringParams("cauldron.effects.add.base", base.basename);
 			}
 		}
-		else
+		else // Normal ingredients
 		{
 			Brewing b = Brewing.getBrewingFromIngredient(ingredient);
 			if (brewings.size() > 0 && b != null)
@@ -117,13 +117,13 @@ public class TileEntityCauldron extends TileEntity
 					brewings.add(b);
 					if (b.getEffect() != null)
 					{
-						out = StatCollector.translateToLocal(b.getEffect().getEffectName()) + " added.";
+						out = I18n.getStringParams("cauldron.effects.add", I18n.getString(b.getEffect().getEffectName()));
 					}
 				}
 				else if (contains)
-					out = "Unable to add ingredient, this ingredient's effect has already been added.";
+					out = I18n.getString("cauldron.failed.existing");
 				else if (requiredBase != null)
-					out = "Unable to add ingredient, " + requiredBase.basename + " is required to brew this ingredient.";
+					out = I18n.getStringParams("cauldron.failed.wrongbase", requiredBase.basename);
 			}
 		}
 		

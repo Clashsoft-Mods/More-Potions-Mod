@@ -69,7 +69,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	 */
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		this.inner = par1IconRegister.registerIcon("cauldron_inner");
+		this.inner = BlockCauldron.getCauldronIcon("inner");
 		this.top = par1IconRegister.registerIcon("cauldron_top");
 		this.bottom = par1IconRegister.registerIcon("cauldron_bottom");
 		this.blockIcon = par1IconRegister.registerIcon("cauldron_side");
@@ -186,8 +186,6 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 						par1World.setBlockMetadataWithNotify(par2, par3, par4, i1, 2);
 						flag = true;
 					}
-					else
-						te.brewings.clear();
 				}
 				else if (i1 > 0 && itemstack.getItem() instanceof ItemArmor && ((ItemArmor) itemstack.getItem()).getArmorMaterial() == EnumArmorMaterial.CLOTH)
 				{
@@ -205,7 +203,6 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 					}
 				}
 			}
-			par1World.setBlockTileEntity(par2, par3, par4, te);
 			
 			if (flag)
 			{
