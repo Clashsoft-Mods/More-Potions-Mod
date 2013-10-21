@@ -44,7 +44,7 @@ import net.minecraftforge.oredict.OreDictionary;
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class MorePotionsMod
 {
-	public static final int			REVISION		= 3;
+	public static final int			REVISION		= 4;
 	public static final String		VERSION			= CSUpdate.CURRENT_VERSION + "-" + REVISION;
 	
 	@Instance("MorePotionsMod")
@@ -180,8 +180,8 @@ public class MorePotionsMod
 		{
 			public void run()
 			{
-				loadLanguageFile("lang/mpm_en_US", "en_US");
-				loadLanguageFile("lang/mpm_de_DE", "de_DE");
+				loadLanguageFile("mpm_en_US", "en_US");
+				loadLanguageFile("mpm_de_DE", "de_DE");
 			}
 		}).start();
 	}
@@ -191,7 +191,7 @@ public class MorePotionsMod
 		try
 		{
 			Properties langPack = new Properties();
-			ResourceLocation de = new ResourceLocation(fileName);
+			ResourceLocation de = new ResourceLocation("lang/" + fileName + ".lang");
 			
 			InputStream stream = Minecraft.getMinecraft().getResourceManager().getResource(de).getInputStream();
 			Reader reader = new InputStreamReader(stream, Charsets.UTF_8);
