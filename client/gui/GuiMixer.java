@@ -1,4 +1,4 @@
-package clashsoft.mods.morepotions.gui;
+package clashsoft.mods.morepotions.client.gui;
 
 import org.lwjgl.opengl.GL11;
 

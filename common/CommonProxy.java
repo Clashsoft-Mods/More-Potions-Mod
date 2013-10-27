@@ -1,8 +1,9 @@
-package clashsoft.mods.morepotions;
+package clashsoft.mods.morepotions.common;
 
 import clashsoft.brewingapi.inventory.ContainerBrewingStand2;
 import clashsoft.brewingapi.tileentity.TileEntityBrewingStand2;
-import clashsoft.mods.morepotions.gui.GuiMixer;
+import clashsoft.mods.morepotions.MorePotionsMod;
+import clashsoft.mods.morepotions.client.gui.GuiMixer;
 import clashsoft.mods.morepotions.inventory.ContainerMixer;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
 import cpw.mods.fml.common.network.IGuiHandler;

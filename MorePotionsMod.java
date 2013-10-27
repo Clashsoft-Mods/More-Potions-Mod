@@ -11,6 +11,12 @@ import clashsoft.clashsoftapi.CustomPotion;
 import clashsoft.clashsoftapi.util.*;
 import clashsoft.mods.morepotions.block.BlockCauldron2;
 import clashsoft.mods.morepotions.block.BlockMixer;
+import clashsoft.mods.morepotions.brewing.MPMBrewingList;
+import clashsoft.mods.morepotions.common.CommonProxy;
+import clashsoft.mods.morepotions.handlers.MPMEffectHandler;
+import clashsoft.mods.morepotions.handlers.MPMEventHandler;
+import clashsoft.mods.morepotions.handlers.MPMIngredientHandler;
+import clashsoft.mods.morepotions.handlers.MPMPacketHandler;
 import clashsoft.mods.morepotions.item.ItemMortar;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
@@ -41,7 +47,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 
 @Mod(modid = "MorePotionsMod", name = "More Potions Mod", version = MorePotionsMod.VERSION)
-@NetworkMod(clientSideRequired = true, serverSideRequired = false)
+@NetworkMod(channels = { "MPMCauldron" }, clientSideRequired = true, serverSideRequired = false, packetHandler = MPMPacketHandler.class)
 public class MorePotionsMod
 {
 	public static final int			REVISION		= 4;
@@ -50,7 +56,8 @@ public class MorePotionsMod
 	@Instance("MorePotionsMod")
 	public static MorePotionsMod	INSTANCE;
 	
-	@SidedProxy(clientSide = "clashsoft.mods.morepotions.ClientProxy", serverSide = "clashsoft.mods.morepotions.CommonProxy")
+	
+	@SidedProxy(clientSide = "clashsoft.mods.morepotions.client.ClientProxy", serverSide = "clashsoft.mods.morepotions.common.CommonProxy")
 	public static CommonProxy		proxy;
 	
 	public static String			customEffects	= "gui/potionIcons.png";
@@ -112,7 +119,7 @@ public class MorePotionsMod
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
-	{
+	{	
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 		
@@ -132,8 +139,8 @@ public class MorePotionsMod
 	@EventHandler
 	public void load(FMLInitializationEvent event)
 	{
-		BrewingAPI.registerEffectHandler(new MorePotionsModEffectHandler());
-		BrewingAPI.registerIngredientHandler(new MorePotionsModIngredientHandler());
+		BrewingAPI.registerEffectHandler(new MPMEffectHandler());
+		BrewingAPI.registerIngredientHandler(new MPMIngredientHandler());
 		
 		GameRegistry.registerTileEntity(TileEntityMixer.class, "Mixxer");
 		GameRegistry.registerTileEntity(TileEntityCauldron.class, "Cauldron2");
@@ -162,16 +169,16 @@ public class MorePotionsMod
 		NetworkRegistry.instance().registerGuiHandler(INSTANCE, proxy);
 		proxy.registerRenderInformation();
 		proxy.registerRenderers();
-		MinecraftForge.EVENT_BUS.register(new MorePotionsModEventHandler());
+		MinecraftForge.EVENT_BUS.register(new MPMEventHandler());
 		GameRegistry.registerCraftingHandler(new MorePotionsModCraftingHandler());
 		
 		System.out.println("Initializing MorePotionsMod Brewings");
-		MorePotionsModBrewingList.initializeBaseBrewings_MorePotionsMod();
-		MorePotionsModBrewingList.initializeBrewings_MorePotionsMod();
+		MPMBrewingList.initializeBaseBrewings_MorePotionsMod();
+		MPMBrewingList.initializeBrewings_MorePotionsMod();
 		
 		System.out.println("Registering MorePotionsMod Brewings");
-		MorePotionsModBrewingList.registerBaseBrewings_MorePotionsMod();
-		MorePotionsModBrewingList.registerBrewings_MorePotionsMod();
+		MPMBrewingList.registerBaseBrewings_MorePotionsMod();
+		MPMBrewingList.registerBrewings_MorePotionsMod();
 	}
 	
 	private void addLocalizations()

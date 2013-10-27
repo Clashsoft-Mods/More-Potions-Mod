@@ -1,6 +1,7 @@
-package clashsoft.mods.morepotions;
+package clashsoft.mods.morepotions.handlers;
 
 import clashsoft.clashsoftapi.util.CSUpdate;
+import clashsoft.mods.morepotions.MorePotionsMod;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +20,7 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
-public class MorePotionsModEventHandler
+public class MPMEventHandler
 {
 	@ForgeSubscribe
 	public void playerJoined(EntityJoinWorldEvent event)

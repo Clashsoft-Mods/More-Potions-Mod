@@ -6,7 +6,6 @@ import java.util.List;
 import clashsoft.brewingapi.BrewingAPI;
 import clashsoft.brewingapi.brewing.Brewing;
 import clashsoft.brewingapi.item.ItemPotion2;
-import clashsoft.mods.morepotions.lib.PacketHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -16,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityMixer extends TileEntity implements IInventory
@@ -346,12 +344,6 @@ public class TileEntityMixer extends TileEntity implements IInventory
 			}
 		}
 		return var1;
-	}
-	
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		return PacketHandler.getPacket(this);
 	}
 	
 	public void handlePacketData(int typeData, int[] intData)

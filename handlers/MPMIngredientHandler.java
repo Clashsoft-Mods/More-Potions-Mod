@@ -1,4 +1,4 @@
-package clashsoft.mods.morepotions;
+package clashsoft.mods.morepotions.handlers;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import clashsoft.brewingapi.brewing.BrewingBase;
 
 import net.minecraft.item.ItemStack;
 
-public class MorePotionsModIngredientHandler implements IIngredientHandler
+public class MPMIngredientHandler implements IIngredientHandler
 {
 	@Override
 	public boolean canHandleIngredient(ItemStack ingredient)

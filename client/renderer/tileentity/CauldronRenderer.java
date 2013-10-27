@@ -1,9 +1,10 @@
-package clashsoft.mods.morepotions.tileentity;
+package clashsoft.mods.morepotions.client.renderer.tileentity;
 
 import org.lwjgl.opengl.GL11;
 
 import clashsoft.mods.morepotions.MorePotionsMod;
 import clashsoft.mods.morepotions.block.BlockCauldron2;
+import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFluid;

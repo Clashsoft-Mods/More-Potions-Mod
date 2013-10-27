@@ -1,16 +1,18 @@
-package clashsoft.mods.morepotions;
+package clashsoft.mods.morepotions.brewing;
 
 import clashsoft.brewingapi.brewing.Brewing;
 import clashsoft.brewingapi.brewing.BrewingBase;
 import clashsoft.brewingapi.brewing.BrewingList;
+import clashsoft.mods.morepotions.MorePotionsMod;
 import static clashsoft.brewingapi.brewing.BrewingList.*;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
-public class MorePotionsModBrewingList
+public class MPMBrewingList
 {
 	public static Brewing	thorns;
 	public static Brewing	greenThumb;

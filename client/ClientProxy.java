@@ -1,6 +1,7 @@
-package clashsoft.mods.morepotions;
+package clashsoft.mods.morepotions.client;
 
-import clashsoft.mods.morepotions.tileentity.CauldronRenderer;
+import clashsoft.mods.morepotions.client.renderer.tileentity.CauldronRenderer;
+import clashsoft.mods.morepotions.common.CommonProxy;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;

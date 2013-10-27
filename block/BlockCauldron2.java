@@ -121,7 +121,11 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	
 	public boolean onItemAdded(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, ItemStack itemstack)
 	{
-		if (par1World.getBlockTileEntity(par2, par3, par4) instanceof TileEntityCauldron)
+		if (par1World.isRemote)
+		{
+			return true;
+		}
+		else if (par1World.getBlockTileEntity(par2, par3, par4) instanceof TileEntityCauldron)
 		{
 			TileEntityCauldron te = (TileEntityCauldron) par1World.getBlockTileEntity(par2, par3, par4);
 			boolean flag = false;
@@ -207,6 +211,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 			
 			if (flag)
 			{
+				par1World.setBlockTileEntity(par2, par3, par4, te);
 				par1World.playSound(par2, par3, par4, "random.pop", 1F, 1F, true);
 				if (MorePotionsMod.cauldronInfo && !itemDrop && !par1World.isRemote && message != null && !message.isEmpty())
 					par5EntityPlayer.addChatMessage(EnumChatFormatting.DARK_AQUA + "Cauldron" + EnumChatFormatting.RESET + ": " + message);
@@ -218,10 +223,10 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 			return false;
 	}
 	
-	@Override
 	/**
-	 * currently only used by BlockCauldron to incrament meta-data during rain
+	 * currently only used by BlockCauldron to increment metadata during rain
 	 */
+	@Override
 	public void fillWithRain(World par1World, int par2, int par3, int par4)
 	{
 		if (par1World.rand.nextInt(20) == 1)
@@ -236,7 +241,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	}
 	
 	/**
-	 * ejects contained items into the world, and notifies neighbours of an
+	 * ejects contained items into the world, and notifies neighbors of an
 	 * update, as appropriate
 	 */
 	@Override

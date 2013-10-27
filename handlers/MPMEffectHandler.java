@@ -1,10 +1,11 @@
-package clashsoft.mods.morepotions;
+package clashsoft.mods.morepotions.handlers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import clashsoft.brewingapi.api.IPotionEffectHandler;
 import clashsoft.brewingapi.brewing.Brewing;
+import clashsoft.mods.morepotions.MorePotionsMod;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,7 +13,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.ForgeDirection;
 
-public class MorePotionsModEffectHandler implements IPotionEffectHandler
+public class MPMEffectHandler implements IPotionEffectHandler
 {
 	private float				tick				= 0;
 	

@@ -18,9 +18,12 @@ import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityCauldron extends TileEntity
 {
+	public static final String CHANNEL = "MPMCauldron";
+	
 	public List<Brewing>	brewings;
 	
 	public ItemStack		output;
+	public int				color;
 	
 	public TileEntityCauldron()
 	{
@@ -128,6 +131,7 @@ public class TileEntityCauldron extends TileEntity
 		}
 		
 		this.output = brew(true);
+		this.color = output.getItem().getColorFromItemStack(output, 0);
 		
 		return out;
 	}
@@ -168,9 +172,7 @@ public class TileEntityCauldron extends TileEntity
 	
 	public int getColor()
 	{
-		if (output == null)
-			output = brew(true);
-		return (water() || output == null) ? -1 : output.getItem().getColorFromItemStack(output, 0);
+		return color;
 	}
 	
 	@Override
@@ -194,6 +196,7 @@ public class TileEntityCauldron extends TileEntity
 		}
 		
 		this.output = brew(false);
+		this.color = output.getItem().getColorFromItemStack(output, 0);
 	}
 	
 	@Override
