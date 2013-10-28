@@ -12,7 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class CommonProxy implements IGuiHandler
+public class MPMCommonProxy implements IGuiHandler
 {
 	public void registerRenderInformation()
 	{

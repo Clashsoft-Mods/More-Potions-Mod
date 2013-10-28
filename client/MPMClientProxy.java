@@ -1,12 +1,15 @@
 package clashsoft.mods.morepotions.client;
 
 import clashsoft.mods.morepotions.client.renderer.tileentity.CauldronRenderer;
-import clashsoft.mods.morepotions.common.CommonProxy;
+import clashsoft.mods.morepotions.common.MPMCommonProxy;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
-public class ClientProxy extends CommonProxy
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.World;
+
+public class MPMClientProxy extends MPMCommonProxy
 {
 	public static int	mixerRenderType;
 	public static int	cauldronRenderType;
@@ -21,7 +24,14 @@ public class ClientProxy extends CommonProxy
 	public static void setCustomRenderers()
 	{
 		mixerRenderType = RenderingRegistry.getNextAvailableRenderId();
-		cauldronRenderType = RenderingRegistry.getNextAvailableRenderId();
+		cauldronRenderType = 24;
+		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCauldron.class, new CauldronRenderer());
+	}
+	
+	@Override
+	public World getClientWorld()
+	{
+		return Minecraft.getMinecraft().thePlayer.worldObj;
 	}
 }

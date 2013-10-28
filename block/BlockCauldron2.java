@@ -3,13 +3,13 @@ package clashsoft.mods.morepotions.block;
 import java.util.List;
 
 import clashsoft.mods.morepotions.MorePotionsMod;
+import clashsoft.mods.morepotions.client.MPMClientProxy;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,37 +42,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	@Override
 	public int getRenderType()
 	{
-		return 24;
-	}
-	
-	@Override
-	public boolean isOpaqueCube()
-	{
-		return false;
-	}
-	
-	@SideOnly(Side.CLIENT)
-	@Override
-	/**
-	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-	 */
-	public Icon getIcon(int par1, int par2)
-	{
-		return par1 == 1 ? this.top : (par1 == 0 ? this.bottom : this.blockIcon);
-	}
-	
-	@SideOnly(Side.CLIENT)
-	@Override
-	/**
-	 * When this method is called, your block should register all the icons it needs with the given IconRegister. This
-	 * is the only chance you get to register icons.
-	 */
-	public void registerIcons(IconRegister par1IconRegister)
-	{
-		this.inner = BlockCauldron.getCauldronIcon("inner");
-		this.top = par1IconRegister.registerIcon("cauldron_top");
-		this.bottom = par1IconRegister.registerIcon("cauldron_bottom");
-		this.blockIcon = par1IconRegister.registerIcon("cauldron_side");
+		return MPMClientProxy.cauldronRenderType;
 	}
 	
 	@Override
@@ -100,7 +70,9 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	@Override
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
 	{
-		if (par5Entity instanceof EntityItem)
+		if (par1World.isRemote)
+			return;
+		else if (par5Entity instanceof EntityItem)
 		{
 			EntityItem item = (EntityItem) par5Entity;
 			
@@ -122,9 +94,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	public boolean onItemAdded(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, ItemStack itemstack)
 	{
 		if (par1World.isRemote)
-		{
 			return true;
-		}
 		else if (par1World.getBlockTileEntity(par2, par3, par4) instanceof TileEntityCauldron)
 		{
 			TileEntityCauldron te = (TileEntityCauldron) par1World.getBlockTileEntity(par2, par3, par4);
@@ -210,13 +180,13 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 			}
 			
 			if (flag)
-			{
-				par1World.setBlockTileEntity(par2, par3, par4, te);
+			{				
 				par1World.playSound(par2, par3, par4, "random.pop", 1F, 1F, true);
 				if (MorePotionsMod.cauldronInfo && !itemDrop && !par1World.isRemote && message != null && !message.isEmpty())
 					par5EntityPlayer.addChatMessage(EnumChatFormatting.DARK_AQUA + "Cauldron" + EnumChatFormatting.RESET + ": " + message);
 			}
 			
+			te.sync();
 			return flag;
 		}
 		else
@@ -238,17 +208,6 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 				par1World.setBlockMetadataWithNotify(par2, par3, par4, l + 1, 2);
 			}
 		}
-	}
-	
-	/**
-	 * ejects contained items into the world, and notifies neighbors of an
-	 * update, as appropriate
-	 */
-	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
-	{
-		super.breakBlock(par1World, par2, par3, par4, par5, par6);
-		par1World.removeBlockTileEntity(par2, par3, par4);
 	}
 	
 	/**

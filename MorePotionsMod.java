@@ -12,7 +12,7 @@ import clashsoft.clashsoftapi.util.*;
 import clashsoft.mods.morepotions.block.BlockCauldron2;
 import clashsoft.mods.morepotions.block.BlockMixer;
 import clashsoft.mods.morepotions.brewing.MPMBrewingList;
-import clashsoft.mods.morepotions.common.CommonProxy;
+import clashsoft.mods.morepotions.common.MPMCommonProxy;
 import clashsoft.mods.morepotions.handlers.MPMEffectHandler;
 import clashsoft.mods.morepotions.handlers.MPMEventHandler;
 import clashsoft.mods.morepotions.handlers.MPMIngredientHandler;
@@ -47,7 +47,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 
 @Mod(modid = "MorePotionsMod", name = "More Potions Mod", version = MorePotionsMod.VERSION)
-@NetworkMod(channels = { "MPMCauldron" }, clientSideRequired = true, serverSideRequired = false, packetHandler = MPMPacketHandler.class)
+@NetworkMod(channels = { TileEntityCauldron.CHANNEL }, clientSideRequired = true, serverSideRequired = false, packetHandler = MPMPacketHandler.class)
 public class MorePotionsMod
 {
 	public static final int			REVISION		= 4;
@@ -56,9 +56,8 @@ public class MorePotionsMod
 	@Instance("MorePotionsMod")
 	public static MorePotionsMod	INSTANCE;
 	
-	
-	@SidedProxy(clientSide = "clashsoft.mods.morepotions.client.ClientProxy", serverSide = "clashsoft.mods.morepotions.common.CommonProxy")
-	public static CommonProxy		proxy;
+	@SidedProxy(clientSide = "clashsoft.mods.morepotions.client.MPMClientProxy", serverSide = "clashsoft.mods.morepotions.common.MPMCommonProxy")
+	public static MPMCommonProxy		proxy;
 	
 	public static String			customEffects	= "gui/potionIcons.png";
 	

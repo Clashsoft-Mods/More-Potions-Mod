@@ -41,10 +41,10 @@ public class CauldronRenderer extends TileEntitySpecialRenderer
 				
 				Icon icon2 = BlockFluid.getFluidIcon("lava_still");
 				
-				double yPos = (6D + i1 * 3.0D) / 16.0D;
+				double yPos = (6D + (i1 * 3.0D)) / 16.0D;
 				
-				tess.setTranslation(-x, (-y) + yPos - 0.937D, -z);
-				renderer.setRenderBounds(0.125, yPos, 0.125, 0.875, yPos, 0.875);
+				tess.setTranslation(-x, -y, -z);
+				renderer.setRenderBounds(0.125, yPos, 0.125, 0.875, yPos + 0.001D, 0.875);
 				renderer.setOverrideBlockTexture(icon2);
 				renderer.renderStandardBlockWithColorMultiplier(Block.grass, x, y, z, r, g, b);
 			}

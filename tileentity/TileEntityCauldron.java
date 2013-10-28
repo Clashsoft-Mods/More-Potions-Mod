@@ -1,5 +1,8 @@
 package clashsoft.mods.morepotions.tileentity;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,12 +10,15 @@ import clashsoft.brewingapi.BrewingAPI;
 import clashsoft.brewingapi.brewing.Brewing;
 import clashsoft.brewingapi.brewing.BrewingBase;
 import clashsoft.brewingapi.brewing.BrewingList;
+import cpw.mods.fml.common.network.PacketDispatcher;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 
@@ -130,8 +136,7 @@ public class TileEntityCauldron extends TileEntity
 			}
 		}
 		
-		this.output = brew(true);
-		this.color = output.getItem().getColorFromItemStack(output, 0);
+		this.updateOutput();
 		
 		return out;
 	}
@@ -151,6 +156,47 @@ public class TileEntityCauldron extends TileEntity
 	public boolean water()
 	{
 		return brewings.size() <= 0;
+	}
+	
+	protected void updateOutput()
+	{
+		this.output = brew(false);
+		this.color = output.getItem().getColorFromItemStack(output, 0);
+		sync();
+	}
+	
+	public void sync()
+	{
+		if (!this.worldObj.isRemote)
+			PacketDispatcher.sendPacketToAllPlayers(getDescriptionPacket());
+	}
+	
+	@Override
+	public Packet getDescriptionPacket()
+	{
+		Packet250CustomPayload packet = new Packet250CustomPayload();
+		
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		DataOutputStream dos = new DataOutputStream(bos);
+		
+		try
+		{
+			dos.writeInt(xCoord);
+			dos.writeInt(yCoord);
+			dos.writeInt(zCoord);
+			dos.writeInt(color);
+			Packet.writeItemStack(output, dos);
+		}
+		catch (IOException ex)
+		{
+			
+		}
+		
+		packet.channel = CHANNEL;
+		packet.data = bos.toByteArray();
+		packet.length = bos.size();
+		
+		return packet;
 	}
 	
 	private ItemStack brew(boolean removeDuplicates)
@@ -195,13 +241,12 @@ public class TileEntityCauldron extends TileEntity
 			brewings = var6;
 		}
 		
-		this.output = brew(false);
-		this.color = output.getItem().getColorFromItemStack(output, 0);
+		updateOutput();
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
-	{
+	{	
 		super.writeToNBT(par1NBTTagCompound);
 		
 		if (!par1NBTTagCompound.hasKey("Brewing"))
