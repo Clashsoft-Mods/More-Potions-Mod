@@ -1,7 +1,5 @@
 package clashsoft.mods.morepotions.block;
 
-import java.util.List;
-
 import clashsoft.mods.morepotions.MorePotionsMod;
 import clashsoft.mods.morepotions.client.MPMClientProxy;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
@@ -19,7 +17,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
@@ -36,35 +33,12 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	public BlockCauldron2(int par1)
 	{
 		super(par1);
-		this.setBlockBounds(0F, 0F, 0F, 1F, 1F, 1F);
 	}
 	
 	@Override
 	public int getRenderType()
 	{
 		return MPMClientProxy.cauldronRenderType;
-	}
-	
-	@Override
-	/**
-	 * Adds all intersecting collision boxes to a list. (Be sure to only add boxes to the list if they intersect the
-	 * mask.) Parameters: World, X, Y, Z, mask, list, colliding entity
-	 */
-	public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
-	{
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.3125F, 1.0F);
-		super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
-		float f = 0.125F;
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
-		super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
-		super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
-		this.setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-		super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
-		this.setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
-		super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
-		this.setBlockBounds(0F, 0F, 0F, 1F, 1F, 1F);
-		this.setBlockBoundsForItemRender();
 	}
 	
 	@Override

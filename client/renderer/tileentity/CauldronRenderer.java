@@ -20,7 +20,7 @@ import net.minecraft.util.Icon;
 public class CauldronRenderer extends TileEntitySpecialRenderer
 {
 	public void renderBlockCauldron(RenderBlocks renderer, TileEntityCauldron tileentity, BlockCauldron2 cauldron, int x, int y, int z)
-	{
+	{	
 		Tessellator tess = Tessellator.instance;
 		
 		int i1 = tileentity.blockMetadata;
@@ -56,6 +56,7 @@ public class CauldronRenderer extends TileEntitySpecialRenderer
 	{
 		TileEntityCauldron te = (TileEntityCauldron) Minecraft.getMinecraft().theWorld.getBlockTileEntity(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
 		
+		GL11.glPushMatrix();
 		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 		Tessellator tessellator = Tessellator.instance;
 		RenderBlocks renderBlocks = Minecraft.getMinecraft().renderGlobal.globalRenderBlocks;
@@ -69,7 +70,6 @@ public class CauldronRenderer extends TileEntitySpecialRenderer
 		else
 			GL11.glShadeModel(GL11.GL_FLAT);
 		
-		GL11.glPushMatrix();
 		GL11.glTranslated(d0, d1, d2);
 		tessellator.startDrawingQuads();
 		
