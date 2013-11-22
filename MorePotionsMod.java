@@ -6,9 +6,12 @@ import java.io.Reader;
 import java.util.Properties;
 
 import clashsoft.brewingapi.BrewingAPI;
-import clashsoft.clashsoftapi.CustomItem;
-import clashsoft.clashsoftapi.CustomPotion;
-import clashsoft.clashsoftapi.util.*;
+import clashsoft.cslib.minecraft.CustomItem;
+import clashsoft.cslib.minecraft.CustomPotion;
+import clashsoft.cslib.minecraft.update.CSUpdate;
+import clashsoft.cslib.minecraft.util.CSBlocks;
+import clashsoft.cslib.minecraft.util.CSCrafting;
+import clashsoft.cslib.util.*;
 import clashsoft.mods.morepotions.block.BlockCauldron2;
 import clashsoft.mods.morepotions.block.BlockMixer;
 import clashsoft.mods.morepotions.brewing.MPMBrewingList;

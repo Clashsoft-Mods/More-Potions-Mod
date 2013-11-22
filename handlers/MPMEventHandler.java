@@ -1,6 +1,6 @@
 package clashsoft.mods.morepotions.handlers;
 
-import clashsoft.clashsoftapi.util.CSUpdate;
+import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.mods.morepotions.MorePotionsMod;
 
 import net.minecraft.entity.Entity;
