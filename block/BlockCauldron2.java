@@ -6,8 +6,10 @@ import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,9 +32,9 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	@SideOnly(Side.CLIENT)
 	public Icon	bottom;
 	
-	public BlockCauldron2(int par1)
+	public BlockCauldron2(int blockID)
 	{
-		super(par1);
+		super(blockID);
 	}
 	
 	@Override
@@ -42,18 +44,25 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	}
 	
 	@Override
-	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
+	public void registerIcons(IconRegister iconRegister)
 	{
-		if (par1World.isRemote)
+		super.registerIcons(iconRegister);
+		Block.cauldron.registerIcons(iconRegister);
+	}
+	
+	@Override
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
+	{
+		if (world.isRemote)
 			return;
-		else if (par5Entity instanceof EntityItem)
+		else if (entity instanceof EntityItem)
 		{
-			EntityItem item = (EntityItem) par5Entity;
+			EntityItem item = (EntityItem) entity;
 			
 			// Makes sure the item is *in* the cauldron
-			if (item.posX >= par2 + 0.125D && item.posX <= par2 + 0.875D && item.posY >= par3 + 0.125D && item.posY <= par3 + 1D && item.posZ >= par4 + 0.125D && item.posZ <= par4 + 0.875D)
+			if (item.posX >= x + 0.125D && item.posX <= x + 0.875D && item.posY >= y + 0.125D && item.posY <= y + 1D && item.posZ >= z + 0.125D && item.posZ <= z + 0.875D)
 			{
-				if (this.onItemAdded(par1World, par2, par3, par4, null, item.getEntityItem()))
+				if (this.onItemAdded(world, x, y, z, null, item.getEntityItem()))
 					item.setDead();
 			}
 		}
