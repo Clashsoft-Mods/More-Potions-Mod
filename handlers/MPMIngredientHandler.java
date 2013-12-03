@@ -4,8 +4,8 @@ import java.util.List;
 
 import clashsoft.brewingapi.BrewingAPI;
 import clashsoft.brewingapi.api.IIngredientHandler;
-import clashsoft.brewingapi.brewing.Brewing;
-import clashsoft.brewingapi.brewing.BrewingBase;
+import clashsoft.brewingapi.brewing.PotionType;
+import clashsoft.brewingapi.brewing.PotionBase;
 
 import net.minecraft.item.ItemStack;
 
@@ -14,15 +14,15 @@ public class MPMIngredientHandler implements IIngredientHandler
 	@Override
 	public boolean canHandleIngredient(ItemStack ingredient)
 	{
-		return Brewing.getBrewingFromIngredient(ingredient) != null;
+		return PotionType.getBrewingFromIngredient(ingredient) != null;
 	}
 	
 	@Override
 	public boolean canApplyIngredient(ItemStack ingredient, ItemStack potion)
 	{
-		List<Brewing> effects = BrewingAPI.potion2.getEffects(potion);
-		BrewingBase base = null;
-		for (Brewing b : effects)
+		List<PotionType> effects = BrewingAPI.potion2.getEffects(potion);
+		PotionBase base = null;
+		for (PotionType b : effects)
 			if (b != null)
 			{
 				if (base == null)
@@ -36,11 +36,11 @@ public class MPMIngredientHandler implements IIngredientHandler
 	@Override
 	public ItemStack applyIngredient(ItemStack ingredient, ItemStack potion)
 	{
-		Brewing newBrewing = Brewing.getBrewingFromIngredient(ingredient);
-		List<Brewing> oldBrewings = BrewingAPI.potion2.getEffects(potion);
+		PotionType newBrewing = PotionType.getBrewingFromIngredient(ingredient);
+		List<PotionType> oldBrewings = BrewingAPI.potion2.getEffects(potion);
 		ItemStack newPotion = new ItemStack(potion.getItem(), potion.stackSize, potion.getItemDamage());
 		
-		for (Brewing b : oldBrewings)
+		for (PotionType b : oldBrewings)
 		{
 			if (b.getEffect() != null)
 				b.getEffect().duration *= 0.75;

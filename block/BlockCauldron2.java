@@ -143,7 +143,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 					}
 					
 					if (i1 == 0)
-						te.brewings.clear();
+						te.potionTypes.clear();
 				}
 				else if (i1 > 0 && itemstack.getItem() instanceof ItemArmor && ((ItemArmor) itemstack.getItem()).getArmorMaterial() == EnumArmorMaterial.CLOTH)
 				{

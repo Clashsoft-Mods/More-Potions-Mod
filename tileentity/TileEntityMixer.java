@@ -1,10 +1,10 @@
 package clashsoft.mods.morepotions.tileentity;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import clashsoft.brewingapi.BrewingAPI;
-import clashsoft.brewingapi.brewing.Brewing;
+import clashsoft.brewingapi.brewing.PotionType;
 import clashsoft.brewingapi.item.ItemPotion2;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -112,38 +112,34 @@ public class TileEntityMixer extends TileEntity implements IInventory
 	
 	public ItemStack getOutput()
 	{
-		List<Brewing> brewings = new LinkedList<Brewing>();
-		for (int var1 = 0; var1 < 3; var1++)
+		List<PotionType> potionTypes = new ArrayList<PotionType>();
+		for (int potionIndex = 0; potionIndex < 3; potionIndex++)
 		{
-			if (mixingItemStacks[var1] != null)
+			if (mixingItemStacks[potionIndex] != null)
 			{
-				NBTTagCompound compound = this.mixingItemStacks[var1].stackTagCompound;
-				NBTTagList list = (compound != null) ? compound.getTagList("Brewing") : (NBTTagList) null;
-				Brewing[] brewing = new Brewing[list != null ? list.tagCount() : 1];
+				NBTTagCompound compound = this.mixingItemStacks[potionIndex].stackTagCompound;
+				NBTTagList list = compound != null ? compound.getTagList("PotionType") : null;
+				PotionType[] brewingArray = new PotionType[list != null ? list.tagCount() : 1];
 				if (list != null && list.tagCount() > 0)
 				{
-					for (int var2 = 0; var2 < list.tagCount(); var2++)
+					for (int index = 0; index < list.tagCount(); index++)
 					{
-						Brewing b = Brewing.readFromNBT((NBTTagCompound) list.tagAt(var2));
-						if (!brewings.contains(b) && b.getEffect() != null)
-						{
-							brewings.add(b);
-						}
+						PotionType potionType = new PotionType();
+						potionType.readFromNBT((NBTTagCompound) list.tagAt(index));
+						if (!potionTypes.contains(potionType) && potionType.getEffect() != null)
+							potionTypes.add(potionType);
 					}
 				}
 			}
 		}
-		if (brewings != null && brewings.size() > 0)
+		if (!potionTypes.isEmpty())
 		{
-			brewings = (List<Brewing>) Brewing.removeDuplicates(brewings);
+			potionTypes = (List<PotionType>) PotionType.removeDuplicates(potionTypes);
 			int damage = mixingItemStacks[0] != null ? mixingItemStacks[0].getItemDamage() : mixingItemStacks[1] != null ? mixingItemStacks[1].getItemDamage() : mixingItemStacks[2] != null ? mixingItemStacks[2].getItemDamage() : 0;
-			if (damage == 0)
-			{
-			}
 			ItemStack ret = new ItemStack(BrewingAPI.potion2, 1, damage);
-			for (Brewing b : brewings)
+			for (PotionType b : potionTypes)
 			{
-				ret = b.addBrewingToItemStack(ret);
+				b.addBrewingToItemStack(ret);
 			}
 			return ret;
 		}
@@ -155,23 +151,23 @@ public class TileEntityMixer extends TileEntity implements IInventory
 	{
 		if (this.mixingItemStacks[3] == null && getFilledSlots() >= 2 && mixingItemStacks[3] == null)
 		{
-			boolean var1 = false;
-			for (int var2 = 0; var2 < 3; var2++)
+			boolean flag = false;
+			for (int index = 0; index < 3; index++)
 			{
-				if (mixingItemStacks[var2] != null && mixingItemStacks[var2].getItem() instanceof ItemPotion2)
+				if (mixingItemStacks[index] != null && mixingItemStacks[index].getItem() instanceof ItemPotion2)
 				{
-					if (((ItemPotion2) mixingItemStacks[var2].getItem()).getEffects(mixingItemStacks[var2]) == null)
+					if (((ItemPotion2) mixingItemStacks[index].getItem()).getEffects(mixingItemStacks[index]) == null)
 					{
-						var1 = false;
+						flag = false;
 						break;
 					}
 					else
 					{
-						var1 = true;
+						flag = true;
 					}
 				}
 			}
-			return var1;
+			return flag;
 		}
 		else
 		{
@@ -188,57 +184,57 @@ public class TileEntityMixer extends TileEntity implements IInventory
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+	public void readFromNBT(NBTTagCompound nbt)
 	{
-		super.readFromNBT(par1NBTTagCompound);
-		NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+		super.readFromNBT(nbt);
+		NBTTagList tagList = nbt.getTagList("Items");
 		this.mixingItemStacks = new ItemStack[this.getSizeInventory()];
 		
-		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+		for (int index = 0; index < tagList.tagCount(); ++index)
 		{
-			NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
-			byte var5 = var4.getByte("Slot");
+			NBTTagCompound slotCompound = (NBTTagCompound) tagList.tagAt(index);
+			byte slotID = slotCompound.getByte("Slot");
 			
-			if (var5 >= 0 && var5 < this.mixingItemStacks.length)
+			if (slotID >= 0 && slotID < this.mixingItemStacks.length)
 			{
-				this.mixingItemStacks[var5] = ItemStack.loadItemStackFromNBT(var4);
+				this.mixingItemStacks[slotID] = ItemStack.loadItemStackFromNBT(slotCompound);
 			}
 		}
 		
-		this.mixTime = par1NBTTagCompound.getShort("BrewTime");
+		this.mixTime = nbt.getShort("BrewTime");
 	}
 	
 	/**
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+	public void writeToNBT(NBTTagCompound nbt)
 	{
-		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setShort("BrewTime", (short) this.mixTime);
-		NBTTagList var2 = new NBTTagList();
+		super.writeToNBT(nbt);
+		nbt.setShort("BrewTime", (short) this.mixTime);
+		NBTTagList tagList = new NBTTagList();
 		
-		for (int var3 = 0; var3 < this.mixingItemStacks.length; ++var3)
+		for (int index = 0; index < this.mixingItemStacks.length; ++index)
 		{
-			if (this.mixingItemStacks[var3] != null)
+			if (this.mixingItemStacks[index] != null)
 			{
 				NBTTagCompound var4 = new NBTTagCompound();
-				var4.setByte("Slot", (byte) var3);
-				this.mixingItemStacks[var3].writeToNBT(var4);
-				var2.appendTag(var4);
+				var4.setByte("Slot", (byte) index);
+				this.mixingItemStacks[index].writeToNBT(var4);
+				tagList.appendTag(var4);
 			}
 		}
 		
-		par1NBTTagCompound.setTag("Items", var2);
+		nbt.setTag("Items", tagList);
 	}
 	
 	/**
 	 * Returns the stack in slot i
 	 */
 	@Override
-	public ItemStack getStackInSlot(int par1)
+	public ItemStack getStackInSlot(int slotID)
 	{
-		return par1 >= 0 && par1 < this.mixingItemStacks.length ? this.mixingItemStacks[par1] : null;
+		return slotID >= 0 && slotID < this.mixingItemStacks.length ? this.mixingItemStacks[slotID] : null;
 	}
 	
 	/**
@@ -246,12 +242,12 @@ public class TileEntityMixer extends TileEntity implements IInventory
 	 * (second arg) of items and returns them in a new stack.
 	 */
 	@Override
-	public ItemStack decrStackSize(int par1, int par2)
+	public ItemStack decrStackSize(int slotID, int amount)
 	{
-		if (par1 >= 0 && par1 < this.mixingItemStacks.length)
+		if (slotID >= 0 && slotID < this.mixingItemStacks.length)
 		{
-			ItemStack var3 = this.mixingItemStacks[par1];
-			this.mixingItemStacks[par1] = null;
+			ItemStack var3 = this.mixingItemStacks[slotID];
+			this.mixingItemStacks[slotID] = null;
 			return var3;
 		}
 		else

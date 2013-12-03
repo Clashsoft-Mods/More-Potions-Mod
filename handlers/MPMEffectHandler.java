@@ -1,10 +1,7 @@
 package clashsoft.mods.morepotions.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import clashsoft.brewingapi.api.IPotionEffectHandler;
-import clashsoft.brewingapi.brewing.Brewing;
+import clashsoft.brewingapi.brewing.PotionType;
 import clashsoft.mods.morepotions.MorePotionsMod;
 
 import net.minecraft.block.Block;
@@ -15,19 +12,16 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class MPMEffectHandler implements IPotionEffectHandler
 {
-	private float				tick				= 0;
-	
-	private List<PotionEffect>	addEffectQueue		= new ArrayList<PotionEffect>();
-	private List<Integer>		removeEffectQueue	= new ArrayList<Integer>();
+	private float	tick	= 0;
 	
 	@Override
-	public void onPotionUpdate(EntityLivingBase living, PotionEffect effect)
+	public void onPotionUpdate(PotionQueue queue, EntityLivingBase living, PotionEffect effect)
 	{
 		if (effect.getPotionID() == MorePotionsMod.fire.id)
 		{
-			int x = (int) Math.floor(living.posX);
+			int x = (int) living.posX;
 			int y = (int) (living.posY - living.getYOffset());
-			int z = (int) Math.floor(living.posZ);
+			int z = (int) living.posZ;
 			int id = living.worldObj.getBlockId(x, y - 1, z);
 			if (Block.blocksList[id] != null && Block.blocksList[id].isBlockSolidOnSide(living.worldObj, x, y - 1, z, ForgeDirection.UP) && living.worldObj.getBlockId(x, y, z) == 0)
 			{
@@ -83,28 +77,23 @@ public class MPMEffectHandler implements IPotionEffectHandler
 		else if (effect.getPotionID() == MorePotionsMod.explosiveness.id)
 		{
 			if (((int) tick) % 40 == 0)
-			{
 				living.worldObj.createExplosion(living, living.posX, living.posY, living.posZ, (effect.getAmplifier() + 1) * 2, true);
-			}
 		}
 		else if (effect.getPotionID() == MorePotionsMod.random.id)
 		{
 			if (MorePotionsMod.randomMode == 0)
 			{
-				this.addEffectQueue.clear();
-				this.addEffectQueue.add(Brewing.effectBrewings.get(living.getRNG().nextInt(Brewing.effectBrewings.size() - 1)).getEffect());
-				this.removeEffectQueue.add(MorePotionsMod.random.id);
+				queue.add(PotionType.getRandom(living.getRNG()).getEffect());
+				queue.remove(MorePotionsMod.random.id);
 			}
 			else
 			{
 				if (((int) tick) % 40 == 0)
 				{
-					PotionEffect pe = Brewing.combinableEffects.get(living.getRNG().nextInt(Brewing.effectBrewings.size() - 1)).getEffect();
-					if (pe.getDuration() >= 2)
-					{
-						pe = new PotionEffect(pe.getPotionID(), 2 * 20, pe.getAmplifier());
-					}
-					this.addEffectQueue.add(pe);
+					PotionEffect pe = PotionType.getRandom(living.getRNG()).getEffect();
+					if (pe.getDuration() > 1)
+						pe.duration = 40;
+					queue.add(pe);
 				}
 			}
 		}
@@ -115,29 +104,5 @@ public class MPMEffectHandler implements IPotionEffectHandler
 	public boolean canHandle(PotionEffect effect)
 	{
 		return true;
-	}
-	
-	@Override
-	public List<PotionEffect> getAddQueue()
-	{
-		return addEffectQueue;
-	}
-	
-	@Override
-	public List<Integer> getRemoveQueue()
-	{
-		return removeEffectQueue;
-	}
-	
-	@Override
-	public void clearAddQueue()
-	{
-		addEffectQueue.clear();
-	}
-	
-	@Override
-	public void clearRemoveQueue()
-	{
-		removeEffectQueue.clear();
 	}
 }
