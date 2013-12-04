@@ -233,8 +233,7 @@ public class TileEntityCauldron extends TileEntity
 			for (int index = 0; index < tagList.tagCount(); ++index)
 			{
 				NBTTagCompound brewingCompound = (NBTTagCompound) tagList.tagAt(index);
-				PotionType potionType = new PotionType();
-				potionType.readFromNBT(brewingCompound);
+				PotionType potionType = PotionType.getPotionTypeFromNBT(brewingCompound);
 				result.add(potionType);
 			}
 			this.potionTypes = result;

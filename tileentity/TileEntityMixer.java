@@ -115,21 +115,10 @@ public class TileEntityMixer extends TileEntity implements IInventory
 		List<PotionType> potionTypes = new ArrayList<PotionType>();
 		for (int potionIndex = 0; potionIndex < 3; potionIndex++)
 		{
-			if (mixingItemStacks[potionIndex] != null)
+			if (mixingItemStacks[potionIndex] != null && mixingItemStacks[potionIndex].getItem() instanceof ItemPotion2)
 			{
-				NBTTagCompound compound = this.mixingItemStacks[potionIndex].stackTagCompound;
-				NBTTagList list = compound != null ? compound.getTagList("PotionType") : null;
-				PotionType[] brewingArray = new PotionType[list != null ? list.tagCount() : 1];
-				if (list != null && list.tagCount() > 0)
-				{
-					for (int index = 0; index < list.tagCount(); index++)
-					{
-						PotionType potionType = new PotionType();
-						potionType.readFromNBT((NBTTagCompound) list.tagAt(index));
-						if (!potionTypes.contains(potionType) && potionType.getEffect() != null)
-							potionTypes.add(potionType);
-					}
-				}
+				ItemPotion2 item = (ItemPotion2) mixingItemStacks[potionIndex].getItem();
+				potionTypes.addAll(item.getEffects(mixingItemStacks[potionIndex]));
 			}
 		}
 		if (!potionTypes.isEmpty())

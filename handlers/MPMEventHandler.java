@@ -76,33 +76,36 @@ public class MPMEventHandler
 	@ForgeSubscribe
 	public void playerRightClick(PlayerInteractEvent event)
 	{
-		if (event.action == Action.RIGHT_CLICK_BLOCK && event.entityLiving.isPotionActive(MorePotionsMod.greenThumb))
+		if (!event.entityPlayer.worldObj.isRemote)
 		{
-			if (event.entityPlayer.getCurrentEquippedItem() == null)
+			if (event.action == Action.RIGHT_CLICK_BLOCK && event.entityLiving.isPotionActive(MorePotionsMod.greenThumb))
 			{
-				int amplifier = event.entityPlayer.getActivePotionEffect(MorePotionsMod.greenThumb).getAmplifier();
-				
-				for (int i = 0; i < amplifier + 1; i++)
-					Item.dyePowder.onItemUse(new ItemStack(Item.dyePowder, 1, 15), event.entityPlayer, event.entityPlayer.worldObj, event.x, event.y, event.z, event.face, 0F, 0F, 0F);
-			}
-		}
-		if (event.action == Action.RIGHT_CLICK_AIR && event.entityLiving.isPotionActive(MorePotionsMod.projectile))
-		{
-			if (event.entityPlayer.getCurrentEquippedItem() == null)
-			{
-				int amplifier = event.entityPlayer.getActivePotionEffect(MorePotionsMod.projectile).getAmplifier();
-				World world = event.entityPlayer.worldObj;
-				
-				if (amplifier == 0)
-					world.spawnEntityInWorld(new EntitySnowball(world, event.entityPlayer));
-				else
+				if (event.entityPlayer.getCurrentEquippedItem() == null)
 				{
-					EntityArrow projectile = new EntityArrow(world, event.entityPlayer, 1F + 0.5F * amplifier);
-					projectile.canBePickedUp = 2;
-					projectile.setDamage(projectile.getDamage() + 0.5D * amplifier);
-					projectile.setKnockbackStrength(1);
+					int amplifier = event.entityPlayer.getActivePotionEffect(MorePotionsMod.greenThumb).getAmplifier();
 					
-					world.spawnEntityInWorld(projectile);
+					for (int i = 0; i < amplifier + 1; i++)
+						Item.dyePowder.onItemUse(new ItemStack(Item.dyePowder, 1, 15), event.entityPlayer, event.entityPlayer.worldObj, event.x, event.y, event.z, event.face, 0F, 0F, 0F);
+				}
+			}
+			if (event.action == Action.RIGHT_CLICK_AIR && event.entityLiving.isPotionActive(MorePotionsMod.projectile))
+			{
+				if (event.entityPlayer.getCurrentEquippedItem() == null)
+				{
+					int amplifier = event.entityPlayer.getActivePotionEffect(MorePotionsMod.projectile).getAmplifier();
+					World world = event.entityPlayer.worldObj;
+					
+					if (amplifier == 0)
+						world.spawnEntityInWorld(new EntitySnowball(world, event.entityPlayer));
+					else
+					{
+						EntityArrow projectile = new EntityArrow(world, event.entityPlayer, 1F + 0.5F * amplifier);
+						projectile.canBePickedUp = 2;
+						projectile.setDamage(projectile.getDamage() + 0.5D * amplifier);
+						projectile.setKnockbackStrength(1);
+						
+						world.spawnEntityInWorld(projectile);
+					}
 				}
 			}
 		}
