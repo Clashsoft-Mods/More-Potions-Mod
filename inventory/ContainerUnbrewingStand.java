@@ -16,13 +16,13 @@ import net.minecraft.item.ItemStack;
 public class ContainerUnbrewingStand extends Container
 {
 	private TileEntityUnbrewingStand	mixer;
-	
-	private int				brewTime	= 0;
+	private Slot						theSlot;
+	private int							brewTime	= 0;
 	
 	public ContainerUnbrewingStand(InventoryPlayer inventory, TileEntityUnbrewingStand unbrewingStand)
 	{
 		this.mixer = unbrewingStand;
-		this.addSlotToContainer(new SlotPotion(inventory.player, unbrewingStand, 0, 79, 17));
+		this.theSlot = this.addSlotToContainer(new SlotPotion(inventory.player, unbrewingStand, 0, 79, 17));
 		this.addSlotToContainer(new SlotOutput(inventory.player, unbrewingStand, 1, 57, 61));
 		this.addSlotToContainer(new SlotOutput(inventory.player, unbrewingStand, 2, 79, 61));
 		this.addSlotToContainer(new SlotOutput(inventory.player, unbrewingStand, 3, 101, 61));
@@ -90,8 +90,7 @@ public class ContainerUnbrewingStand extends Container
 	}
 	
 	/**
-	 * Called when a player shift-clicks on a slot. You must override this or
-	 * you will crash when someone does that.
+	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
 	 */
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotID)
@@ -104,42 +103,34 @@ public class ContainerUnbrewingStand extends Container
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
 			
-			if ((slotID < 0 || slotID > 3) && slotID != 3)
+			if (slotID < 6)
 			{
-				if (slotID < 6)
-				{
-					if (!this.mergeItemStack(itemstack1, 6, 42, false))
-					{
-						return null;
-					}
-				}
-				else if (slotID >= 6 && slotID < 33)
-				{
-					if (!this.mergeItemStack(itemstack1, 33, 42, false))
-					{
-						return null;
-					}
-				}
-				else if (slotID >= 33 && slotID < 42)
-				{
-					if (!this.mergeItemStack(itemstack1, 6, 33, false))
-					{
-						return null;
-					}
-				}
-				else if (!this.mergeItemStack(itemstack1, 6, 42, false))
+				if (!this.mergeItemStack(itemstack1, 6, 42, false))
 				{
 					return null;
 				}
 			}
-			else
+			else if (!this.theSlot.getHasStack() && this.theSlot.isItemValid(itemstack))
 			{
-				if (!this.mergeItemStack(itemstack1, 6, 42, true))
+				if (!this.mergeItemStack(itemstack1, 0, 1, false));
+			}
+			else if (slotID >= 6 && slotID < 33)
+			{
+				if (!this.mergeItemStack(itemstack1, 33, 42, false))
 				{
 					return null;
 				}
-				
-				slot.onSlotChange(itemstack1, itemstack);
+			}
+			else if (slotID >= 33 && slotID < 42)
+			{
+				if (!this.mergeItemStack(itemstack1, 6, 33, false))
+				{
+					return null;
+				}
+			}
+			else if (!this.mergeItemStack(itemstack1, 6, 42, false))
+			{
+				return null;
 			}
 			
 			if (itemstack1.stackSize == 0)

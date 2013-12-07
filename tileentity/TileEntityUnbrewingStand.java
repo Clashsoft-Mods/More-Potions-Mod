@@ -292,6 +292,6 @@ public class TileEntityUnbrewingStand extends TileEntity implements IInventory
 	@Override
 	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
 	{
-		return (par2ItemStack.itemID == Item.potion.itemID || par2ItemStack.itemID == Item.glassBottle.itemID) && par1 != 3;
+		return par2ItemStack.getItem() instanceof ItemPotion2;
 	}
 }
