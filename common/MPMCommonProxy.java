@@ -22,7 +22,7 @@ public class MPMCommonProxy implements IGuiHandler
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		if (ID == MorePotionsMod.MixerTEID)
+		if (ID == MorePotionsMod.mixerTileEntityID)
 		{
 			return new GuiMixer(player.inventory, (TileEntityMixer) world.getBlockTileEntity(x, y, z));
 		}

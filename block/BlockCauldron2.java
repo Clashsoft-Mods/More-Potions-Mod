@@ -19,7 +19,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
@@ -69,94 +68,95 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	}
 	
 	@Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
+	
 	{
-		return onItemAdded(par1World, par2, par3, par4, par5EntityPlayer, par5EntityPlayer.getCurrentEquippedItem());
+		return onItemAdded(world, x, y, z, player, player.getCurrentEquippedItem());
 	}
 	
-	public boolean onItemAdded(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, ItemStack itemstack)
+	public boolean onItemAdded(World world, int x, int y, int z, EntityPlayer player, ItemStack stack)
 	{
-		if (par1World.isRemote)
+		if (world.isRemote)
 			return true;
-		else if (par1World.getBlockTileEntity(par2, par3, par4) instanceof TileEntityCauldron)
+		else if (world.getBlockTileEntity(x, y, z) instanceof TileEntityCauldron)
 		{
-			TileEntityCauldron te = (TileEntityCauldron) par1World.getBlockTileEntity(par2, par3, par4);
+			TileEntityCauldron te = (TileEntityCauldron) world.getBlockTileEntity(x, y, z);
 			boolean flag = false;
-			boolean itemDrop = par5EntityPlayer == null;
-			String message = "";
+			boolean itemDrop = player == null;
+			String message = null;
 			
-			if (itemstack == null)
+			if (stack == null)
 				return false;
 			else
 			{
-				int i1 = par1World.getBlockMetadata(par2, par3, par4);
+				int i1 = world.getBlockMetadata(x, y, z);
 				
-				if (itemstack.itemID == Item.bucketWater.itemID && !itemDrop)
+				if (stack.itemID == Item.bucketWater.itemID && !itemDrop)
 				{
 					if (i1 < 3)
 					{
 						if (itemDrop)
 						{
-							par1World.spawnEntityInWorld(new EntityItem(par1World, par2 + 0.5D, par3 + 0.5D, par4 + 1.5D, new ItemStack(Item.bucketEmpty)));
+							world.spawnEntityInWorld(new EntityItem(world, x + 0.5D, y + 0.5D, z + 1.5D, new ItemStack(Item.bucketEmpty)));
 						}
-						else if (!par5EntityPlayer.capabilities.isCreativeMode)
+						else if (!player.capabilities.isCreativeMode)
 						{
-							par5EntityPlayer.inventory.setInventorySlotContents(par5EntityPlayer.inventory.currentItem, new ItemStack(Item.bucketEmpty));
+							player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(Item.bucketEmpty));
 						}
 						
-						par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
+						world.setBlockMetadataWithNotify(x, y, z, 3, 2);
 						
-						message = te.addIngredient(itemstack);
+						message = te.addIngredient(stack);
 						flag = true;
 					}
 					else
 						flag = false;
 				}
-				else if (itemstack.itemID == Item.glassBottle.itemID)
+				else if (stack.itemID == Item.glassBottle.itemID)
 				{
 					if (i1 > 0)
 					{
 						ItemStack itemstack1 = te.output;
 						itemstack1.stackSize = 1;
 						
-						if (itemDrop || !par5EntityPlayer.inventory.addItemStackToInventory(itemstack1))
+						if (itemDrop || !player.inventory.addItemStackToInventory(itemstack1))
 						{
-							par5EntityPlayer.dropPlayerItem(itemstack1);
+							player.dropPlayerItem(itemstack1);
 						}
 						
-						if (par5EntityPlayer instanceof EntityPlayerMP)
+						if (player instanceof EntityPlayerMP)
 						{
-							((EntityPlayerMP) par5EntityPlayer).sendContainerToPlayer(par5EntityPlayer.inventoryContainer);
+							((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
 						}
 						
-						--itemstack.stackSize;
+						--stack.stackSize;
 						
-						if (!itemDrop && itemstack.stackSize <= 0)
+						if (!itemDrop && stack.stackSize <= 0)
 						{
-							par5EntityPlayer.inventory.setInventorySlotContents(par5EntityPlayer.inventory.currentItem, (ItemStack) null);
+							player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack) null);
 						}
 						
 						--i1;
 						
-						par1World.setBlockMetadataWithNotify(par2, par3, par4, i1, 2);
+						world.setBlockMetadataWithNotify(x, y, z, i1, 2);
 						flag = true;
 					}
 					
 					if (i1 == 0)
 						te.potionTypes.clear();
 				}
-				else if (i1 > 0 && itemstack.getItem() instanceof ItemArmor && ((ItemArmor) itemstack.getItem()).getArmorMaterial() == EnumArmorMaterial.CLOTH)
+				else if (i1 > 0 && stack.getItem() instanceof ItemArmor && ((ItemArmor) stack.getItem()).getArmorMaterial() == EnumArmorMaterial.CLOTH)
 				{
-					ItemArmor itemarmor = (ItemArmor) itemstack.getItem();
-					itemarmor.removeColor(itemstack);
-					par1World.setBlockMetadataWithNotify(par2, par3, par4, i1 - 1, 2);
+					ItemArmor itemarmor = (ItemArmor) stack.getItem();
+					itemarmor.removeColor(stack);
+					world.setBlockMetadataWithNotify(x, y, z, i1 - 1, 2);
 					flag = true;
 				}
 				else
 				{
-					if (te.isItemValid(itemstack) && i1 > 0)
+					if (te.isItemValid(stack) && i1 > 0)
 					{
-						message = te.addIngredient(itemstack);
+						message = te.addIngredient(stack);
 						flag = true;
 					}
 				}
@@ -164,9 +164,9 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 			
 			if (flag)
 			{				
-				par1World.playSound(par2, par3, par4, "random.pop", 1F, 1F, true);
-				if (MorePotionsMod.cauldronInfo && !itemDrop && !par1World.isRemote && message != null && !message.isEmpty())
-					par5EntityPlayer.addChatMessage(EnumChatFormatting.DARK_AQUA + "Cauldron" + EnumChatFormatting.RESET + ": " + message);
+				world.playSound(x, y, z, "random.pop", 1F, 1F, true);
+				if (MorePotionsMod.cauldronInfo && player != null && !world.isRemote && message != null && !message.isEmpty())
+					player.addChatMessage(message);
 			}
 			
 			te.sync();
@@ -180,15 +180,15 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	 * currently only used by BlockCauldron to increment metadata during rain
 	 */
 	@Override
-	public void fillWithRain(World par1World, int par2, int par3, int par4)
+	public void fillWithRain(World world, int x, int y, int z)
 	{
-		if (par1World.rand.nextInt(20) == 1)
+		if (world.rand.nextInt(20) == 1)
 		{
-			int l = par1World.getBlockMetadata(par2, par3, par4);
+			int l = world.getBlockMetadata(x, y, z);
 			
 			if (l < 3)
 			{
-				par1World.setBlockMetadataWithNotify(par2, par3, par4, l + 1, 2);
+				world.setBlockMetadataWithNotify(x, y, z, l + 1, 2);
 			}
 		}
 	}

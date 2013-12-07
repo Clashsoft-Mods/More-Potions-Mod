@@ -12,13 +12,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
-public class MPMBrewingList
+public class MPMPotionList
 {
 	public static PotionType	thorns;
 	public static PotionType	greenThumb;
 	public static PotionType	projectile;
 	
-	public static void initializeBaseBrewings_MorePotionsMod()
+	public static void initializePotionBases()
 	{
 		awkward = new PotionBase("awkward", new ItemStack(Item.netherStalkSeeds));
 		mundane = new PotionBase("mundane", new ItemStack(Block.mushroomBrown));
@@ -54,7 +54,7 @@ public class MPMBrewingList
 		stinky = new PotionBase("stinky", new ItemStack(Item.fishRaw));
 	}
 	
-	public static void initializeBrewings_MorePotionsMod()
+	public static void initializePotionTypes()
 	{
 		moveSlowdown = new PotionType(new PotionEffect(Potion.moveSlowdown.id, 20 * 90, 0), 4, 20 * 240, PotionType.getBaseBrewing(PotionList.dashing));
 		moveSpeed = new PotionType(new PotionEffect(Potion.moveSpeed.id, 20 * 180, 0), 7, 20 * 360, PotionList.moveSlowdown, new ItemStack(Item.sugar), PotionType.getBaseBrewing(PotionList.dashing));
@@ -91,50 +91,10 @@ public class MPMBrewingList
 		
 		thorns = new PotionType(new PotionEffect(MorePotionsMod.thorns.id, 20 * 60, 0), 3, 20 * 120, null, new ItemStack(Block.cactus), PotionList.awkward);
 		greenThumb = new PotionType(new PotionEffect(MorePotionsMod.greenThumb.id, 20 * 60, 0), 2, 20 * 120, null, new ItemStack(Block.leaves), PotionList.awkward);
-		projectile = new PotionType(new PotionEffect(MorePotionsMod.projectile.id, 20 * 60, 0), 2, 20 * 120, null, new ItemStack(Item.arrow), PotionList.awkward);
-		
+		projectile = new PotionType(new PotionEffect(MorePotionsMod.projectile.id, 20 * 60, 0), 2, 20 * 120, null, new ItemStack(Item.arrow), PotionList.awkward);	
 	}
 	
-	public static void registerBrewings_MorePotionsMod()
-	{
-		regeneration.register();
-		moveSpeed.register();
-		moveSlowdown.register();
-		digSpeed.register();
-		digSlowdown.register();
-		fireResistance.register();
-		waterBreathing.register();
-		waterWalking.register(); //
-		coldness.register(); //
-		doubleLife.register(); //
-		heal.register();
-		harm.register();
-		healthBoost.register();
-		absorption.register();
-		poison.register();
-		fire.register();
-		explosiveness.register();
-		wither.register();
-		saturation.register();
-		hunger.register();
-		confusion.register();
-		nightVision.register();
-		invisibility.register();
-		blindness.register();
-		damageBoost.register();
-		weakness.register();
-		jump.register();
-		resistance.register();
-		thorns.register(); //
-		projectile.register();
-		greenThumb.register(); //
-		ironSkin.register(); //
-		obsidianSkin.register(); //
-		effectRemove.register(); //
-		random.register();
-	}
-	
-	public static void registerBaseBrewings_MorePotionsMod()
+	public static void registerPotionBases()
 	{
 		awkward.register();
 		thick.register();
@@ -173,5 +133,44 @@ public class MPMBrewingList
 			gross.register();
 			stinky.register();
 		}
+	}
+	
+	public static void registerPotionTypes()
+	{
+		regeneration.register();
+		moveSpeed.register();
+		moveSlowdown.register();
+		digSpeed.register();
+		digSlowdown.register();
+		fireResistance.register();
+		waterBreathing.register();
+		waterWalking.register(); //
+		coldness.register(); //
+		doubleLife.register(); //
+		heal.register();
+		harm.register();
+		healthBoost.register();
+		absorption.register();
+		poison.register();
+		fire.register();
+		explosiveness.register();
+		wither.register();
+		saturation.register();
+		hunger.register();
+		confusion.register();
+		nightVision.register();
+		invisibility.register();
+		blindness.register();
+		damageBoost.register();
+		weakness.register();
+		jump.register();
+		resistance.register();
+		thorns.register(); //
+		projectile.register();
+		greenThumb.register(); //
+		ironSkin.register(); //
+		obsidianSkin.register(); //
+		effectRemove.register(); //
+		random.register();
 	}
 }

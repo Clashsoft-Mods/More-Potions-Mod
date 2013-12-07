@@ -3,7 +3,7 @@ package clashsoft.mods.morepotions.block;
 import java.util.Random;
 
 import clashsoft.mods.morepotions.MorePotionsMod;
-import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
+import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
 import cpw.mods.fml.common.network.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -20,17 +20,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
-public class BlockMixer extends BlockContainer
+public class BlockUnbrewingStand extends BlockContainer
 {
 	private Random	rand	= new Random();
 	public Icon		top;
 	public Icon		side;
 	public Icon		bottom;
 	
-	public BlockMixer(int blockID)
+	public BlockUnbrewingStand(int blockID)
 	{
 		super(blockID, Material.rock);
-		this.setBlockBounds(0.25F, 0F, 0.25F, 0.75F, 0.8125F, 0.75F);
 	}
 	
 	@Override
@@ -70,7 +69,7 @@ public class BlockMixer extends BlockContainer
 	@Override
 	public TileEntity createNewTileEntity(World world)
 	{
-		return new TileEntityMixer();
+		return new TileEntityUnbrewingStand();
 	}
 	
 	@Override
@@ -88,7 +87,7 @@ public class BlockMixer extends BlockContainer
 		}
 		else
 		{
-			TileEntityMixer unbrewingStand = (TileEntityMixer) world.getBlockTileEntity(x, y, z);
+			TileEntityUnbrewingStand unbrewingStand = (TileEntityUnbrewingStand) world.getBlockTileEntity(x, y, z);
 			
 			if (unbrewingStand != null)
 			{
@@ -104,9 +103,9 @@ public class BlockMixer extends BlockContainer
 	{
 		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 		
-		if (tileEntity instanceof TileEntityMixer)
+		if (tileEntity instanceof TileEntityUnbrewingStand)
 		{
-			TileEntityMixer unbrewingStand = (TileEntityMixer) tileEntity;
+			TileEntityUnbrewingStand unbrewingStand = (TileEntityUnbrewingStand) tileEntity;
 			
 			for (int i = 0; i < unbrewingStand.getSizeInventory(); ++i)
 			{
