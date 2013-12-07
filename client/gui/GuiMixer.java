@@ -4,25 +4,22 @@ import org.lwjgl.opengl.GL11;
 
 import clashsoft.mods.morepotions.inventory.ContainerMixer;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
-@SideOnly(Side.CLIENT)
 public class GuiMixer extends GuiContainer
 {
 	private TileEntityMixer			mixer;
 	public static ResourceLocation	mixer_gui	= new ResourceLocation("gui/mixer_gui.png");
 	
-	public GuiMixer(InventoryPlayer par1InventoryPlayer, TileEntityMixer par2TileEntityMixxer)
+	public GuiMixer(InventoryPlayer inventory, TileEntityMixer mixer)
 	{
-		super(new ContainerMixer(par1InventoryPlayer, par2TileEntityMixxer));
-		this.mixer = par2TileEntityMixxer;
-		par2TileEntityMixxer.player = par1InventoryPlayer.player;
+		super(new ContainerMixer(inventory, mixer));
+		this.mixer = mixer;
+		mixer.player = inventory.player;
 	}
 	
 	/**
@@ -30,7 +27,7 @@ public class GuiMixer extends GuiContainer
 	 * the items)
 	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2)
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		this.fontRenderer.drawString(StatCollector.translateToLocal("tile.mixer.name"), 60, 6, 4210752);
 		this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
@@ -41,7 +38,7 @@ public class GuiMixer extends GuiContainer
 	 * items)
 	 */
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
+	protected void drawGuiContainerBackgroundLayer(float fpt, int mouseX, int mouseY)
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(mixer_gui);

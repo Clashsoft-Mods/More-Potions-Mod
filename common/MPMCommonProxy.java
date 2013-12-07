@@ -1,11 +1,12 @@
 package clashsoft.mods.morepotions.common;
 
-import clashsoft.brewingapi.inventory.ContainerBrewingStand2;
-import clashsoft.brewingapi.tileentity.TileEntityBrewingStand2;
 import clashsoft.mods.morepotions.MorePotionsMod;
 import clashsoft.mods.morepotions.client.gui.GuiMixer;
+import clashsoft.mods.morepotions.client.gui.GuiUnbrewingStand;
 import clashsoft.mods.morepotions.inventory.ContainerMixer;
+import clashsoft.mods.morepotions.inventory.ContainerUnbrewingStand;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
+import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,22 +27,26 @@ public class MPMCommonProxy implements IGuiHandler
 		{
 			return new GuiMixer(player.inventory, (TileEntityMixer) world.getBlockTileEntity(x, y, z));
 		}
+		else if (ID == MorePotionsMod.unbrewingStandTileEntityID)
+		{
+			return new GuiUnbrewingStand(player.inventory, (TileEntityUnbrewingStand) world.getBlockTileEntity(x, y, z));
+		}
 		return null;
 	}
 	
 	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int X, int Y, int Z)
+	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		TileEntity te = world.getBlockTileEntity(X, Y, Z);
-		if (te != null && te instanceof TileEntityBrewingStand2)
+		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		if (tileEntity instanceof TileEntityMixer)
 		{
-			TileEntityBrewingStand2 bs = (TileEntityBrewingStand2) te;
-			return new ContainerBrewingStand2(player.inventory, bs);
+			TileEntityMixer mixer = (TileEntityMixer) tileEntity;
+			return new ContainerMixer(player.inventory, mixer);
 		}
-		else if (te != null && te instanceof TileEntityMixer)
+		else if (tileEntity instanceof TileEntityUnbrewingStand)
 		{
-			TileEntityMixer m = (TileEntityMixer) te;
-			return new ContainerMixer(player.inventory, m);
+			TileEntityUnbrewingStand unbrewingStand = (TileEntityUnbrewingStand) tileEntity;
+			return new ContainerUnbrewingStand(player.inventory, unbrewingStand);
 		}
 		else
 		{

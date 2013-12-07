@@ -21,6 +21,7 @@ import clashsoft.mods.morepotions.handlers.*;
 import clashsoft.mods.morepotions.item.ItemMortar;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
+import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
 
 import com.google.common.base.Charsets;
 
@@ -49,84 +50,88 @@ import net.minecraftforge.oredict.OreDictionary;
 @NetworkMod(channels = { TileEntityCauldron.CHANNEL }, clientSideRequired = true, serverSideRequired = false, packetHandler = MPMPacketHandler.class)
 public class MorePotionsMod
 {
-	public static final int			REVISION				= 4;
-	public static final String		VERSION					= CSUpdate.CURRENT_VERSION + "-" + REVISION;
+	public static final int				REVISION					= 4;
+	public static final String			VERSION						= CSUpdate.CURRENT_VERSION + "-" + REVISION;
 	
 	@Instance("MorePotionsMod")
-	public static MorePotionsMod	INSTANCE;
+	public static MorePotionsMod		INSTANCE;
 	
 	@SidedProxy(clientSide = "clashsoft.mods.morepotions.client.MPMClientProxy", serverSide = "clashsoft.mods.morepotions.common.MPMCommonProxy")
-	public static MPMCommonProxy	proxy;
+	public static MPMCommonProxy		proxy;
 	
-	public static String			customEffects			= "gui/potionIcons.png";
+	public static String				customEffects				= "gui/potionIcons.png";
 	
 	// Configurables
-	public static int				randomMode				= 0;
+	public static int					randomMode					= 0;
 	
-	public static int				mixerTileEntityID		= 12;
-	public static int				cuuldronTileEntityID	= 13;
+	public static int					mixerTileEntityID			= 12;
+	public static int					cauldronTileEntityID		= 13;
+	public static int					unbrewingStandTileEntityID	= 14;
 	
-	public static int				mixerBlockID			= 190;
-	public static int				dustItemID				= 14000;
-	public static int				mortarItemID			= 14001;
+	public static int					mixerBlockID				= 2700;
+	public static int					unbrewingStandBlockID		= 2701;
+	public static int					dustItemID					= 14000;
+	public static int					mortarItemID				= 14001;
 	
-	public static boolean			cauldronInfo			= false;
+	public static boolean				cauldronInfo				= false;
 	
 	static
 	{
-		BrewingAPI.expandPotionList();
+		BrewingAPI.load();
 	}
 	
-	public static Potion			fire					= new CustomPotion("potion.fire", true, 0xFFE500, false, customEffects, 0, 0);
-	public static Potion			effectRemove			= new CustomPotion("potion.effectRemove", false, 0xFFFFFF, false, customEffects, 1, 0);
-	public static Potion			waterWalking			= new CustomPotion("potion.waterWalking", false, 0x124EFE, false, customEffects, 2, 0);
-	public static Potion			coldness				= new CustomPotion("potion.coldness", false, 0x00DDFF, false, customEffects, 3, 0);
-	public static Potion			ironSkin				= new CustomPotion("potion.ironSkin", false, 0xD8D8D8, false, customEffects, 4, 0);
-	public static Potion			obsidianSkin			= new CustomPotion("potion.obsidianSkin", false, 0x101023, false, customEffects, 5, 0);
-	public static Potion			doubleLife				= new CustomPotion("potion.doubleLife", false, 0xFF2222, false, customEffects, 7, 0, CSUtil.fontColorInt(0, 0, 1, 1));
-	public static Potion			explosiveness			= new CustomPotion("potion.explosiveness", true, 0xCC0000, false, customEffects, 1, 1);
-	public static Potion			random					= new CustomPotion("potion.random", false, 0x000000, randomMode == 0, customEffects, 2, 1, CSUtil.fontColorInt(0, 1, 1, 1));
-	public static Potion			thorns					= new CustomPotion("potion.thorns", false, 0x810081, false, customEffects, 3, 1);
-	public static Potion			greenThumb				= new CustomPotion("potion.greenThumb", false, 0x008100, false, customEffects, 4, 1);
-	public static Potion			projectile				= new CustomPotion("potion.projectile", false, 0x101010, false, customEffects, 5, 1);
+	public static Potion				fire						= new CustomPotion("potion.fire", true, 0xFFE500, false, customEffects, 0, 0);
+	public static Potion				effectRemove				= new CustomPotion("potion.effectRemove", false, 0xFFFFFF, false, customEffects, 1, 0);
+	public static Potion				waterWalking				= new CustomPotion("potion.waterWalking", false, 0x124EFE, false, customEffects, 2, 0);
+	public static Potion				coldness					= new CustomPotion("potion.coldness", false, 0x00DDFF, false, customEffects, 3, 0);
+	public static Potion				ironSkin					= new CustomPotion("potion.ironSkin", false, 0xD8D8D8, false, customEffects, 4, 0);
+	public static Potion				obsidianSkin				= new CustomPotion("potion.obsidianSkin", false, 0x101023, false, customEffects, 5, 0);
+	public static Potion				doubleLife					= new CustomPotion("potion.doubleLife", false, 0xFF2222, false, customEffects, 7, 0, CSUtil.fontColorInt(0, 0, 1, 1));
+	public static Potion				explosiveness				= new CustomPotion("potion.explosiveness", true, 0xCC0000, false, customEffects, 1, 1);
+	public static Potion				random						= new CustomPotion("potion.random", false, 0x000000, randomMode == 0, customEffects, 2, 1, CSUtil.fontColorInt(0, 1, 1, 1));
+	public static Potion				thorns						= new CustomPotion("potion.thorns", false, 0x810081, false, customEffects, 3, 1);
+	public static Potion				greenThumb					= new CustomPotion("potion.greenThumb", false, 0x008100, false, customEffects, 4, 1);
+	public static Potion				projectile					= new CustomPotion("potion.projectile", false, 0x101010, false, customEffects, 5, 1);
 	
-	public static BlockMixer		mixer;
-	public static BlockCauldron2	cauldron2;
+	public static BlockMixer			mixer;
+	public static BlockCauldron2		cauldron2;
 	public static BlockUnbrewingStand	unbrewingStand;
 	
-	public static Item				dust;
-	public static ItemMortar		mortar;
+	public static Item					dust;
+	public static ItemMortar			mortar;
 	
-	public static ItemStack			dustCoal;
-	public static ItemStack			dustIron;
-	public static ItemStack			dustGold;
-	public static ItemStack			dustObsidian;
-	public static ItemStack			dustDiamond;
-	public static ItemStack			dustEmerald;
-	public static ItemStack			dustQuartz;
-	public static ItemStack			dustWither;
-	public static ItemStack			dustEnderpearl;
-	public static ItemStack			dustClay;
-	public static ItemStack			dustBrick;
-	public static ItemStack			dustFlint;
-	public static ItemStack			dustGlass;
-	public static ItemStack			dustCharcoal;
-	public static ItemStack			dustWoodOak;
-	public static ItemStack			dustWoodBirch;
-	public static ItemStack			dustWoodSpruce;
-	public static ItemStack			dustWoodJungle;
-	public static ItemStack			dustNetherstar;
-	public static ItemStack			dustNetherbrick;
+	public static ItemStack				dustCoal;
+	public static ItemStack				dustIron;
+	public static ItemStack				dustGold;
+	public static ItemStack				dustObsidian;
+	public static ItemStack				dustDiamond;
+	public static ItemStack				dustEmerald;
+	public static ItemStack				dustQuartz;
+	public static ItemStack				dustWither;
+	public static ItemStack				dustEnderpearl;
+	public static ItemStack				dustClay;
+	public static ItemStack				dustBrick;
+	public static ItemStack				dustFlint;
+	public static ItemStack				dustGlass;
+	public static ItemStack				dustCharcoal;
+	public static ItemStack				dustWoodOak;
+	public static ItemStack				dustWoodBirch;
+	public static ItemStack				dustWoodSpruce;
+	public static ItemStack				dustWoodJungle;
+	public static ItemStack				dustNetherstar;
+	public static ItemStack				dustNetherbrick;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		
-		mixerTileEntityID = config.get("TileEntityIDs", "MixerTEID", 12).getInt();
-		cuuldronTileEntityID = config.get("TileEntityIDs", "Cauldron2TEID", 13).getInt();
+		mixerTileEntityID = config.get("tileentity", "Mixer TEID", 12).getInt();
+		cauldronTileEntityID = config.get("tileentity", "Cauldron TEID", 13).getInt();
+		unbrewingStandTileEntityID = config.get("tileentity", "Unbrewing Stand TEID", 14).getInt();
 		
-		mixerBlockID = config.getBlock("MixerID", 190).getInt();
+		mixerBlockID = config.getBlock("MixerID", 2700).getInt();
+		unbrewingStandBlockID = config.getBlock("Unbrewing Stand Block ID", 2701).getInt();
 		dustItemID = config.getItem("DustID", 14000).getInt();
 		mortarItemID = config.getItem("MortarID", 14001).getInt();
 		
@@ -144,11 +149,13 @@ public class MorePotionsMod
 		
 		GameRegistry.registerTileEntity(TileEntityMixer.class, "Mixxer");
 		GameRegistry.registerTileEntity(TileEntityCauldron.class, "Cauldron2");
+		GameRegistry.registerTileEntity(TileEntityUnbrewingStand.class, "UnbrewingStand");
 		
 		Block.blocksList[Block.cauldron.blockID] = null;
 		cauldron2 = (BlockCauldron2) (new BlockCauldron2(Block.cauldron.blockID)).setHardness(2.0F).setUnlocalizedName("cauldron").setTextureName("cauldron");
 		
 		mixer = (BlockMixer) (new BlockMixer(mixerBlockID)).setUnlocalizedName("mixer").setCreativeTab(CreativeTabs.tabBrewing);
+		unbrewingStand = (BlockUnbrewingStand) new BlockUnbrewingStand(unbrewingStandBlockID).setUnlocalizedName("unbrewingStand").setCreativeTab(CreativeTabs.tabBrewing);
 		
 		mortar = (ItemMortar) new ItemMortar(mortarItemID).setCreativeTab(CreativeTabs.tabTools).setMaxDamage(32).setNoRepair().setMaxStackSize(1).setUnlocalizedName("mortar");
 		dust = new CustomItem(dustItemID, CSString.concatAll(new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCharcoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, "item.", ".name"), new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, new String[] { "C2", "Fe", "Au", "C128", "Be3Al2Si6O18", "MgFeSi2O8", "SiO2", "\u00a7k???", "BeK4N5Cl6", "Na2LiAl2Si2", "Na2LiAl2Si2", "SiO2", "SiO4", "C", "", "", "", "", "", "" }).setCreativeTab(CreativeTabs.tabMaterials);
@@ -156,6 +163,7 @@ public class MorePotionsMod
 		
 		CSBlocks.addBlock(mixer, "Mixer");
 		CSBlocks.addBlock(cauldron2, "Cauldron");
+		CSBlocks.addBlock(unbrewingStand, "Unbrewing Stand");
 		
 		Item.sugar.setCreativeTab(CreativeTabs.tabBrewing);
 		Item.netherStalkSeeds.setCreativeTab(CreativeTabs.tabBrewing);

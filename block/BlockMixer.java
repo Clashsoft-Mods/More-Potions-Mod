@@ -88,9 +88,9 @@ public class BlockMixer extends BlockContainer
 		}
 		else
 		{
-			TileEntityMixer unbrewingStand = (TileEntityMixer) world.getBlockTileEntity(x, y, z);
+			TileEntityMixer mixer = (TileEntityMixer) world.getBlockTileEntity(x, y, z);
 			
-			if (unbrewingStand != null)
+			if (mixer != null)
 			{
 				FMLNetworkHandler.openGui(player, MorePotionsMod.INSTANCE, MorePotionsMod.mixerTileEntityID, world, x, y, z);
 			}
@@ -106,11 +106,11 @@ public class BlockMixer extends BlockContainer
 		
 		if (tileEntity instanceof TileEntityMixer)
 		{
-			TileEntityMixer unbrewingStand = (TileEntityMixer) tileEntity;
+			TileEntityMixer mixer = (TileEntityMixer) tileEntity;
 			
-			for (int i = 0; i < unbrewingStand.getSizeInventory(); ++i)
+			for (int i = 0; i < mixer.getSizeInventory(); ++i)
 			{
-				ItemStack stack = unbrewingStand.getStackInSlot(i);
+				ItemStack stack = mixer.getStackInSlot(i);
 				
 				if (stack != null)
 				{

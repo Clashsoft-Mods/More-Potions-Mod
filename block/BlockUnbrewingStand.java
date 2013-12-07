@@ -48,9 +48,9 @@ public class BlockUnbrewingStand extends BlockContainer
 	@Override
 	public void registerIcons(IconRegister iconRegister)
 	{
-		this.top = iconRegister.registerIcon("mixer_top");
-		this.bottom = iconRegister.registerIcon("mixer_bottom");
-		this.side = iconRegister.registerIcon("mixer_side");
+		this.top = iconRegister.registerIcon("unbrewingstand_top");
+		this.bottom = iconRegister.registerIcon("unbrewingstand_bottom");
+		this.side = iconRegister.registerIcon("unbrewingstand_side");
 	}
 	
 	@Override
@@ -91,7 +91,7 @@ public class BlockUnbrewingStand extends BlockContainer
 			
 			if (unbrewingStand != null)
 			{
-				FMLNetworkHandler.openGui(player, MorePotionsMod.INSTANCE, MorePotionsMod.mixerTileEntityID, world, x, y, z);
+				FMLNetworkHandler.openGui(player, MorePotionsMod.INSTANCE, MorePotionsMod.unbrewingStandTileEntityID, world, x, y, z);
 			}
 			
 			return true;

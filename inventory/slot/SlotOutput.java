@@ -7,12 +7,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
 
-public class SlotMixerOutput extends Slot
+public class SlotOutput extends Slot
 {
 	/** The player that has this container open. */
 	private EntityPlayer	player;
 	
-	public SlotMixerOutput(EntityPlayer par1EntityPlayer, IInventory par2IInventory, int par3, int par4, int par5)
+	public SlotOutput(EntityPlayer par1EntityPlayer, IInventory par2IInventory, int par3, int par4, int par5)
 	{
 		super(par2IInventory, par3, par4, par5);
 		this.player = par1EntityPlayer;

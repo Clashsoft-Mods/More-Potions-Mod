@@ -2,7 +2,7 @@ package clashsoft.mods.morepotions.inventory;
 
 import clashsoft.brewingapi.inventory.slot.SlotPotion;
 import clashsoft.mods.morepotions.inventory.slot.SlotOutput;
-import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
+import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -13,21 +13,22 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class ContainerMixer extends Container
+public class ContainerUnbrewingStand extends Container
 {
-	private TileEntityMixer	mixer;
+	private TileEntityUnbrewingStand	mixer;
 	
-	/** Instance of Slot. */
-	private final Slot		theSlot;
 	private int				brewTime	= 0;
 	
-	public ContainerMixer(InventoryPlayer inventory, TileEntityMixer mixer)
+	public ContainerUnbrewingStand(InventoryPlayer inventory, TileEntityUnbrewingStand unbrewingStand)
 	{
-		this.mixer = mixer;
-		this.theSlot = this.addSlotToContainer(new SlotPotion(inventory.player, mixer, 0, 56, 23));
-		this.addSlotToContainer(new SlotPotion(inventory.player, mixer, 1, 79, 16));
-		this.addSlotToContainer(new SlotPotion(inventory.player, mixer, 2, 102, 23));
-		this.addSlotToContainer(new SlotOutput(inventory.player, mixer, 3, 79, 52));
+		this.mixer = unbrewingStand;
+		this.addSlotToContainer(new SlotPotion(inventory.player, unbrewingStand, 0, 79, 17));
+		this.addSlotToContainer(new SlotOutput(inventory.player, unbrewingStand, 1, 57, 61));
+		this.addSlotToContainer(new SlotOutput(inventory.player, unbrewingStand, 2, 79, 61));
+		this.addSlotToContainer(new SlotOutput(inventory.player, unbrewingStand, 3, 101, 61));
+		this.addSlotToContainer(new SlotOutput(inventory.player, unbrewingStand, 4, 38, 44));
+		this.addSlotToContainer(new SlotOutput(inventory.player, unbrewingStand, 5, 120, 44));
+		
 		int var3;
 		
 		for (var3 = 0; var3 < 3; ++var3)
@@ -45,10 +46,10 @@ public class ContainerMixer extends Container
 	}
 	
 	@Override
-	public void addCraftingToCrafters(ICrafting icrafting)
+	public void addCraftingToCrafters(ICrafting par1ICrafting)
 	{
-		super.addCraftingToCrafters(icrafting);
-		icrafting.sendProgressBarUpdate(this, 0, this.mixer.getMixTime());
+		super.addCraftingToCrafters(par1ICrafting);
+		par1ICrafting.sendProgressBarUpdate(this, 0, this.mixer.getUnbrewTime());
 	}
 	
 	/**
@@ -59,33 +60,33 @@ public class ContainerMixer extends Container
 	{
 		super.detectAndSendChanges();
 		
-		for (int i = 0; i < this.crafters.size(); ++i)
+		for (int var1 = 0; var1 < this.crafters.size(); ++var1)
 		{
-			ICrafting icrafting = (ICrafting) this.crafters.get(i);
+			ICrafting var2 = (ICrafting) this.crafters.get(var1);
 			
-			if (this.brewTime != this.mixer.getMixTime())
+			if (this.brewTime != this.mixer.getUnbrewTime())
 			{
-				icrafting.sendProgressBarUpdate(this, 0, this.mixer.getMixTime());
+				var2.sendProgressBarUpdate(this, 0, this.mixer.getUnbrewTime());
 			}
 		}
 		
-		this.brewTime = this.mixer.getMixTime();
+		this.brewTime = this.mixer.getUnbrewTime();
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void updateProgressBar(int type, int value)
+	public void updateProgressBar(int par1, int par2)
 	{
-		if (type == 0)
+		if (par1 == 0)
 		{
-			this.mixer.setBrewTime(value);
+			this.mixer.setBrewTime(par2);
 		}
 	}
 	
 	@Override
-	public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+	public boolean canInteractWith(EntityPlayer player)
 	{
-		return this.mixer.isUseableByPlayer(par1EntityPlayer);
+		return this.mixer.isUseableByPlayer(player);
 	}
 	
 	/**
@@ -105,42 +106,35 @@ public class ContainerMixer extends Container
 			
 			if ((slotID < 0 || slotID > 3) && slotID != 3)
 			{
-				if (!this.theSlot.getHasStack() && this.theSlot.isItemValid(itemstack1))
+				if (slotID < 6)
 				{
-					if (!this.mergeItemStack(itemstack1, 0, 4, false))
+					if (!this.mergeItemStack(itemstack1, 6, 42, false))
 					{
 						return null;
 					}
 				}
-				else if (SlotPotion.canHoldPotion(itemstack))
+				else if (slotID >= 6 && slotID < 33)
 				{
-					if (!this.mergeItemStack(itemstack1, 1, 3, false))
+					if (!this.mergeItemStack(itemstack1, 33, 42, false))
 					{
 						return null;
 					}
 				}
-				else if (slotID >= 4 && slotID < 31)
+				else if (slotID >= 33 && slotID < 42)
 				{
-					if (!this.mergeItemStack(itemstack1, 31, 40, false))
+					if (!this.mergeItemStack(itemstack1, 6, 33, false))
 					{
 						return null;
 					}
 				}
-				else if (slotID >= 31 && slotID < 40)
-				{
-					if (!this.mergeItemStack(itemstack1, 4, 31, false))
-					{
-						return null;
-					}
-				}
-				else if (!this.mergeItemStack(itemstack1, 4, 40, false))
+				else if (!this.mergeItemStack(itemstack1, 6, 42, false))
 				{
 					return null;
 				}
 			}
 			else
 			{
-				if (!this.mergeItemStack(itemstack1, 4, 40, true))
+				if (!this.mergeItemStack(itemstack1, 6, 42, true))
 				{
 					return null;
 				}

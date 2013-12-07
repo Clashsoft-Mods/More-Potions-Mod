@@ -44,7 +44,7 @@ public class TileEntityCauldron extends TileEntity
 	{
 		if (stack != null)
 		{
-			if (Item.itemsList[stack.itemID].isPotionIngredient() || PotionType.getBrewingFromIngredient(stack) != null && stack.itemID != Item.gunpowder.itemID)
+			if (Item.itemsList[stack.itemID].isPotionIngredient() || PotionType.getPotionTypeFromIngredient(stack) != null && stack.itemID != Item.gunpowder.itemID)
 				return true;
 		}
 		return false;
@@ -114,7 +114,7 @@ public class TileEntityCauldron extends TileEntity
 		else
 		// Normal ingredients
 		{
-			PotionType potionType = PotionType.getBrewingFromIngredient(ingredient);
+			PotionType potionType = PotionType.getPotionTypeFromIngredient(ingredient);
 			if (this.potionTypes.size() > 0 && potionType != null)
 			{
 				boolean contains = this.potionTypes.contains(potionType);
@@ -207,10 +207,10 @@ public class TileEntityCauldron extends TileEntity
 		this.potionTypes = removeDuplicates ? (List<PotionType>) PotionType.removeDuplicates(this.potionTypes) : this.potionTypes;
 		
 		if (this.potionTypes.size() == 1)
-			this.potionTypes.get(0).addBrewingToItemStack(is);
+			this.potionTypes.get(0).addPotionTypeToItemStack(is);
 		else
 			for (int i = 1; i < this.potionTypes.size(); i++)
-				this.potionTypes.get(i).addBrewingToItemStack(is);
+				this.potionTypes.get(i).addPotionTypeToItemStack(is);
 		
 		return is;
 	}
