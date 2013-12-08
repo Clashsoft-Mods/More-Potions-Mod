@@ -57,35 +57,35 @@ public class MPMPotionList
 	
 	public static void initializePotionTypes()
 	{
-		moveSlowdown = new PotionType(new PotionEffect(Potion.moveSlowdown.id, 20 * 90, 0), 4, 20 * 240, PotionType.getBaseBrewing(PotionList.dashing));
+		moveSlowdown = new PotionType(new PotionEffect(Potion.moveSlowdown.id, 20 * 90, 0), 4, 20 * 240);
 		moveSpeed = new PotionType(new PotionEffect(Potion.moveSpeed.id, 20 * 180, 0), 7, 20 * 360, PotionList.moveSlowdown, new ItemStack(Item.sugar), PotionType.getBaseBrewing(PotionList.dashing));
-		digSlowdown = new PotionType(new PotionEffect(Potion.digSlowdown.id, 20 * 90, 0), 4, 20 * 240, PotionType.getBaseBrewing(PotionList.dashing));
+		digSlowdown = new PotionType(new PotionEffect(Potion.digSlowdown.id, 20 * 90, 0), 4, 20 * 240);
 		digSpeed = new PotionType(new PotionEffect(Potion.digSpeed.id, 20 * 180, 0), 7, 20 * 360, PotionList.digSlowdown, MorePotionsMod.dustGold, PotionType.getBaseBrewing(PotionList.dashing));
 		weakness = new PotionType(new PotionEffect(Potion.weakness.id, 20 * 90, 0), 2, 20 * 240, new ItemStack(Item.fermentedSpiderEye), PotionList.awkward);
 		damageBoost = new PotionType(new PotionEffect(Potion.damageBoost.id, 20 * 180, 0), 4, 20 * 300, PotionList.weakness, new ItemStack(Item.blazePowder), PotionList.awkward);
-		harm = new PotionType(new PotionEffect(Potion.harm.id, 1, 0), 1, 0, PotionType.getBaseBrewing(PotionList.thick));
+		harm = new PotionType(new PotionEffect(Potion.harm.id, 1, 0), 1, 0);
 		heal = new PotionType(new PotionEffect(Potion.heal.id, 1, 0), 1, 0, PotionList.harm, new ItemStack(Item.speckledMelon), PotionType.getBaseBrewing(PotionList.thick));
 		doubleLife = new PotionType(new PotionEffect(MorePotionsMod.doubleLife.id, 1625000, 0), 0, 0, PotionList.harm, MorePotionsMod.dustNetherstar, PotionType.getBaseBrewing(PotionList.thick));
-		healthBoost = new PotionType(new PotionEffect(Potion.field_76434_w.id, 45 * 20, 0), 4, 120 * 20, PotionType.getBaseBrewing(PotionList.thick));
+		healthBoost = new PotionType(new PotionEffect(Potion.field_76434_w.id, 45 * 20, 0), 4, 120 * 20);
 		absorption = new PotionType(new PotionEffect(Potion.field_76444_x.id, 45 * 20, 0), 4, 120 * 20, PotionList.healthBoost, new ItemStack(Item.appleGold), PotionType.getBaseBrewing(PotionList.thick));
-		jump = new PotionType(new PotionEffect(Potion.jump.id, 20 * 180, 0), 4, 20 * 300, PotionType.getBaseBrewing(PotionList.dashing));
+		jump = new PotionType(new PotionEffect(Potion.jump.id, 20 * 180, 0), 4, 20 * 300);
 		confusion = new PotionType(new PotionEffect(Potion.confusion.id, 20 * 90, 0), 2, 20 * 180, new ItemStack(Item.poisonousPotato), PotionList.awkward);
 		regeneration = new PotionType(new PotionEffect(Potion.regeneration.id, 20 * 45, 0), 2, 20 * 180, PotionList.moveSlowdown, new ItemStack(Item.ghastTear), PotionList.awkward);
 		resistance = new PotionType(new PotionEffect(Potion.resistance.id, 20 * 180, 0), 3, 20 * 240, MorePotionsMod.dustDiamond, PotionType.getBaseBrewing(PotionList.thick));
 		ironSkin = new PotionType(new PotionEffect(MorePotionsMod.ironSkin.id, 20 * 120, 0), 1, 20 * 240, MorePotionsMod.dustIron, PotionType.getBaseBrewing(PotionList.thick));
 		obsidianSkin = new PotionType(new PotionEffect(MorePotionsMod.obsidianSkin.id, 20 * 120, 0), 1, 20 * 240, MorePotionsMod.dustObsidian, PotionType.getBaseBrewing(PotionList.thick));
 		fireResistance = new PotionType(new PotionEffect(Potion.fireResistance.id, 20 * 180, 0), 0, 20 * 360, PotionList.moveSlowdown, new ItemStack(Item.magmaCream), PotionList.awkward);
-		waterWalking = new PotionType(new PotionEffect(MorePotionsMod.waterWalking.id, 20 * 120, 0), 0, 240 * 20, PotionList.awkward);
+		waterWalking = new PotionType(new PotionEffect(MorePotionsMod.waterWalking.id, 20 * 120, 0), 0, 240 * 20);
 		waterBreathing = new PotionType(new PotionEffect(Potion.waterBreathing.id, 20 * 180, 0), 2, 20 * 360, PotionList.waterWalking, MorePotionsMod.dustClay, PotionList.awkward);
 		coldness = new PotionType(new PotionEffect(MorePotionsMod.coldness.id, 20 * 180, 0), 1, 20 * 360, new ItemStack(Item.snowball), PotionList.awkward);
 		invisibility = new PotionType(new PotionEffect(Potion.invisibility.id, 20 * 180, 0), 0, 720 * 20);
 		blindness = new PotionType(new PotionEffect(Potion.blindness.id, 20 * 90, 0), 0, 20 * 240, new ItemStack(Item.dyePowder, 1, 0), PotionType.getBaseBrewing(PotionList.thin));
 		nightVision = new PotionType(new PotionEffect(Potion.nightVision.id, 20 * 180, 0), 0, 20 * 300, PotionList.invisibility, new ItemStack(Item.goldenCarrot), PotionType.getBaseBrewing(PotionList.thin));
 		poison = new PotionType(new PotionEffect(Potion.poison.id, 20 * 45, 0), 2, 20 * 60, new ItemStack(Item.spiderEye), PotionType.getBaseBrewing(PotionList.acrid));
-		hunger = new PotionType(new PotionEffect(Potion.hunger.id, 20 * 45, 0), 3, 20 * 60, PotionType.getBaseBrewing(PotionList.acrid));
+		hunger = new PotionType(new PotionEffect(Potion.hunger.id, 20 * 45, 0), 3, 20 * 60);
 		saturation = new PotionType(new PotionEffect(Potion.field_76443_y.id, 20 * 45, 0), 3, 20 * 60, PotionList.hunger, new ItemStack(Item.bread), PotionType.getBaseBrewing(PotionList.awkward));
 		wither = new PotionType(new PotionEffect(Potion.wither.id, 450, 0), 1, 20 * 60, MorePotionsMod.dustWither, PotionType.getBaseBrewing(PotionList.acrid));
-		explosiveness = new PotionType(new PotionEffect(MorePotionsMod.explosiveness.id, 20 * 10, 0), 4, 20 * 20, PotionList.awkward);
+		explosiveness = new PotionType(new PotionEffect(MorePotionsMod.explosiveness.id, 20 * 10, 0), 4, 20 * 20);
 		fire = new PotionType(new PotionEffect(MorePotionsMod.fire.id, 20 * 10, 0), 0, 20 * 20, PotionList.explosiveness, new ItemStack(Item.fireballCharge), PotionList.awkward);
 		random = new PotionType(new PotionEffect(MorePotionsMod.random.id, MorePotionsMod.randomMode == 0 ? 1 : 20 * 45, 0), 0, MorePotionsMod.randomMode == 0 ? 1 : 20 * 90, new ItemStack(BrewingAPI.potion2), PotionList.awkward);
 		effectRemove = new PotionType(new PotionEffect(MorePotionsMod.effectRemove.id, 20 * 45, 0), 0, 20 * 90, PotionList.random, new ItemStack(Item.bucketMilk), PotionList.awkward);
