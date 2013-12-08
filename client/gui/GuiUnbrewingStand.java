@@ -12,7 +12,7 @@ import net.minecraft.util.StatCollector;
 
 public class GuiUnbrewingStand extends GuiContainer
 {
-	private TileEntityUnbrewingStand			unbrewingStand;
+	public TileEntityUnbrewingStand	unbrewingStand;
 	public static ResourceLocation	unbrewingStandGUI	= new ResourceLocation("gui/unbrewingstand_gui.png");
 	
 	public GuiUnbrewingStand(InventoryPlayer inventory, TileEntityUnbrewingStand unbrewingStand)
@@ -23,20 +23,18 @@ public class GuiUnbrewingStand extends GuiContainer
 	}
 	
 	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of
-	 * the items)
+	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		String title = StatCollector.translateToLocal("tile.unbrewingStand.name");
 		this.fontRenderer.drawString(title, (this.xSize - this.fontRenderer.getStringWidth(title)) / 2, 6, 4210752);
-		this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+		this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 94, 4210752);
 	}
 	
 	/**
-	 * Draw the background layer for the GuiContainer (everything behind the
-	 * items)
+	 * Draw the background layer for the GuiContainer (everything behind the items)
 	 */
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float fpt, int mouseX, int mouseY)
@@ -61,26 +59,26 @@ public class GuiUnbrewingStand extends GuiContainer
 			
 			switch (bubbleIndex)
 			{
-			case 0:
-				scaledUnbrewTime = 29;
-				break;
-			case 1:
-				scaledUnbrewTime = 24;
-				break;
-			case 2:
-				scaledUnbrewTime = 20;
-				break;
-			case 3:
-				scaledUnbrewTime = 16;
-				break;
-			case 4:
-				scaledUnbrewTime = 11;
-				break;
-			case 5:
-				scaledUnbrewTime = 6;
-				break;
-			case 6:
-				scaledUnbrewTime = 0;
+				case 0:
+					scaledUnbrewTime = 29;
+					break;
+				case 1:
+					scaledUnbrewTime = 24;
+					break;
+				case 2:
+					scaledUnbrewTime = 20;
+					break;
+				case 3:
+					scaledUnbrewTime = 16;
+					break;
+				case 4:
+					scaledUnbrewTime = 11;
+					break;
+				case 5:
+					scaledUnbrewTime = 6;
+					break;
+				case 6:
+					scaledUnbrewTime = 0;
 			}
 			
 			if (scaledUnbrewTime > 0)

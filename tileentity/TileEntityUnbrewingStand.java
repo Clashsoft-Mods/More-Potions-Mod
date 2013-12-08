@@ -8,24 +8,27 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityUnbrewingStand extends TileEntity implements IInventory
+public class TileEntityUnbrewingStand extends TileEntity implements ISidedInventory
 {
+	private static int[]	inputSlots		= { 0 };
+	private static int[]	outputSlots		= { 1, 2, 3, 4, 5 };
+	
 	/**
 	 * The itemstacks currently placed in the slots of the unbrewing stand 0 = potion 1 = redstone 2 = glowstone 3 = gunpowder 4 = bottle 5 = ingredient
 	 */
-	private ItemStack[]	itemStacks		= new ItemStack[6];
-	public int			unbrewTime;
+	private ItemStack[]		itemStacks		= new ItemStack[6];
+	public int				unbrewTime;
 	
-	public static int	maxUnbrewTime	= 100;
+	public static int		maxUnbrewTime	= 100;
 	
-	public EntityPlayer	player;
+	public EntityPlayer		player;
 	
 	public TileEntityUnbrewingStand()
 	{
@@ -85,39 +88,54 @@ public class TileEntityUnbrewingStand extends TileEntity implements IInventory
 		{
 			ItemPotion2 potionItem = (ItemPotion2) potion.getItem();
 			List<PotionType> potionTypes = potionItem.getEffects(potion);
-			int redstoneAmount = 0;
-			int glowstoneAmount = 0;
-			int bottleAmount = potion.stackSize;
-			ItemStack ingredient = null;
 			
-			for (PotionType pt : potionTypes)
+			int potionCount = potion.stackSize;
+			
+			if (potionCount > 0)
 			{
-				redstoneAmount += pt.getRedstoneAmount();
-				glowstoneAmount += pt.getGlowstoneAmount();
-				ItemStack ingredient1 = pt.getIngredient();
+				int oldRedstoneAmount = this.itemStacks[1] != null ? this.itemStacks[1].stackSize : 0;
+				int oldGlowstoneAmount = this.itemStacks[2] != null ? this.itemStacks[2].stackSize : 0;
+				int oldGunPowderAmount = this.itemStacks[3] != null ? this.itemStacks[3].stackSize : 0;
+				int oldBottleAmount = this.itemStacks[4] != null ? this.itemStacks[4].stackSize : 0;
 				
-				if (ingredient1 != null)
+				int redstoneAmount = 0;
+				int glowstoneAmount = 0;
+				int gunPowderAmount = potionItem.isSplash(potion.getItemDamage()) ? potionCount : 0;
+				int bottleAmount = potionCount;
+				
+				ItemStack ingredient = null;
+				
+				for (PotionType pt : potionTypes)
 				{
-					if (ingredient == null)
-						ingredient = ingredient1.copy();
-					else if (ingredient1.isItemEqual(ingredient))
-						ingredient.stackSize += ingredient1.stackSize;
+					redstoneAmount += pt.getRedstoneAmount();
+					glowstoneAmount += pt.getGlowstoneAmount();
+					
+					ItemStack ingredient1 = pt.getIngredient();
+					
+					if (ingredient1 != null)
+					{
+						if (ingredient == null)
+							ingredient = ingredient1.copy();
+						else if (ingredient1.isItemEqual(ingredient))
+							ingredient.stackSize += ingredient1.stackSize;
+					}
 				}
-			}
-			
-			if (redstoneAmount > 0)
-				this.itemStacks[1] = new ItemStack(Item.redstone, redstoneAmount * bottleAmount);
-			if (glowstoneAmount > 0)
-				this.itemStacks[2] = new ItemStack(Item.glowstone, glowstoneAmount * bottleAmount);
-			if (potionItem.isSplash(potion.getItemDamage()))
-				this.itemStacks[3] = new ItemStack(Item.gunpowder, bottleAmount);
-			
-			this.itemStacks[4] = new ItemStack(Item.glassBottle, bottleAmount);
-			
-			if (ingredient != null)
-			{
-				ingredient.stackSize *= bottleAmount;
-				this.itemStacks[5] = ingredient;
+				
+				redstoneAmount = oldRedstoneAmount + redstoneAmount * potionCount;
+				glowstoneAmount = oldGlowstoneAmount + glowstoneAmount * potionCount;
+				gunPowderAmount = oldGunPowderAmount + gunPowderAmount * potionCount;
+				bottleAmount = oldBottleAmount + bottleAmount;
+				
+				this.itemStacks[1] = redstoneAmount > 0 ? new ItemStack(Item.redstone, redstoneAmount) : null;
+				this.itemStacks[2] = glowstoneAmount > 0 ? new ItemStack(Item.glowstone, glowstoneAmount) : null;
+				this.itemStacks[3] = gunPowderAmount > 0 ? new ItemStack(Item.gunpowder, gunPowderAmount) : null;
+				this.itemStacks[4] = bottleAmount > 0 ? new ItemStack(Item.glassBottle, bottleAmount) : null;
+				
+				if (ingredient != null)
+				{
+					ingredient.stackSize *= potionCount;
+					this.itemStacks[5] = ingredient;
+				}
 			}
 			
 			this.itemStacks[0] = null;
@@ -131,11 +149,15 @@ public class TileEntityUnbrewingStand extends TileEntity implements IInventory
 	
 	public boolean canUnbrew()
 	{
-		for (int i = 1; i < this.itemStacks.length; i++)
+		for (int i = 1; i < 5; i++)
 		{
 			if (this.itemStacks[i] != null)
-				return false;
+				if (this.itemStacks[i].stackSize > this.itemStacks[i].getMaxStackSize())
+					return false;
 		}
+		if (this.itemStacks[5] != null)
+			return false;
+		
 		return this.getPotion() != null && this.getPotion().getItem() instanceof ItemPotion2;
 	}
 	
@@ -290,8 +312,26 @@ public class TileEntityUnbrewingStand extends TileEntity implements IInventory
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
+	public boolean isItemValidForSlot(int slotID, ItemStack stack)
 	{
-		return par2ItemStack.getItem() instanceof ItemPotion2;
+		return stack.getItem() instanceof ItemPotion2;
+	}
+	
+	@Override
+	public int[] getAccessibleSlotsFromSide(int side)
+	{
+		return side != 1 ? outputSlots : inputSlots;
+	}
+	
+	@Override
+	public boolean canInsertItem(int slotID, ItemStack stack, int side)
+	{
+		return side == 1 && this.isItemValidForSlot(slotID, stack);
+	}
+	
+	@Override
+	public boolean canExtractItem(int slotID, ItemStack stack, int side)
+	{
+		return side != 1;
 	}
 }
