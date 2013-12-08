@@ -18,7 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 public class TileEntityUnbrewingStand extends TileEntity implements ISidedInventory
 {
 	private static int[]	inputSlots		= { 0 };
-	private static int[]	outputSlots		= { 1, 2, 3, 4, 5 };
+	private static int[]	outputSlots		= { 5, 4, 3, 2, 1 };
 	
 	/**
 	 * The itemstacks currently placed in the slots of the unbrewing stand 0 = potion 1 = redstone 2 = glowstone 3 = gunpowder 4 = bottle 5 = ingredient
@@ -229,16 +229,34 @@ public class TileEntityUnbrewingStand extends TileEntity implements ISidedInvent
 	@Override
 	public ItemStack decrStackSize(int slotID, int amount)
 	{
-		if (slotID >= 0 && slotID < this.itemStacks.length)
-		{
-			ItemStack var3 = this.itemStacks[slotID];
-			this.itemStacks[slotID] = null;
-			return var3;
-		}
-		else
-		{
-			return null;
-		}
+		ItemStack[] aitemstack = this.itemStacks;
+
+        if (aitemstack[slotID] != null)
+        {
+            ItemStack itemstack;
+
+            if (aitemstack[slotID].stackSize <= amount)
+            {
+                itemstack = aitemstack[slotID];
+                aitemstack[slotID] = null;
+                return itemstack;
+            }
+            else
+            {
+                itemstack = aitemstack[slotID].splitStack(amount);
+
+                if (aitemstack[slotID].stackSize == 0)
+                {
+                    aitemstack[slotID] = null;
+                }
+
+                return itemstack;
+            }
+        }
+        else
+        {
+            return null;
+        }
 	}
 	
 	/**
@@ -320,18 +338,18 @@ public class TileEntityUnbrewingStand extends TileEntity implements ISidedInvent
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return side != 1 ? outputSlots : inputSlots;
+		return side == 0 ? outputSlots : inputSlots;
 	}
 	
 	@Override
 	public boolean canInsertItem(int slotID, ItemStack stack, int side)
 	{
-		return side == 1 && this.isItemValidForSlot(slotID, stack);
+		return side != 0 && this.isItemValidForSlot(slotID, stack);
 	}
 	
 	@Override
 	public boolean canExtractItem(int slotID, ItemStack stack, int side)
 	{
-		return side != 1;
+		return side == 0;
 	}
 }
