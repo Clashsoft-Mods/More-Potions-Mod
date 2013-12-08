@@ -11,7 +11,8 @@ import clashsoft.cslib.minecraft.CustomPotion;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.util.CSBlocks;
 import clashsoft.cslib.minecraft.util.CSCrafting;
-import clashsoft.cslib.util.*;
+import clashsoft.cslib.util.CSString;
+import clashsoft.cslib.util.CSUtil;
 import clashsoft.mods.morepotions.block.BlockCauldron2;
 import clashsoft.mods.morepotions.block.BlockMixer;
 import clashsoft.mods.morepotions.block.BlockUnbrewingStand;
@@ -25,9 +26,10 @@ import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
 
 import com.google.common.base.Charsets;
 
-import cpw.mods.fml.common.*;
+import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
@@ -39,6 +41,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
@@ -161,9 +164,9 @@ public class MorePotionsMod
 		dust = new CustomItem(dustItemID, CSString.concatAll(new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCharcoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, "item.", ".name"), new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, new String[] { "C2", "Fe", "Au", "C128", "Be3Al2Si6O18", "MgFeSi2O8", "SiO2", "\u00a7k???", "BeK4N5Cl6", "Na2LiAl2Si2", "Na2LiAl2Si2", "SiO2", "SiO4", "C", "", "", "", "", "", "" }).setCreativeTab(CreativeTabs.tabMaterials);
 		this.addDusts();
 		
-		CSBlocks.addBlock(mixer, "Mixer");
-		CSBlocks.addBlock(cauldron2, "Cauldron");
-		CSBlocks.addBlock(unbrewingStand, "Unbrewing Stand");
+		CSBlocks.addBlock(mixer, ItemBlock.class, "Mixer");
+		CSBlocks.addBlock(cauldron2, ItemBlock.class, "Cauldron");
+		CSBlocks.addBlock(unbrewingStand, ItemBlock.class, "Unbrewing Stand");
 		
 		Item.sugar.setCreativeTab(CreativeTabs.tabBrewing);
 		Item.netherStalkSeeds.setCreativeTab(CreativeTabs.tabBrewing);
@@ -195,6 +198,7 @@ public class MorePotionsMod
 		
 		CSCrafting.addCrafting(new ItemStack(mortar), new Object[] { "SfS", " S ", 'S', Block.stone, 'f', Item.flint });
 		CSCrafting.addCrafting(new ItemStack(mixer), new Object[] { "gSg", "g g", "SiS", 'g', Block.thinGlass, 'S', Block.stone, 'i', Item.ingotIron });
+		CSCrafting.addCrafting(new ItemStack(unbrewingStand), new Object[] { "bib", "bpb", "bbb", 'b', Item.brick, 'i', Item.ingotIron, 'p', Item.glassBottle });
 	}
 	
 	private void addLocalizations()
