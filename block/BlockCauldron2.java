@@ -3,8 +3,6 @@ package clashsoft.mods.morepotions.block;
 import clashsoft.mods.morepotions.MorePotionsMod;
 import clashsoft.mods.morepotions.client.MPMClientProxy;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCauldron;
@@ -24,12 +22,12 @@ import net.minecraft.world.World;
 
 public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 {
-	@SideOnly(Side.CLIENT)
+	private static ItemStack WATER_BUCKET = new ItemStack(Item.bucketWater);
+	
 	public Icon	inner;
-	@SideOnly(Side.CLIENT)
 	public Icon	top;
-	@SideOnly(Side.CLIENT)
 	public Icon	bottom;
+	public Icon liquid;
 	
 	public BlockCauldron2(int blockID)
 	{
@@ -47,6 +45,13 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	{
 		super.registerIcons(iconRegister);
 		Block.cauldron.registerIcons(iconRegister);
+		
+		this.liquid = iconRegister.registerIcon("cauldron_liquid");
+	}
+	
+	public static Icon getLiquidIcon()
+	{
+		return MorePotionsMod.cauldron2.liquid;
 	}
 	
 	@Override
@@ -58,7 +63,6 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 		{
 			EntityItem item = (EntityItem) entity;
 			
-			// Makes sure the item is *in* the cauldron
 			if (item.posX >= x + 0.125D && item.posX <= x + 0.875D && item.posY >= y + 0.125D && item.posY <= y + 1D && item.posZ >= z + 0.125D && item.posZ <= z + 0.875D)
 			{
 				if (this.onItemAdded(world, x, y, z, null, item.getEntityItem()))
@@ -69,7 +73,6 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
-	
 	{
 		return onItemAdded(world, x, y, z, player, player.getCurrentEquippedItem());
 	}
@@ -82,7 +85,6 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 		{
 			TileEntityCauldron te = (TileEntityCauldron) world.getBlockTileEntity(x, y, z);
 			boolean flag = false;
-			boolean itemDrop = player == null;
 			String message = null;
 			
 			if (stack == null)
@@ -91,11 +93,11 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 			{
 				int i1 = world.getBlockMetadata(x, y, z);
 				
-				if (stack.itemID == Item.bucketWater.itemID && !itemDrop)
+				if (stack.itemID == Item.bucketWater.itemID)
 				{
 					if (i1 < 3)
 					{
-						if (itemDrop)
+						if (player == null)
 						{
 							world.spawnEntityInWorld(new EntityItem(world, x + 0.5D, y + 0.5D, z + 1.5D, new ItemStack(Item.bucketEmpty)));
 						}
@@ -104,8 +106,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 							player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(Item.bucketEmpty));
 						}
 						
-						world.setBlockMetadataWithNotify(x, y, z, 3, 2);
-						
+						world.setBlockMetadataWithNotify(x, y, z, 3, 3);
 						message = te.addIngredient(stack);
 						flag = true;
 					}
@@ -119,26 +120,33 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 						ItemStack itemstack1 = te.output;
 						itemstack1.stackSize = 1;
 						
-						if (itemDrop || !player.inventory.addItemStackToInventory(itemstack1))
+						if (player == null)
 						{
-							player.dropPlayerItem(itemstack1);
+							world.spawnEntityInWorld(new EntityItem(world, x + 0.5D, y + 0.5D, z + 1.5D, itemstack1));
 						}
-						
-						if (player instanceof EntityPlayerMP)
+						else
 						{
-							((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
+							if (!player.inventory.addItemStackToInventory(itemstack1))
+							{
+								player.dropPlayerItem(itemstack1);
+							}
+							
+							if (player instanceof EntityPlayerMP)
+							{
+								((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
+							}
 						}
 						
 						--stack.stackSize;
 						
-						if (!itemDrop && stack.stackSize <= 0)
+						if (player != null && stack.stackSize <= 0)
 						{
 							player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack) null);
 						}
 						
 						--i1;
 						
-						world.setBlockMetadataWithNotify(x, y, z, i1, 2);
+						world.setBlockMetadataWithNotify(x, y, z, i1, 3);
 						flag = true;
 					}
 					
@@ -149,7 +157,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 				{
 					ItemArmor itemarmor = (ItemArmor) stack.getItem();
 					itemarmor.removeColor(stack);
-					world.setBlockMetadataWithNotify(x, y, z, i1 - 1, 2);
+					world.setBlockMetadataWithNotify(x, y, z, i1 - 1, 3);
 					flag = true;
 				}
 				else
@@ -163,7 +171,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 			}
 			
 			if (flag)
-			{				
+			{
 				world.playSound(x, y, z, "random.pop", 1F, 1F, true);
 				if (MorePotionsMod.cauldronInfo && player != null && !world.isRemote && message != null && !message.isEmpty())
 					player.addChatMessage(message);
@@ -190,20 +198,24 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 			{
 				world.setBlockMetadataWithNotify(x, y, z, l + 1, 2);
 			}
+			
+			TileEntityCauldron te = (TileEntityCauldron) world.getBlockTileEntity(x, y, z);
+			if (te != null)
+			{
+				te.addIngredient(WATER_BUCKET);
+			}
 		}
 	}
 	
 	/**
-	 * Called when the block receives a BlockEvent - see World.addBlockEvent. By
-	 * default, passes it on to the tile entity at this location. Args: world,
-	 * x, y, z, blockID, EventID, event parameter
+	 * Called when the block receives a BlockEvent - see World.addBlockEvent. By default, passes it on to the tile entity at this location. Args: world, x, y, z, blockID, EventID, event parameter
 	 */
 	@Override
-	public boolean onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6)
+	public boolean onBlockEventReceived(World world, int x, int y, int z, int eventID, int data)
 	{
-		super.onBlockEventReceived(par1World, par2, par3, par4, par5, par6);
-		TileEntity tileentity = par1World.getBlockTileEntity(par2, par3, par4);
-		return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
+		super.onBlockEventReceived(world, x, y, z, eventID, data);
+		TileEntity tileentity = world.getBlockTileEntity(x, y, z);
+		return tileentity != null ? tileentity.receiveClientEvent(eventID, data) : false;
 	}
 	
 	@Override

@@ -27,7 +27,6 @@ public class MPMPacketHandler implements IPacketHandler
 			
 			if (world != null)
 			{
-				
 				ByteArrayInputStream bis = new ByteArrayInputStream(packet.data);
 				DataInputStream dis = new DataInputStream(bis);
 				
@@ -49,7 +48,7 @@ public class MPMPacketHandler implements IPacketHandler
 				}
 				catch (IOException ex)
 				{
-					
+					ex.printStackTrace();
 				}
 			}
 		}

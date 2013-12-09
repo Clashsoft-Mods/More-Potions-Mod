@@ -9,7 +9,6 @@ import java.util.List;
 import clashsoft.brewingapi.BrewingAPI;
 import clashsoft.brewingapi.brewing.PotionType;
 import clashsoft.brewingapi.brewing.PotionBase;
-import clashsoft.brewingapi.brewing.PotionList;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 import net.minecraft.client.resources.I18n;
@@ -37,8 +36,7 @@ public class TileEntityCauldron extends TileEntity
 	}
 	
 	/**
-	 * Check if the stack is a valid item for this slot. Always true beside for
-	 * the armor slots.
+	 * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
 	 */
 	public boolean isItemValid(ItemStack stack)
 	{
@@ -69,36 +67,28 @@ public class TileEntityCauldron extends TileEntity
 		}
 		else if (ingredient.getItem() == Item.glowstone && !this.isWater()) // Improving
 		{
-			for (int var3 = 0; var3 < this.potionTypes.size(); var3++)
+			for (int i = 0; i < this.potionTypes.size(); i++)
 			{
-				PotionType potionType = this.potionTypes.get(var3);
-				if (potionType != PotionList.awkward)
-				{
-					this.potionTypes.set(var3, potionType.onImproved());
-				}
+				PotionType potionType = this.potionTypes.get(i);
+				this.potionTypes.set(i, potionType.onImproved());
 			}
 			out = I18n.getString("cauldron.effects.amplifiers.increase");
 		}
 		else if (ingredient.getItem() == Item.redstone && !this.isWater()) // Extending
 		{
-			for (int var3 = 0; var3 < this.potionTypes.size(); var3++)
+			for (int i = 0; i < this.potionTypes.size(); i++)
 			{
-				PotionType potionType = this.potionTypes.get(var3);
-				if (potionType != PotionList.awkward)
-				{
-					this.potionTypes.set(var3, potionType.onExtended());
-				}
+				PotionType potionType = this.potionTypes.get(i);
+				this.potionTypes.set(i, potionType.onExtended());
 			}
 			out = I18n.getString("cauldron.effects.durations.increase");
 		}
 		else if (ingredient.getItem() == Item.fermentedSpiderEye && !this.isWater()) // Inverting
 		{
-			for (int index = 0; index < this.potionTypes.size(); index++)
+			for (int i = 0; i < this.potionTypes.size(); i++)
 			{
-				PotionType potionType = this.potionTypes.get(index);
-				potionType = potionType.getInverted() != null ? potionType.getInverted() : potionType;
-				potionType.setOpposite(null);
-				this.potionTypes.set(index, potionType);
+				PotionType potionType = this.potionTypes.get(i);
+				this.potionTypes.set(i, potionType.onInverted());
 			}
 			out = I18n.getString("cauldron.effects.invert");
 		}
@@ -166,7 +156,7 @@ public class TileEntityCauldron extends TileEntity
 	
 	public void sync()
 	{
-		if (!this.worldObj.isRemote)
+		if (this.worldObj != null && !this.worldObj.isRemote)
 			PacketDispatcher.sendPacketToAllPlayers(this.getDescriptionPacket());
 	}
 	
