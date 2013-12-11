@@ -172,7 +172,8 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 			
 			if (flag)
 			{
-				world.playSound(x, y, z, "random.pop", 1F, 1F, true);
+		        world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), "random.fizz", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
+
 				if (MorePotionsMod.cauldronInfo && player != null && !world.isRemote && message != null && !message.isEmpty())
 					player.addChatMessage(message);
 			}

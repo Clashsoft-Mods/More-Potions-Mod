@@ -39,7 +39,17 @@ public class CauldronRenderer extends TileEntitySpecialRenderer
 				float g = (color >> 8 & 255) / 255.0F;
 				float b = (color & 255) / 255.0F;
 				
-				Icon icon2 = BlockFluid.getFluidIcon("lava_still");
+				Icon icon2;
+				
+				if (color == 0x0C0CFF)
+				{
+					icon2 = BlockFluid.getFluidIcon("water_still");
+					r = g = b = 1F;
+				}
+				else
+				{
+					icon2 = BlockCauldron2.getLiquidIcon();
+				}
 				
 				double yPos = (6D + (i1 * 3.0D)) / 16.0D;
 				
