@@ -16,9 +16,13 @@ import clashsoft.cslib.util.CSUtil;
 import clashsoft.mods.morepotions.block.BlockCauldron2;
 import clashsoft.mods.morepotions.block.BlockMixer;
 import clashsoft.mods.morepotions.block.BlockUnbrewingStand;
+import clashsoft.mods.morepotions.brewing.MPMEffectHandler;
+import clashsoft.mods.morepotions.brewing.MPMIngredientHandler;
 import clashsoft.mods.morepotions.brewing.MPMPotionList;
 import clashsoft.mods.morepotions.common.MPMCommonProxy;
-import clashsoft.mods.morepotions.handlers.*;
+import clashsoft.mods.morepotions.common.MPMEventHandler;
+import clashsoft.mods.morepotions.common.MPMPacketHandler;
+import clashsoft.mods.morepotions.crafting.*;
 import clashsoft.mods.morepotions.item.ItemMortar;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
@@ -53,7 +57,7 @@ import net.minecraftforge.oredict.OreDictionary;
 @NetworkMod(channels = { TileEntityCauldron.CHANNEL }, clientSideRequired = true, serverSideRequired = false, packetHandler = MPMPacketHandler.class)
 public class MorePotionsMod
 {
-	public static final int				REVISION					= 4;
+	public static final int				REVISION					= 5;
 	public static final String			VERSION						= CSUpdate.CURRENT_VERSION + "-" + REVISION;
 	
 	@Instance("MorePotionsMod")
@@ -95,6 +99,7 @@ public class MorePotionsMod
 	public static Potion				thorns						= new CustomPotion("potion.thorns", false, 0x810081, false, customEffects, 3, 1);
 	public static Potion				greenThumb					= new CustomPotion("potion.greenThumb", false, 0x008100, false, customEffects, 4, 1);
 	public static Potion				projectile					= new CustomPotion("potion.projectile", false, 0x101010, false, customEffects, 5, 1);
+	public static Potion				doubleJump					= new CustomPotion("potion.doubleJump", false, 0x157490, false, customEffects, 6, 1); 
 	
 	public static BlockMixer			mixer;
 	public static BlockCauldron2		cauldron2;

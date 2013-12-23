@@ -1,7 +1,7 @@
 package clashsoft.mods.morepotions.inventory;
 
 import clashsoft.brewingapi.inventory.slot.SlotPotion;
-import clashsoft.mods.morepotions.inventory.slot.SlotOutput;
+import clashsoft.cslib.minecraft.inventory.SlotOutput;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -27,7 +27,7 @@ public class ContainerMixer extends Container
 		this.theSlot = this.addSlotToContainer(new SlotPotion(inventory.player, mixer, 0, 56, 23));
 		this.addSlotToContainer(new SlotPotion(inventory.player, mixer, 1, 79, 16));
 		this.addSlotToContainer(new SlotPotion(inventory.player, mixer, 2, 102, 23));
-		this.addSlotToContainer(new SlotOutput(inventory.player, mixer, 3, 79, 52));
+		this.addSlotToContainer(new SlotOutput(mixer, 3, 79, 52));
 		int var3;
 		
 		for (var3 = 0; var3 < 3; ++var3)

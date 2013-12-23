@@ -1,4 +1,4 @@
-package clashsoft.mods.morepotions.handlers;
+package clashsoft.mods.morepotions.brewing;
 
 import clashsoft.brewingapi.api.IIngredientHandler;
 

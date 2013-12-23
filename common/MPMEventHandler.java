@@ -1,4 +1,4 @@
-package clashsoft.mods.morepotions.handlers;
+package clashsoft.mods.morepotions.common;
 
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.mods.morepotions.MorePotionsMod;

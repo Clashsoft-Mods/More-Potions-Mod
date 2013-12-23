@@ -1,4 +1,4 @@
-package clashsoft.mods.morepotions.handlers;
+package clashsoft.mods.morepotions.brewing;
 
 import clashsoft.brewingapi.api.IPotionEffectHandler;
 import clashsoft.brewingapi.brewing.PotionType;
@@ -11,11 +11,9 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.ForgeDirection;
 
 public class MPMEffectHandler implements IPotionEffectHandler
-{
-	private float	tick	= 0;
-	
+{	
 	@Override
-	public void onPotionUpdate(PotionQueue queue, EntityLivingBase living, PotionEffect effect)
+	public void onPotionUpdate(int tick, EntityLivingBase living, PotionEffect effect)
 	{
 		if (effect.getPotionID() == MorePotionsMod.fire.id)
 		{
@@ -83,17 +81,19 @@ public class MPMEffectHandler implements IPotionEffectHandler
 		{
 			if (MorePotionsMod.randomMode == 0)
 			{
-				queue.add(PotionType.getRandom(living.getRNG()).getEffect());
-				queue.remove(MorePotionsMod.random.id);
+				living.addPotionEffect(PotionType.getRandom(living.getRNG()).getEffect());
+				living.removePotionEffect(MorePotionsMod.random.id);
 			}
 			else
 			{
-				if (((int) tick) % 40 == 0)
+				if ((int) (tick % 40) == 0)
 				{
 					PotionEffect pe = PotionType.getRandom(living.getRNG()).getEffect();
 					if (pe.getDuration() > 1)
+					{
 						pe.duration = 40;
-					queue.add(pe);
+					}
+					living.addPotionEffect(effect);
 				}
 			}
 		}

@@ -15,9 +15,18 @@ import net.minecraft.potion.PotionEffect;
 
 public class MPMPotionList
 {
+	public static PotionType	doubleLife;
+	public static PotionType	ironSkin;
+	public static PotionType	obsidianSkin;
+	public static PotionType	waterWalking;
+	public static PotionType	explosiveness;
+	public static PotionType	fire;
+	public static PotionType	random;
+	public static PotionType	effectRemove;
 	public static PotionType	thorns;
 	public static PotionType	greenThumb;
 	public static PotionType	projectile;
+	public static PotionType	doubleJump;
 	
 	public static void initializePotionBases()
 	{
@@ -68,7 +77,8 @@ public class MPMPotionList
 		doubleLife = new PotionType(new PotionEffect(MorePotionsMod.doubleLife.id, 1625000, 0), 0, 0, PotionList.harm, MorePotionsMod.dustNetherstar, PotionType.getBaseBrewing(PotionList.thick));
 		healthBoost = new PotionType(new PotionEffect(Potion.field_76434_w.id, 45 * 20, 0), 4, 120 * 20);
 		absorption = new PotionType(new PotionEffect(Potion.field_76444_x.id, 45 * 20, 0), 4, 120 * 20, PotionList.healthBoost, new ItemStack(Item.appleGold), PotionType.getBaseBrewing(PotionList.thick));
-		jump = new PotionType(new PotionEffect(Potion.jump.id, 20 * 180, 0), 4, 20 * 300);
+		doubleJump = new PotionType(new PotionEffect(MorePotionsMod.doubleJump.id, 20 * 60, 0), 2, 20 * 120, null);
+		jump = new PotionType(new PotionEffect(Potion.jump.id, 20 * 180, 0), 4, 20 * 300, doubleJump);
 		confusion = new PotionType(new PotionEffect(Potion.confusion.id, 20 * 90, 0), 2, 20 * 180, new ItemStack(Item.poisonousPotato), PotionList.awkward);
 		regeneration = new PotionType(new PotionEffect(Potion.regeneration.id, 20 * 45, 0), 2, 20 * 180, PotionList.moveSlowdown, new ItemStack(Item.ghastTear), PotionList.awkward);
 		resistance = new PotionType(new PotionEffect(Potion.resistance.id, 20 * 180, 0), 3, 20 * 240, MorePotionsMod.dustDiamond, PotionType.getBaseBrewing(PotionList.thick));
@@ -76,7 +86,7 @@ public class MPMPotionList
 		obsidianSkin = new PotionType(new PotionEffect(MorePotionsMod.obsidianSkin.id, 20 * 120, 0), 1, 20 * 240, MorePotionsMod.dustObsidian, PotionType.getBaseBrewing(PotionList.thick));
 		fireResistance = new PotionType(new PotionEffect(Potion.fireResistance.id, 20 * 180, 0), 0, 20 * 360, PotionList.moveSlowdown, new ItemStack(Item.magmaCream), PotionList.awkward);
 		waterWalking = new PotionType(new PotionEffect(MorePotionsMod.waterWalking.id, 20 * 120, 0), 0, 240 * 20);
-		waterBreathing = new PotionType(new PotionEffect(Potion.waterBreathing.id, 20 * 180, 0), 2, 20 * 360, PotionList.waterWalking, MorePotionsMod.dustClay, PotionList.awkward);
+		waterBreathing = new PotionType(new PotionEffect(Potion.waterBreathing.id, 20 * 180, 0), 2, 20 * 360, waterWalking, MorePotionsMod.dustClay, PotionList.awkward);
 		coldness = new PotionType(new PotionEffect(MorePotionsMod.coldness.id, 20 * 180, 0), 1, 20 * 360, new ItemStack(Item.snowball), PotionList.awkward);
 		invisibility = new PotionType(new PotionEffect(Potion.invisibility.id, 20 * 180, 0), 0, 720 * 20);
 		blindness = new PotionType(new PotionEffect(Potion.blindness.id, 20 * 90, 0), 0, 20 * 240, new ItemStack(Item.dyePowder, 1, 0), PotionType.getBaseBrewing(PotionList.thin));
@@ -86,13 +96,20 @@ public class MPMPotionList
 		saturation = new PotionType(new PotionEffect(Potion.field_76443_y.id, 20 * 45, 0), 3, 20 * 60, PotionList.hunger, new ItemStack(Item.bread), PotionType.getBaseBrewing(PotionList.awkward));
 		wither = new PotionType(new PotionEffect(Potion.wither.id, 450, 0), 1, 20 * 60, MorePotionsMod.dustWither, PotionType.getBaseBrewing(PotionList.acrid));
 		explosiveness = new PotionType(new PotionEffect(MorePotionsMod.explosiveness.id, 20 * 10, 0), 4, 20 * 20);
-		fire = new PotionType(new PotionEffect(MorePotionsMod.fire.id, 20 * 10, 0), 0, 20 * 20, PotionList.explosiveness, new ItemStack(Item.fireballCharge), PotionList.awkward);
+		fire = new PotionType(new PotionEffect(MorePotionsMod.fire.id, 20 * 10, 0), 0, 20 * 20, explosiveness, new ItemStack(Item.fireballCharge), PotionList.awkward);
 		random = new PotionType(new PotionEffect(MorePotionsMod.random.id, MorePotionsMod.randomMode == 0 ? 1 : 20 * 45, 0), 0, MorePotionsMod.randomMode == 0 ? 1 : 20 * 90, new ItemStack(BrewingAPI.potion2), PotionList.awkward);
-		effectRemove = new PotionType(new PotionEffect(MorePotionsMod.effectRemove.id, 20 * 45, 0), 0, 20 * 90, PotionList.random, new ItemStack(Item.bucketMilk), PotionList.awkward);
+		effectRemove = new PotionType(new PotionEffect(MorePotionsMod.effectRemove.id, 20 * 45, 0), 0, 20 * 90, random, new ItemStack(Item.bucketMilk), PotionList.awkward)
+		{
+			@Override
+			public boolean isCombinable()
+			{
+				return false;
+			}
+		};
 		
 		thorns = new PotionType(new PotionEffect(MorePotionsMod.thorns.id, 20 * 60, 0), 3, 20 * 120, null, new ItemStack(Block.cactus), PotionList.awkward);
 		greenThumb = new PotionType(new PotionEffect(MorePotionsMod.greenThumb.id, 20 * 60, 0), 2, 20 * 120, null, new ItemStack(Block.leaves), PotionList.awkward);
-		projectile = new PotionType(new PotionEffect(MorePotionsMod.projectile.id, 20 * 60, 0), 2, 20 * 120, null, new ItemStack(Item.arrow), PotionList.awkward);	
+		projectile = new PotionType(new PotionEffect(MorePotionsMod.projectile.id, 20 * 60, 0), 2, 20 * 120, null, new ItemStack(Item.arrow), PotionList.awkward);
 	}
 	
 	public static void registerPotionBases()
@@ -103,7 +120,7 @@ public class MPMPotionList
 		dashing.register();
 		acrid.register();
 		
-		if (SHOW_ALL_BASEBREWINGS)
+		if (SHOW_ALL_BASES)
 		{
 			mundane.register();
 			elegant.register();
@@ -165,6 +182,7 @@ public class MPMPotionList
 		damageBoost.register();
 		weakness.register();
 		jump.register();
+		doubleJump.register(); //
 		resistance.register();
 		thorns.register(); //
 		projectile.register();

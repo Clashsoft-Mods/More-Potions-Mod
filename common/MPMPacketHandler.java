@@ -1,4 +1,4 @@
-package clashsoft.mods.morepotions.handlers;
+package clashsoft.mods.morepotions.common;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;

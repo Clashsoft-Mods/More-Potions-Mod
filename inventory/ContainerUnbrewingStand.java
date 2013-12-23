@@ -1,7 +1,7 @@
 package clashsoft.mods.morepotions.inventory;
 
 import clashsoft.brewingapi.inventory.slot.SlotPotion;
-import clashsoft.mods.morepotions.inventory.slot.SlotOutput;
+import clashsoft.cslib.minecraft.inventory.SlotOutput;
 import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -23,11 +23,11 @@ public class ContainerUnbrewingStand extends Container
 	{
 		this.mixer = unbrewingStand;
 		this.theSlot = this.addSlotToContainer(new SlotPotion(inventory.player, unbrewingStand, 0, 79, 17));
-		this.addSlotToContainer(new SlotOutput(inventory.player, unbrewingStand, 1, 57, 61));
-		this.addSlotToContainer(new SlotOutput(inventory.player, unbrewingStand, 2, 79, 61));
-		this.addSlotToContainer(new SlotOutput(inventory.player, unbrewingStand, 3, 101, 61));
-		this.addSlotToContainer(new SlotOutput(inventory.player, unbrewingStand, 4, 38, 44));
-		this.addSlotToContainer(new SlotOutput(inventory.player, unbrewingStand, 5, 120, 44));
+		this.addSlotToContainer(new SlotOutput(unbrewingStand, 1, 57, 61));
+		this.addSlotToContainer(new SlotOutput(unbrewingStand, 2, 79, 61));
+		this.addSlotToContainer(new SlotOutput(unbrewingStand, 3, 101, 61));
+		this.addSlotToContainer(new SlotOutput(unbrewingStand, 4, 38, 44));
+		this.addSlotToContainer(new SlotOutput(unbrewingStand, 5, 120, 44));
 		
 		int var3;
 		

@@ -1,4 +1,4 @@
-package clashsoft.mods.morepotions.handlers;
+package clashsoft.mods.morepotions.crafting;
 
 import clashsoft.mods.morepotions.MorePotionsMod;
 import cpw.mods.fml.common.ICraftingHandler;
