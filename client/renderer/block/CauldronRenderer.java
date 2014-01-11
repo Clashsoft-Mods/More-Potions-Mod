@@ -23,15 +23,13 @@ public class CauldronRenderer implements ISimpleBlockRenderingHandler
 	
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
-	{
-		System.out.println("Cauldron");
+	{	
+		BlockCauldron2 cauldron = (BlockCauldron2) block;
 		
-		BlockCauldron2 par1BlockCauldron = (BlockCauldron2) block;
-		
-		renderer.renderStandardBlock(par1BlockCauldron, x, y, z);
+		renderer.renderStandardBlock(cauldron, x, y, z);
         Tessellator tessellator = Tessellator.instance;
-        tessellator.setBrightness(par1BlockCauldron.getMixedBrightnessForBlock(world, x, y, z));
-        int l = par1BlockCauldron.colorMultiplier(world, x, y, z);
+        tessellator.setBrightness(cauldron.getMixedBrightnessForBlock(world, x, y, z));
+        int l = cauldron.colorMultiplier(world, x, y, z);
         float r = (float)(l >> 16 & 255) / 255.0F;
         float g = (float)(l >> 8 & 255) / 255.0F;
         float b = (float)(l & 255) / 255.0F;
@@ -47,14 +45,14 @@ public class CauldronRenderer implements ISimpleBlockRenderingHandler
         }
 
         tessellator.setColorOpaque_F(r, g, b);
-        Icon icon = par1BlockCauldron.getBlockTextureFromSide(2);
-        renderer.renderFaceXPos(par1BlockCauldron, (double)((float)x - 1.0F + 0.125F), (double)y, (double)z, icon);
-        renderer.renderFaceXNeg(par1BlockCauldron, (double)((float)x + 1.0F - 0.125F), (double)y, (double)z, icon);
-        renderer.renderFaceZPos(par1BlockCauldron, (double)x, (double)y, (double)((float)z - 1.0F + 0.125F), icon);
-        renderer.renderFaceZNeg(par1BlockCauldron, (double)x, (double)y, (double)((float)z + 1.0F - 0.125F), icon);
+        Icon icon = cauldron.getBlockTextureFromSide(2);
+        renderer.renderFaceXPos(cauldron, (double)((float)x - 1.0F + 0.125F), (double)y, (double)z, icon);
+        renderer.renderFaceXNeg(cauldron, (double)((float)x + 1.0F - 0.125F), (double)y, (double)z, icon);
+        renderer.renderFaceZPos(cauldron, (double)x, (double)y, (double)((float)z - 1.0F + 0.125F), icon);
+        renderer.renderFaceZNeg(cauldron, (double)x, (double)y, (double)((float)z + 1.0F - 0.125F), icon);
         Icon icon1 = BlockCauldron.getCauldronIcon("inner");
-        renderer.renderFaceYPos(par1BlockCauldron, (double)x, (double)((float)y - 1.0F + 0.25F), (double)z, icon1);
-        renderer.renderFaceYNeg(par1BlockCauldron, (double)x, (double)((float)y + 1.0F - 0.75F), (double)z, icon1);
+        renderer.renderFaceYPos(cauldron, (double)x, (double)((float)y - 1.0F + 0.25F), (double)z, icon1);
+        renderer.renderFaceYNeg(cauldron, (double)x, (double)((float)y + 1.0F - 0.75F), (double)z, icon1);
         int i1 = world.getBlockMetadata(x, y, z);
 
         if (i1 > 0)
@@ -95,7 +93,7 @@ public class CauldronRenderer implements ISimpleBlockRenderingHandler
             	tessellator.setColorOpaque_F(r, g, b);
             }
             
-            renderer.renderFaceYPos(par1BlockCauldron, (double)x, (double)((float)y - 1.0F + (6.0F + (float)i1 * 3.0F) / 16.0F), (double)z, icon2);
+            renderer.renderFaceYPos(cauldron, (double)x, (double)((float)y - 1.0F + (6.0F + (float)i1 * 3.0F) / 16.0F), (double)z, icon2);
         }
 
         return true;

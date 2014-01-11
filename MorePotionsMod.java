@@ -11,6 +11,7 @@ import clashsoft.cslib.minecraft.CustomPotion;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.util.CSBlocks;
 import clashsoft.cslib.minecraft.util.CSCrafting;
+import clashsoft.cslib.util.CSLog;
 import clashsoft.cslib.util.CSString;
 import clashsoft.cslib.util.CSUtil;
 import clashsoft.mods.morepotions.block.BlockCauldron2;
@@ -22,7 +23,7 @@ import clashsoft.mods.morepotions.brewing.MPMPotionList;
 import clashsoft.mods.morepotions.common.MPMCommonProxy;
 import clashsoft.mods.morepotions.common.MPMEventHandler;
 import clashsoft.mods.morepotions.common.MPMPacketHandler;
-import clashsoft.mods.morepotions.crafting.*;
+import clashsoft.mods.morepotions.crafting.MPMCraftingHandler;
 import clashsoft.mods.morepotions.item.ItemMortar;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
@@ -188,11 +189,11 @@ public class MorePotionsMod
 	
 	private void registerPotionTypes()
 	{
-		CSUtil.log("Initializing MorePotionsMod PotionTypes");
+		CSLog.info("Initializing MorePotionsMod PotionTypes");
 		MPMPotionList.initializePotionBases();
 		MPMPotionList.initializePotionTypes();
 		
-		CSUtil.log("Registering MorePotionsMod PotionTypes");
+		CSLog.info("Registering MorePotionsMod PotionTypes");
 		MPMPotionList.registerPotionBases();
 		MPMPotionList.registerPotionTypes();
 	}
@@ -235,7 +236,7 @@ public class MorePotionsMod
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			CSLog.error(ex);
 		}
 	}
 	

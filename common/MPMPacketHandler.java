@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
+import clashsoft.cslib.util.CSLog;
 import clashsoft.mods.morepotions.MorePotionsMod;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import cpw.mods.fml.common.network.IPacketHandler;
@@ -48,7 +49,7 @@ public class MPMPacketHandler implements IPacketHandler
 				}
 				catch (IOException ex)
 				{
-					ex.printStackTrace();
+					CSLog.error(ex);
 				}
 			}
 		}
