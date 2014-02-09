@@ -4,34 +4,35 @@ import clashsoft.mods.morepotions.MorePotionsMod;
 import clashsoft.mods.morepotions.client.MPMClientProxy;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.EnumArmorMaterial;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 {
-	private static ItemStack WATER_BUCKET = new ItemStack(Item.bucketWater);
+	private static ItemStack	WATER_BUCKET	= new ItemStack(Items.water_bucket);
 	
-	public Icon	inner;
-	public Icon	top;
-	public Icon	bottom;
-	public Icon liquid;
+	public IIcon				inner;
+	public IIcon				top;
+	public IIcon				bottom;
+	public IIcon				liquid;
 	
-	public BlockCauldron2(int blockID)
+	public BlockCauldron2()
 	{
-		super(blockID);
+		this.setHardness(2.0F);
 	}
 	
 	@Override
@@ -41,15 +42,15 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	}
 	
 	@Override
-	public void registerIcons(IconRegister iconRegister)
+	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		super.registerIcons(iconRegister);
-		Block.cauldron.registerIcons(iconRegister);
+		super.registerBlockIcons(iconRegister);
+		Blocks.cauldron.registerBlockIcons(iconRegister);
 		
 		this.liquid = iconRegister.registerIcon("cauldron_liquid");
 	}
 	
-	public static Icon getLiquidIcon()
+	public static IIcon getLiquidIcon()
 	{
 		return MorePotionsMod.cauldron2.liquid;
 	}
@@ -80,114 +81,120 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	public boolean onItemAdded(World world, int x, int y, int z, EntityPlayer player, ItemStack stack)
 	{
 		if (world.isRemote)
-			return true;
-		else if (world.getBlockTileEntity(x, y, z) instanceof TileEntityCauldron)
 		{
-			TileEntityCauldron te = (TileEntityCauldron) world.getBlockTileEntity(x, y, z);
-			boolean flag = false;
-			String message = null;
-			
-			if (stack == null)
-				return false;
-			else
+			return true;
+		}
+		else
+		{
+			TileEntity te = world.getTileEntity(x, y, z);
+			if (te instanceof TileEntityCauldron)
 			{
-				int i1 = world.getBlockMetadata(x, y, z);
+				TileEntityCauldron cauldron = (TileEntityCauldron) te;
+				boolean flag = false;
+				IChatComponent message = null;
 				
-				if (stack.itemID == Item.bucketWater.itemID)
+				if (stack == null)
 				{
-					if (i1 < 3)
-					{
-						if (player == null)
-						{
-							world.spawnEntityInWorld(new EntityItem(world, x + 0.5D, y + 0.5D, z + 1.5D, new ItemStack(Item.bucketEmpty)));
-						}
-						else if (!player.capabilities.isCreativeMode)
-						{
-							player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(Item.bucketEmpty));
-						}
-						
-						world.setBlockMetadataWithNotify(x, y, z, 3, 3);
-						message = te.addIngredient(stack);
-						flag = true;
-					}
-					else
-						flag = false;
-				}
-				else if (stack.itemID == Item.glassBottle.itemID)
-				{
-					if (i1 > 0)
-					{
-						ItemStack itemstack1 = te.output;
-						itemstack1.stackSize = 1;
-						
-						if (player == null)
-						{
-							world.spawnEntityInWorld(new EntityItem(world, x + 0.5D, y + 0.5D, z + 1.5D, itemstack1));
-						}
-						else
-						{
-							if (!player.inventory.addItemStackToInventory(itemstack1))
-							{
-								player.dropPlayerItem(itemstack1);
-							}
-							
-							if (player instanceof EntityPlayerMP)
-							{
-								((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
-							}
-						}
-						
-						--stack.stackSize;
-						
-						if (player != null && stack.stackSize <= 0)
-						{
-							player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack) null);
-						}
-						
-						--i1;
-						
-						world.setBlockMetadataWithNotify(x, y, z, i1, 3);
-						flag = true;
-					}
-					
-					if (i1 == 0)
-						te.potionTypes.clear();
-				}
-				else if (i1 > 0 && stack.getItem() instanceof ItemArmor && ((ItemArmor) stack.getItem()).getArmorMaterial() == EnumArmorMaterial.CLOTH)
-				{
-					ItemArmor itemarmor = (ItemArmor) stack.getItem();
-					itemarmor.removeColor(stack);
-					world.setBlockMetadataWithNotify(x, y, z, i1 - 1, 3);
-					flag = true;
+					return false;
 				}
 				else
 				{
-					if (te.isItemValid(stack) && i1 > 0)
+					int i1 = world.getBlockMetadata(x, y, z);
+					
+					if (stack.getItem() == Items.water_bucket)
 					{
-						message = te.addIngredient(stack);
+						if (i1 < 3)
+						{
+							if (player == null)
+							{
+								world.spawnEntityInWorld(new EntityItem(world, x + 0.5D, y + 0.5D, z + 1.5D, new ItemStack(Items.bucket)));
+							}
+							else if (!player.capabilities.isCreativeMode)
+							{
+								player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(Items.bucket));
+							}
+							
+							world.setBlockMetadataWithNotify(x, y, z, 3, 3);
+							message = cauldron.addIngredient(stack);
+							flag = true;
+						}
+						else
+							flag = false;
+					}
+					else if (stack.getItem() == Items.glass_bottle)
+					{
+						if (i1 > 0)
+						{
+							ItemStack itemstack1 = cauldron.output;
+							itemstack1.stackSize = 1;
+							
+							if (player == null)
+							{
+								world.spawnEntityInWorld(new EntityItem(world, x + 0.5D, y + 0.5D, z + 1.5D, itemstack1));
+							}
+							else
+							{
+								if (!player.inventory.addItemStackToInventory(itemstack1))
+								{
+									player.dropPlayerItemWithRandomChoice(itemstack1, false);
+								}
+								
+								if (player instanceof EntityPlayerMP)
+								{
+									((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
+								}
+							}
+							
+							--stack.stackSize;
+							
+							if (player != null && stack.stackSize <= 0)
+							{
+								player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack) null);
+							}
+							
+							--i1;
+							
+							world.setBlockMetadataWithNotify(x, y, z, i1, 3);
+							flag = true;
+						}
+						
+						if (i1 == 0)
+							cauldron.potionTypes.clear();
+					}
+					else if (i1 > 0 && stack.getItem() instanceof ItemArmor && ((ItemArmor) stack.getItem()).getArmorMaterial() == ArmorMaterial.CLOTH)
+					{
+						ItemArmor itemarmor = (ItemArmor) stack.getItem();
+						itemarmor.removeColor(stack);
+						world.setBlockMetadataWithNotify(x, y, z, i1 - 1, 3);
 						flag = true;
 					}
+					else
+					{
+						if (cauldron.isItemValid(stack) && i1 > 0)
+						{
+							message = cauldron.addIngredient(stack);
+							flag = true;
+						}
+					}
 				}
+				
+				if (flag)
+				{
+					world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), "random.fizz", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
+					
+					if (MorePotionsMod.cauldronInfo && player != null && message != null)
+					{
+						player.addChatMessage(message);
+					}
+				}
+				
+				cauldron.sync();
+				return flag;
 			}
-			
-			if (flag)
-			{
-		        world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), "random.fizz", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
-
-				if (MorePotionsMod.cauldronInfo && player != null && !world.isRemote && message != null && !message.isEmpty())
-					player.addChatMessage(message);
-			}
-			
-			te.sync();
-			return flag;
-		}
-		else
 			return false;
+		}
 	}
 	
-	/**
-	 * currently only used by BlockCauldron to increment metadata during rain
-	 */
 	@Override
 	public void fillWithRain(World world, int x, int y, int z)
 	{
@@ -200,7 +207,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 				world.setBlockMetadataWithNotify(x, y, z, l + 1, 2);
 			}
 			
-			TileEntityCauldron te = (TileEntityCauldron) world.getBlockTileEntity(x, y, z);
+			TileEntityCauldron te = (TileEntityCauldron) world.getTileEntity(x, y, z);
 			if (te != null)
 			{
 				te.addIngredient(WATER_BUCKET);
@@ -208,19 +215,16 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 		}
 	}
 	
-	/**
-	 * Called when the block receives a BlockEvent - see World.addBlockEvent. By default, passes it on to the tile entity at this location. Args: world, x, y, z, blockID, EventID, event parameter
-	 */
 	@Override
 	public boolean onBlockEventReceived(World world, int x, int y, int z, int eventID, int data)
 	{
 		super.onBlockEventReceived(world, x, y, z, eventID, data);
-		TileEntity tileentity = world.getBlockTileEntity(x, y, z);
+		TileEntity tileentity = world.getTileEntity(x, y, z);
 		return tileentity != null ? tileentity.receiveClientEvent(eventID, data) : false;
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world)
+	public TileEntity createNewTileEntity(World world, int metadata)
 	{
 		return new TileEntityCauldron();
 	}

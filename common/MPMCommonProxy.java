@@ -17,7 +17,6 @@ public class MPMCommonProxy implements IGuiHandler
 {
 	public void registerRenderInformation()
 	{
-		
 	}
 	
 	@Override
@@ -25,11 +24,11 @@ public class MPMCommonProxy implements IGuiHandler
 	{
 		if (ID == MorePotionsMod.mixerTileEntityID)
 		{
-			return new GuiMixer(player.inventory, (TileEntityMixer) world.getBlockTileEntity(x, y, z));
+			return new GuiMixer(player.inventory, (TileEntityMixer) world.getTileEntity(x, y, z));
 		}
 		else if (ID == MorePotionsMod.unbrewingStandTileEntityID)
 		{
-			return new GuiUnbrewingStand(player.inventory, (TileEntityUnbrewingStand) world.getBlockTileEntity(x, y, z));
+			return new GuiUnbrewingStand(player.inventory, (TileEntityUnbrewingStand) world.getTileEntity(x, y, z));
 		}
 		return null;
 	}
@@ -37,7 +36,7 @@ public class MPMCommonProxy implements IGuiHandler
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
 		if (tileEntity instanceof TileEntityMixer)
 		{
 			TileEntityMixer mixer = (TileEntityMixer) tileEntity;
@@ -62,5 +61,4 @@ public class MPMCommonProxy implements IGuiHandler
 	public void registerRenderers()
 	{
 	}
-	
 }

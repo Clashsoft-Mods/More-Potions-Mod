@@ -28,19 +28,19 @@ public class ContainerMixer extends Container
 		this.addSlotToContainer(new SlotPotion(inventory.player, mixer, 1, 79, 16));
 		this.addSlotToContainer(new SlotPotion(inventory.player, mixer, 2, 102, 23));
 		this.addSlotToContainer(new SlotOutput(mixer, 3, 79, 52));
-		int var3;
+		int i;
 		
-		for (var3 = 0; var3 < 3; ++var3)
+		for (i = 0; i < 3; ++i)
 		{
-			for (int var4 = 0; var4 < 9; ++var4)
+			for (int j = 0; j < 9; ++j)
 			{
-				this.addSlotToContainer(new Slot(inventory, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
+				this.addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
-		for (var3 = 0; var3 < 9; ++var3)
+		for (i = 0; i < 9; ++i)
 		{
-			this.addSlotToContainer(new Slot(inventory, var3, 8 + var3 * 18, 142));
+			this.addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
 		}
 	}
 	
@@ -51,9 +51,6 @@ public class ContainerMixer extends Container
 		icrafting.sendProgressBarUpdate(this, 0, this.mixer.getMixTime());
 	}
 	
-	/**
-	 * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
-	 */
 	@Override
 	public void detectAndSendChanges()
 	{
@@ -83,15 +80,11 @@ public class ContainerMixer extends Container
 	}
 	
 	@Override
-	public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+	public boolean canInteractWith(EntityPlayer player)
 	{
-		return this.mixer.isUseableByPlayer(par1EntityPlayer);
+		return this.mixer.isUseableByPlayer(player);
 	}
 	
-	/**
-	 * Called when a player shift-clicks on a slot. You must override this or
-	 * you will crash when someone does that.
-	 */
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotID)
 	{

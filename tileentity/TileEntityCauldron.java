@@ -1,25 +1,23 @@
 package clashsoft.mods.morepotions.tileentity;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import clashsoft.brewingapi.BrewingAPI;
-import clashsoft.brewingapi.brewing.PotionType;
 import clashsoft.brewingapi.brewing.PotionBase;
-import cpw.mods.fml.common.network.PacketDispatcher;
+import clashsoft.brewingapi.brewing.PotionType;
+import clashsoft.cslib.minecraft.lang.I18n;
+import clashsoft.mods.morepotions.common.MPMPacketHandler;
 
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
+import net.minecraftforge.common.util.Constants;
 
 public class TileEntityCauldron extends TileEntity
 {
@@ -35,23 +33,20 @@ public class TileEntityCauldron extends TileEntity
 		this.potionTypes = new ArrayList<PotionType>();
 	}
 	
-	/**
-	 * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
-	 */
 	public boolean isItemValid(ItemStack stack)
 	{
 		if (stack != null)
 		{
-			if (Item.itemsList[stack.itemID].isPotionIngredient() || PotionType.getPotionTypeFromIngredient(stack) != null && stack.itemID != Item.gunpowder.itemID)
+			if (PotionType.getPotionTypeFromIngredient(stack) != null && stack.getItem() != Items.gunpowder)
 				return true;
 		}
 		return false;
 	}
 	
-	public String addIngredient(ItemStack ingredient)
+	public IChatComponent addIngredient(ItemStack ingredient)
 	{
-		String out = "";
-		if (ingredient.getItem() == Item.bucketWater)
+		IChatComponent out = null;
+		if (ingredient.getItem() == Items.water_bucket)
 		{
 			if (!this.isWater())
 			{
@@ -60,37 +55,37 @@ public class TileEntityCauldron extends TileEntity
 					if (potionType.hasEffect())
 						potionType.setEffect(new PotionEffect(potionType.getEffect().getPotionID(), Math.round(potionType.getEffect().getDuration() * 0.6F), Math.round(potionType.getEffect().getAmplifier() * 0.8F)));
 				}
-				out = I18n.getString("cauldron.effects.durations.decrease");
+				out = new ChatComponentTranslation("cauldron.effects.durations.decrease");
 			}
 			else
-				out = I18n.getString("cauldron.addwater");
+				out = new ChatComponentTranslation("cauldron.addwater");
 		}
-		else if (ingredient.getItem() == Item.glowstone && !this.isWater()) // Improving
+		else if (ingredient.getItem() == Items.glowstone_dust && !this.isWater()) // Improving
 		{
 			for (int i = 0; i < this.potionTypes.size(); i++)
 			{
 				PotionType potionType = this.potionTypes.get(i);
 				this.potionTypes.set(i, potionType.onImproved());
 			}
-			out = I18n.getString("cauldron.effects.amplifiers.increase");
+			out = new ChatComponentTranslation("cauldron.effects.amplifiers.increase");
 		}
-		else if (ingredient.getItem() == Item.redstone && !this.isWater()) // Extending
+		else if (ingredient.getItem() == Items.redstone && !this.isWater()) // Extending
 		{
 			for (int i = 0; i < this.potionTypes.size(); i++)
 			{
 				PotionType potionType = this.potionTypes.get(i);
 				this.potionTypes.set(i, potionType.onExtended());
 			}
-			out = I18n.getString("cauldron.effects.durations.increase");
+			out = new ChatComponentTranslation("cauldron.effects.durations.increase");
 		}
-		else if (ingredient.getItem() == Item.fermentedSpiderEye && !this.isWater()) // Inverting
+		else if (ingredient.getItem() == Items.fermented_spider_eye && !this.isWater()) // Inverting
 		{
 			for (int i = 0; i < this.potionTypes.size(); i++)
 			{
 				PotionType potionType = this.potionTypes.get(i);
 				this.potionTypes.set(i, potionType.onInverted());
 			}
-			out = I18n.getString("cauldron.effects.invert");
+			out = new ChatComponentTranslation("cauldron.effects.invert");
 		}
 		else if (this.isWater()) // Other Base Ingredients
 		{
@@ -98,7 +93,7 @@ public class TileEntityCauldron extends TileEntity
 			if (base != null)
 			{
 				this.setBaseBrewing(base);
-				out = I18n.getStringParams("cauldron.effects.add.base", base.basename);
+				out = new ChatComponentTranslation("cauldron.effects.add.base", base.basename);
 			}
 		}
 		else
@@ -115,13 +110,13 @@ public class TileEntityCauldron extends TileEntity
 					this.potionTypes.add(potionType);
 					if (potionType.getEffect() != null)
 					{
-						out = I18n.getStringParams("cauldron.effects.add", I18n.getString(potionType.getEffect().getEffectName()));
+						out = new ChatComponentTranslation("cauldron.effects.add", I18n.getString(potionType.getEffectName()));
 					}
 				}
 				else if (contains)
-					out = I18n.getString("cauldron.failed.existing");
+					out = new ChatComponentTranslation("cauldron.failed.existing");
 				else if (requiredBase != null)
-					out = I18n.getStringParams("cauldron.failed.wrongbase", requiredBase.basename);
+					out = new ChatComponentTranslation("cauldron.failed.wrongbase", requiredBase.basename);
 			}
 		}
 		
@@ -157,35 +152,9 @@ public class TileEntityCauldron extends TileEntity
 	public void sync()
 	{
 		if (this.worldObj != null && !this.worldObj.isRemote)
-			PacketDispatcher.sendPacketToAllPlayers(this.getDescriptionPacket());
-	}
-	
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		Packet250CustomPayload packet = new Packet250CustomPayload();
-		
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		DataOutputStream dos = new DataOutputStream(bos);
-		
-		try
 		{
-			dos.writeInt(this.xCoord);
-			dos.writeInt(this.yCoord);
-			dos.writeInt(this.zCoord);
-			dos.writeInt(this.color);
-			Packet.writeItemStack(this.output, dos);
+			MPMPacketHandler.instance.syncCauldron(this);
 		}
-		catch (IOException ex)
-		{
-			
-		}
-		
-		packet.channel = CHANNEL;
-		packet.data = bos.toByteArray();
-		packet.length = bos.size();
-		
-		return packet;
 	}
 	
 	private ItemStack brew(boolean removeDuplicates)
@@ -218,11 +187,11 @@ public class TileEntityCauldron extends TileEntity
 		if (nbt.hasKey("PotionType"))
 		{
 			List result = new ArrayList();
-			NBTTagList tagList = nbt.getTagList("PotionType");
+			NBTTagList tagList = nbt.getTagList("PotionType", Constants.NBT.TAG_COMPOUND);
 			
-			for (int index = 0; index < tagList.tagCount(); ++index)
+			for (int i = 0; i < tagList.tagCount(); ++i)
 			{
-				NBTTagCompound brewingCompound = (NBTTagCompound) tagList.tagAt(index);
+				NBTTagCompound brewingCompound = tagList.getCompoundTagAt(i);
 				PotionType potionType = PotionType.getPotionTypeFromNBT(brewingCompound);
 				result.add(potionType);
 			}
@@ -238,7 +207,9 @@ public class TileEntityCauldron extends TileEntity
 		super.writeToNBT(nbt);
 		
 		if (!nbt.hasKey("PotionType"))
-			nbt.setTag("PotionType", new NBTTagList("PotionType"));
+		{
+			nbt.setTag("PotionType", new NBTTagList());
+		}
 		
 		NBTTagList tagList = (NBTTagList) nbt.getTag("PotionType");
 		for (PotionType potionType : this.potionTypes)
@@ -248,5 +219,4 @@ public class TileEntityCauldron extends TileEntity
 			tagList.appendTag(brewingCompound);
 		}
 	}
-	
 }

@@ -29,44 +29,41 @@ public class ContainerUnbrewingStand extends Container
 		this.addSlotToContainer(new SlotOutput(unbrewingStand, 4, 38, 44));
 		this.addSlotToContainer(new SlotOutput(unbrewingStand, 5, 120, 44));
 		
-		int var3;
+		int i;
 		
-		for (var3 = 0; var3 < 3; ++var3)
+		for (i = 0; i < 3; ++i)
 		{
-			for (int var4 = 0; var4 < 9; ++var4)
+			for (int j = 0; j < 9; ++j)
 			{
-				this.addSlotToContainer(new Slot(inventory, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
+				this.addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		
-		for (var3 = 0; var3 < 9; ++var3)
+		for (i = 0; i < 9; ++i)
 		{
-			this.addSlotToContainer(new Slot(inventory, var3, 8 + var3 * 18, 142));
+			this.addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
 		}
 	}
 	
 	@Override
-	public void addCraftingToCrafters(ICrafting par1ICrafting)
+	public void addCraftingToCrafters(ICrafting icrafting)
 	{
-		super.addCraftingToCrafters(par1ICrafting);
-		par1ICrafting.sendProgressBarUpdate(this, 0, this.mixer.getUnbrewTime());
+		super.addCraftingToCrafters(icrafting);
+		icrafting.sendProgressBarUpdate(this, 0, this.mixer.getUnbrewTime());
 	}
 	
-	/**
-	 * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
-	 */
 	@Override
 	public void detectAndSendChanges()
 	{
 		super.detectAndSendChanges();
 		
-		for (int var1 = 0; var1 < this.crafters.size(); ++var1)
+		for (int i = 0; i < this.crafters.size(); ++i)
 		{
-			ICrafting var2 = (ICrafting) this.crafters.get(var1);
+			ICrafting icrafting = (ICrafting) this.crafters.get(i);
 			
 			if (this.brewTime != this.mixer.getUnbrewTime())
 			{
-				var2.sendProgressBarUpdate(this, 0, this.mixer.getUnbrewTime());
+				icrafting.sendProgressBarUpdate(this, 0, this.mixer.getUnbrewTime());
 			}
 		}
 		
@@ -75,11 +72,11 @@ public class ContainerUnbrewingStand extends Container
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void updateProgressBar(int par1, int par2)
+	public void updateProgressBar(int id, int time)
 	{
-		if (par1 == 0)
+		if (id == 0)
 		{
-			this.mixer.setBrewTime(par2);
+			this.mixer.setBrewTime(time);
 		}
 	}
 	
@@ -89,9 +86,6 @@ public class ContainerUnbrewingStand extends Container
 		return this.mixer.isUseableByPlayer(player);
 	}
 	
-	/**
-	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
-	 */
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotID)
 	{
@@ -112,7 +106,8 @@ public class ContainerUnbrewingStand extends Container
 			}
 			else if (!this.theSlot.getHasStack() && this.theSlot.isItemValid(itemstack))
 			{
-				if (!this.mergeItemStack(itemstack1, 0, 1, false));
+				if (!this.mergeItemStack(itemstack1, 0, 1, false))
+					;
 			}
 			else if (slotID >= 6 && slotID < 33)
 			{

@@ -6,11 +6,14 @@ import java.io.Reader;
 import java.util.Properties;
 
 import clashsoft.brewingapi.BrewingAPI;
-import clashsoft.cslib.minecraft.CustomItem;
-import clashsoft.cslib.minecraft.CustomPotion;
+import clashsoft.cslib.minecraft.block.CSBlocks;
+import clashsoft.cslib.minecraft.block.CustomItem;
+import clashsoft.cslib.minecraft.crafting.CSCrafting;
+import clashsoft.cslib.minecraft.item.CSItems;
+import clashsoft.cslib.minecraft.lang.CSLang;
+import clashsoft.cslib.minecraft.potion.CustomPotion;
 import clashsoft.cslib.minecraft.update.CSUpdate;
-import clashsoft.cslib.minecraft.util.CSBlocks;
-import clashsoft.cslib.minecraft.util.CSCrafting;
+import clashsoft.cslib.minecraft.util.*;
 import clashsoft.cslib.util.CSLog;
 import clashsoft.cslib.util.CSString;
 import clashsoft.cslib.util.CSUtil;
@@ -22,8 +25,6 @@ import clashsoft.mods.morepotions.brewing.MPMIngredientHandler;
 import clashsoft.mods.morepotions.brewing.MPMPotionList;
 import clashsoft.mods.morepotions.common.MPMCommonProxy;
 import clashsoft.mods.morepotions.common.MPMEventHandler;
-import clashsoft.mods.morepotions.common.MPMPacketHandler;
-import clashsoft.mods.morepotions.crafting.MPMCraftingHandler;
 import clashsoft.mods.morepotions.item.ItemMortar;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
@@ -37,37 +38,36 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 
-@Mod(modid = "MorePotionsMod", name = "More Potions Mod", version = MorePotionsMod.VERSION)
-@NetworkMod(channels = { TileEntityCauldron.CHANNEL }, clientSideRequired = true, serverSideRequired = false, packetHandler = MPMPacketHandler.class)
+@Mod(modid = MorePotionsMod.MODID, name = MorePotionsMod.NAME, version = MorePotionsMod.VERSION)
 public class MorePotionsMod
 {
-	public static final int				REVISION					= 5;
+	public static final String			MODID						= "morepotions";
+	public static final String			NAME						= "More Potions Mod";
+	public static final int				REVISION					= 0;
 	public static final String			VERSION						= CSUpdate.CURRENT_VERSION + "-" + REVISION;
 	
-	@Instance("MorePotionsMod")
+	@Instance(MODID)
 	public static MorePotionsMod		INSTANCE;
 	
 	@SidedProxy(clientSide = "clashsoft.mods.morepotions.client.MPMClientProxy", serverSide = "clashsoft.mods.morepotions.common.MPMCommonProxy")
 	public static MPMCommonProxy		proxy;
 	
-	public static String				customEffects				= "gui/potionIcons.png";
+	public static String				customEffects				= "morepotions:gui/potions.png";
 	
 	// Configurables
 	public static int					randomMode					= 0;
@@ -100,14 +100,14 @@ public class MorePotionsMod
 	public static Potion				thorns						= new CustomPotion("potion.thorns", false, 0x810081, false, customEffects, 3, 1);
 	public static Potion				greenThumb					= new CustomPotion("potion.greenThumb", false, 0x008100, false, customEffects, 4, 1);
 	public static Potion				projectile					= new CustomPotion("potion.projectile", false, 0x101010, false, customEffects, 5, 1);
-	public static Potion				doubleJump					= new CustomPotion("potion.doubleJump", false, 0x157490, false, customEffects, 6, 1); 
+	public static Potion				doubleJump					= new CustomPotion("potion.doubleJump", false, 0x157490, false, customEffects, 6, 1);
 	
 	public static BlockMixer			mixer;
 	public static BlockCauldron2		cauldron2;
 	public static BlockUnbrewingStand	unbrewingStand;
 	
 	public static Item					dust;
-	public static ItemMortar			mortar;
+	public static Item					mortar;
 	
 	public static ItemStack				dustCoal;
 	public static ItemStack				dustIron;
@@ -133,21 +133,12 @@ public class MorePotionsMod
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+		CSConfig.loadConfig(event.getSuggestedConfigurationFile());
 		
-		mixerTileEntityID = config.get("tileentity", "Mixer TEID", 12).getInt();
-		cauldronTileEntityID = config.get("tileentity", "Cauldron TEID", 13).getInt();
-		unbrewingStandTileEntityID = config.get("tileentity", "Unbrewing Stand TEID", 14).getInt();
+		randomMode = CSConfig.getInt("Potions", "RandomPotionMode", "Determines how the random potion works, if this is 0 the effect is instant and you get a random potion effect when you drink the potion, 1 will give you a new effect every 2 seconds.", 0);
+		cauldronInfo = CSConfig.getBool("Cauldrons", "CauldronInfo", true);
 		
-		mixerBlockID = config.getBlock("MixerID", 2700).getInt();
-		unbrewingStandBlockID = config.getBlock("Unbrewing Stand Block ID", 2701).getInt();
-		dustItemID = config.getItem("DustID", 14000).getInt();
-		mortarItemID = config.getItem("MortarID", 14001).getInt();
-		
-		randomMode = config.get("Potions", "RandomPotionMode", 0, "Determines how the random potion works, if this is 0 the effect is instant and you get a random potion effect when you drink the potion, 1 will give you a new effect every 2 seconds.").getInt();
-		cauldronInfo = config.get("Cauldrons", "CauldronInfo", true).getBoolean(false);
-		
-		config.save();
+		CSConfig.saveConfig();
 	}
 	
 	@EventHandler
@@ -160,29 +151,90 @@ public class MorePotionsMod
 		GameRegistry.registerTileEntity(TileEntityCauldron.class, "Cauldron2");
 		GameRegistry.registerTileEntity(TileEntityUnbrewingStand.class, "UnbrewingStand");
 		
-		Block.blocksList[Block.cauldron.blockID] = null;
-		cauldron2 = (BlockCauldron2) (new BlockCauldron2(Block.cauldron.blockID)).setHardness(2.0F).setUnlocalizedName("cauldron").setTextureName("cauldron");
+		cauldron2 = (BlockCauldron2) new BlockCauldron2().setBlockName("cauldron").setBlockTextureName("cauldron");
+		mixer = (BlockMixer) new BlockMixer().setBlockName("mixer");
+		unbrewingStand = (BlockUnbrewingStand) new BlockUnbrewingStand().setBlockName("unbrewingStand");
 		
-		mixer = (BlockMixer) (new BlockMixer(mixerBlockID)).setUnlocalizedName("mixer").setCreativeTab(CreativeTabs.tabBrewing);
-		unbrewingStand = (BlockUnbrewingStand) new BlockUnbrewingStand(unbrewingStandBlockID).setUnlocalizedName("unbrewingStand").setCreativeTab(CreativeTabs.tabBrewing);
-		
-		mortar = (ItemMortar) new ItemMortar(mortarItemID).setCreativeTab(CreativeTabs.tabTools).setMaxDamage(32).setNoRepair().setMaxStackSize(1).setUnlocalizedName("mortar");
-		dust = new CustomItem(dustItemID, CSString.concatAll(new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCharcoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, "item.", ".name"), new String[] { "dustCoal", "dustIron", "dustGold", "dustDiamond", "dustEmerald", "dustObsidian", "dustQuartz", "dustWither", "dustEnderpearl", "dustClay", "dustBrick", "dustFlint", "dustGlass", "dustCoal", "dustWoodOak", "dustWoodBirch", "dustWoodSpruce", "dustWoodJungle", "dustNetherstar", "dustNetherbrick" }, new String[] { "C2", "Fe", "Au", "C128", "Be3Al2Si6O18", "MgFeSi2O8", "SiO2", "\u00a7k???", "BeK4N5Cl6", "Na2LiAl2Si2", "Na2LiAl2Si2", "SiO2", "SiO4", "C", "", "", "", "", "", "" }).setCreativeTab(CreativeTabs.tabMaterials);
+		mortar = new ItemMortar().setUnlocalizedName("mortar").setTextureName("mortar");
+		dust = new CustomItem(CSString.concatAll(new String[] {
+				"dustCoal",
+				"dustIron",
+				"dustGold",
+				"dustDiamond",
+				"dustEmerald",
+				"dustObsidian",
+				"dustQuartz",
+				"dustWither",
+				"dustEnderpearl",
+				"dustClay",
+				"dustBrick",
+				"dustFlint",
+				"dustGlass",
+				"dustCharcoal",
+				"dustWoodOak",
+				"dustWoodBirch",
+				"dustWoodSpruce",
+				"dustWoodJungle",
+				"dustNetherstar",
+				"dustNetherbrick" }, "item.", ".name"), new String[] {
+				"dustCoal",
+				"dustIron",
+				"dustGold",
+				"dustDiamond",
+				"dustEmerald",
+				"dustObsidian",
+				"dustQuartz",
+				"dustWither",
+				"dustEnderpearl",
+				"dustClay",
+				"dustBrick",
+				"dustFlint",
+				"dustGlass",
+				"dustCoal",
+				"dustWoodOak",
+				"dustWoodBirch",
+				"dustWoodSpruce",
+				"dustWoodJungle",
+				"dustNetherstar",
+				"dustNetherbrick" }, new String[] {
+				"C2",
+				"Fe",
+				"Au",
+				"C128",
+				"Be3Al2Si6O18",
+				"MgFeSi2O8",
+				"SiO2",
+				"\u00a7k???",
+				"BeK4N5Cl6",
+				"Na2LiAl2Si2",
+				"Na2LiAl2Si2",
+				"SiO2",
+				"SiO4",
+				"C",
+				"",
+				"",
+				"",
+				"",
+				"",
+				"" }).setCreativeTab(CreativeTabs.tabMaterials);
 		this.addDusts();
 		
+		CSBlocks.overrideBlock(cauldron2, ItemBlock.class, "Cauldron");
 		CSBlocks.addBlock(mixer, ItemBlock.class, "Mixer");
-		CSBlocks.addBlock(cauldron2, ItemBlock.class, "Cauldron");
 		CSBlocks.addBlock(unbrewingStand, ItemBlock.class, "Unbrewing Stand");
 		
-		Item.sugar.setCreativeTab(CreativeTabs.tabBrewing);
-		Item.netherStalkSeeds.setCreativeTab(CreativeTabs.tabBrewing);
+		CSItems.addItem(mortar, "Mortar");
+		CSItems.addItem(dust, "Dust");
+		
+		Items.sugar.setCreativeTab(CreativeTabs.tabBrewing);
+		Items.nether_wart.setCreativeTab(CreativeTabs.tabBrewing);
 		
 		this.addRecipes();
 		this.addLocalizations();
 		this.registerPotionTypes();
 		
 		MinecraftForge.EVENT_BUS.register(new MPMEventHandler());
-		NetworkRegistry.instance().registerGuiHandler(INSTANCE, proxy);
+		NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, proxy);
 		proxy.registerRenderInformation();
 		proxy.registerRenderers();
 	}
@@ -200,11 +252,33 @@ public class MorePotionsMod
 	
 	private void addRecipes()
 	{
-		GameRegistry.registerCraftingHandler(new MPMCraftingHandler());
-		
-		CSCrafting.addCrafting(new ItemStack(mortar), new Object[] { "SfS", " S ", 'S', Block.stone, 'f', Item.flint });
-		CSCrafting.addCrafting(new ItemStack(mixer), new Object[] { "gSg", "g g", "SiS", 'g', Block.thinGlass, 'S', Block.stone, 'i', Item.ingotIron });
-		CSCrafting.addCrafting(new ItemStack(unbrewingStand), new Object[] { "bib", "bpb", "bbb", 'b', Item.brick, 'i', Item.ingotIron, 'p', Item.glassBottle });
+		CSCrafting.addCrafting(new ItemStack(mortar), new Object[] {
+				"SfS",
+				" S ",
+				'S',
+				Blocks.stone,
+				'f',
+				Items.flint });
+		CSCrafting.addCrafting(new ItemStack(mixer), new Object[] {
+				"gSg",
+				"g g",
+				"SiS",
+				'g',
+				Blocks.glass_pane,
+				'S',
+				Blocks.stone,
+				'i',
+				Items.iron_ingot });
+		CSCrafting.addCrafting(new ItemStack(unbrewingStand), new Object[] {
+				"bib",
+				"bpb",
+				"bbb",
+				'b',
+				Items.brick,
+				'i',
+				Items.iron_ingot,
+				'p',
+				Items.glass_bottle });
 	}
 	
 	private void addLocalizations()
@@ -232,7 +306,9 @@ public class MorePotionsMod
 			langPack.load(reader);
 			
 			if (!langPack.isEmpty())
-				LanguageRegistry.instance().addStringLocalization(langPack, language);
+			{
+				CSLang.addLangPack(langPack, language);
+			}
 		}
 		catch (Exception ex)
 		{
@@ -265,32 +341,73 @@ public class MorePotionsMod
 		dustNetherstar = CSCrafting.registerOre("dustNetherstar", new ItemStack(dust, 1, 18));
 		dustNetherbrick = CSCrafting.registerOre("dustNetherbrick", new ItemStack(dust, 1, 19));
 		
-		GameRegistry.addShapelessRecipe(dustCoal, new Object[] { Item.coal, mortarStack });
-		GameRegistry.addShapelessRecipe(dustIron, new Object[] { Item.ingotIron, mortarStack });
-		GameRegistry.addShapelessRecipe(dustGold, new Object[] { Item.ingotGold, mortarStack });
-		GameRegistry.addShapelessRecipe(dustDiamond, new Object[] { Item.diamond, mortarStack });
-		GameRegistry.addShapelessRecipe(dustEmerald, new Object[] { Item.emerald, mortarStack });
-		GameRegistry.addShapelessRecipe(dustObsidian, new Object[] { Block.obsidian, mortarStack });
-		GameRegistry.addShapelessRecipe(dustQuartz, new Object[] { Item.netherQuartz, mortarStack });
-		GameRegistry.addShapelessRecipe(dustWither, new Object[] { new ItemStack(Item.skull, 1, 1), dustCoal, dustQuartz });
-		GameRegistry.addShapelessRecipe(dustEnderpearl, new Object[] { Item.enderPearl, mortarStack });
-		GameRegistry.addShapelessRecipe(dustClay, new Object[] { Item.clay, mortarStack });
-		GameRegistry.addShapelessRecipe(dustBrick, new Object[] { Item.brick, mortarStack });
-		GameRegistry.addShapelessRecipe(dustFlint, new Object[] { Item.flint, mortarStack });
-		GameRegistry.addShapelessRecipe(dustGlass, new Object[] { Block.glass, mortarStack });
-		GameRegistry.addShapelessRecipe(dustCharcoal, new Object[] { new ItemStack(Item.coal, 1, 1), mortarStack });
-		GameRegistry.addShapelessRecipe(dustWoodOak, new Object[] { new ItemStack(Block.wood, 1, 0), mortarStack });
-		GameRegistry.addShapelessRecipe(dustWoodBirch, new Object[] { new ItemStack(Block.wood, 1, 2), mortarStack });
-		GameRegistry.addShapelessRecipe(dustWoodSpruce, new Object[] { new ItemStack(Block.wood, 1, 1), mortarStack });
-		GameRegistry.addShapelessRecipe(dustWoodJungle, new Object[] { new ItemStack(Block.wood, 1, 3), mortarStack });
-		GameRegistry.addShapelessRecipe(dustNetherstar, new Object[] { Item.netherStar, mortarStack });
-		GameRegistry.addShapelessRecipe(dustNetherbrick, new Object[] { Item.netherrackBrick, mortarStack });
+		GameRegistry.addShapelessRecipe(dustCoal, new Object[] {
+				Items.coal,
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustIron, new Object[] {
+				Items.iron_ingot,
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustGold, new Object[] {
+				Items.gold_ingot,
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustDiamond, new Object[] {
+				Items.diamond,
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustEmerald, new Object[] {
+				Items.emerald,
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustObsidian, new Object[] {
+				Blocks.obsidian,
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustQuartz, new Object[] {
+				Items.quartz,
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustWither, new Object[] {
+				new ItemStack(Items.skull, 1, 1),
+				dustCoal,
+				dustQuartz });
+		GameRegistry.addShapelessRecipe(dustEnderpearl, new Object[] {
+				Items.ender_pearl,
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustClay, new Object[] {
+				Items.clay_ball,
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustBrick, new Object[] {
+				Items.brick,
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustFlint, new Object[] {
+				Items.flint,
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustGlass, new Object[] {
+				Blocks.glass,
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustCharcoal, new Object[] {
+				new ItemStack(Items.coal, 1, 1),
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustWoodOak, new Object[] {
+				new ItemStack(Blocks.planks, 1, 0),
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustWoodBirch, new Object[] {
+				new ItemStack(Blocks.planks, 1, 2),
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustWoodSpruce, new Object[] {
+				new ItemStack(Blocks.planks, 1, 1),
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustWoodJungle, new Object[] {
+				new ItemStack(Blocks.planks, 1, 3),
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustNetherstar, new Object[] {
+				Items.nether_star,
+				mortarStack });
+		GameRegistry.addShapelessRecipe(dustNetherbrick, new Object[] {
+				Items.netherbrick,
+				mortarStack });
 		
-		CSCrafting.addSmelting(dustIron, new ItemStack(Item.ingotIron), 0F);
-		CSCrafting.addSmelting(dustGold, new ItemStack(Item.ingotGold), 0F);
-		CSCrafting.addSmelting(dustQuartz, new ItemStack(Item.netherQuartz), 0F);
-		CSCrafting.addSmelting(dustClay, new ItemStack(Item.brick), 0.1F);
-		CSCrafting.addSmelting(dustBrick, new ItemStack(Item.brick), 0F);
-		CSCrafting.addSmelting(dustGlass, new ItemStack(Block.glass), 0F);
+		CSCrafting.addSmelting(dustIron, new ItemStack(Items.iron_ingot), 0F);
+		CSCrafting.addSmelting(dustGold, new ItemStack(Items.gold_ingot), 0F);
+		CSCrafting.addSmelting(dustQuartz, new ItemStack(Items.quartz), 0F);
+		CSCrafting.addSmelting(dustClay, new ItemStack(Items.brick), 0.1F);
+		CSCrafting.addSmelting(dustBrick, new ItemStack(Items.brick), 0F);
+		CSCrafting.addSmelting(dustGlass, new ItemStack(Blocks.glass), 0F);
 	}
 }

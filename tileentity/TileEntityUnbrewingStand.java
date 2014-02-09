@@ -8,12 +8,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.Constants;
 
 public class TileEntityUnbrewingStand extends TileEntity implements ISidedInventory
 {
@@ -21,9 +22,12 @@ public class TileEntityUnbrewingStand extends TileEntity implements ISidedInvent
 	private static int[]	outputSlots		= { 5, 4, 3, 2, 1 };
 	
 	/**
-	 * The itemstacks currently placed in the slots of the unbrewing stand 0 = potion 1 = redstone 2 = glowstone 3 = gunpowder 4 = bottle 5 = ingredient
+	 * The itemstacks currently placed in the slots of the unbrewing stand.
+	 * <p>
+	 * 0 = potion 1 = redstone 2 = glowstone 3 = gunpowder 4 = bottle 5 = ingredient
 	 */
 	private ItemStack[]		itemStacks		= new ItemStack[6];
+	
 	public int				unbrewTime;
 	
 	public static int		maxUnbrewTime	= 100;
@@ -34,27 +38,18 @@ public class TileEntityUnbrewingStand extends TileEntity implements ISidedInvent
 	{
 	}
 	
-	/**
-	 * Returns the name of the inventory.
-	 */
 	@Override
-	public String getInvName()
+	public String getInventoryName()
 	{
 		return "container.unbrewingstand";
 	}
 	
-	/**
-	 * Returns the number of slots in the inventory.
-	 */
 	@Override
 	public int getSizeInventory()
 	{
 		return this.itemStacks.length;
 	}
 	
-	/**
-	 * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count ticks and creates a new spawn inside its implementation.
-	 */
 	@Override
 	public void updateEntity()
 	{
@@ -65,12 +60,12 @@ public class TileEntityUnbrewingStand extends TileEntity implements ISidedInvent
 			if (this.unbrewTime == 0)
 			{
 				this.unbrew();
-				this.onInventoryChanged();
+				this.markDirty();
 			}
 			else if (!this.canUnbrew())
 			{
 				this.unbrewTime = 0;
-				this.onInventoryChanged();
+				this.markDirty();
 			}
 		}
 		else if (this.canUnbrew())
@@ -126,10 +121,10 @@ public class TileEntityUnbrewingStand extends TileEntity implements ISidedInvent
 				gunPowderAmount = oldGunPowderAmount + gunPowderAmount * potionCount;
 				bottleAmount = oldBottleAmount + bottleAmount;
 				
-				this.itemStacks[1] = redstoneAmount > 0 ? new ItemStack(Item.redstone, redstoneAmount) : null;
-				this.itemStacks[2] = glowstoneAmount > 0 ? new ItemStack(Item.glowstone, glowstoneAmount) : null;
-				this.itemStacks[3] = gunPowderAmount > 0 ? new ItemStack(Item.gunpowder, gunPowderAmount) : null;
-				this.itemStacks[4] = bottleAmount > 0 ? new ItemStack(Item.glassBottle, bottleAmount) : null;
+				this.itemStacks[1] = redstoneAmount > 0 ? new ItemStack(Items.redstone, redstoneAmount) : null;
+				this.itemStacks[2] = glowstoneAmount > 0 ? new ItemStack(Items.glowstone_dust, glowstoneAmount) : null;
+				this.itemStacks[3] = gunPowderAmount > 0 ? new ItemStack(Items.gunpowder, gunPowderAmount) : null;
+				this.itemStacks[4] = bottleAmount > 0 ? new ItemStack(Items.glass_bottle, bottleAmount) : null;
 				
 				if (ingredient != null)
 				{
@@ -166,19 +161,16 @@ public class TileEntityUnbrewingStand extends TileEntity implements ISidedInvent
 		return this.unbrewTime;
 	}
 	
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		NBTTagList tagList = nbt.getTagList("Items");
+		NBTTagList tagList = nbt.getTagList("Items", Constants.NBT.TAG_COMPOUND);
 		this.itemStacks = new ItemStack[this.getSizeInventory()];
 		
 		for (int index = 0; index < tagList.tagCount(); ++index)
 		{
-			NBTTagCompound slotCompound = (NBTTagCompound) tagList.tagAt(index);
+			NBTTagCompound slotCompound = tagList.getCompoundTagAt(index);
 			byte slotID = slotCompound.getByte("Slot");
 			
 			if (slotID >= 0 && slotID < this.itemStacks.length)
@@ -190,9 +182,6 @@ public class TileEntityUnbrewingStand extends TileEntity implements ISidedInvent
 		this.unbrewTime = nbt.getShort("UnbrewTime");
 	}
 	
-	/**
-	 * Writes a tile entity to NBT.
-	 */
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
@@ -214,62 +203,38 @@ public class TileEntityUnbrewingStand extends TileEntity implements ISidedInvent
 		nbt.setTag("Items", tagList);
 	}
 	
-	/**
-	 * Returns the stack in slot i
-	 */
 	@Override
 	public ItemStack getStackInSlot(int slotID)
 	{
 		return slotID >= 0 && slotID < this.itemStacks.length ? this.itemStacks[slotID] : null;
 	}
 	
-	/**
-	 * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a new stack.
-	 */
 	@Override
 	public ItemStack decrStackSize(int slotID, int amount)
 	{
 		ItemStack[] aitemstack = this.itemStacks;
-
-        if (aitemstack[slotID] != null)
-        {
-            ItemStack itemstack;
-
-            if (aitemstack[slotID].stackSize <= amount)
-            {
-                itemstack = aitemstack[slotID];
-                aitemstack[slotID] = null;
-                return itemstack;
-            }
-            else
-            {
-                itemstack = aitemstack[slotID].splitStack(amount);
-
-                if (aitemstack[slotID].stackSize == 0)
-                {
-                    aitemstack[slotID] = null;
-                }
-
-                return itemstack;
-            }
-        }
-        else
-        {
-            return null;
-        }
-	}
-	
-	/**
-	 * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem - like when you close a workbench GUI.
-	 */
-	@Override
-	public ItemStack getStackInSlotOnClosing(int slotID)
-	{
-		if (slotID >= 0 && slotID < this.itemStacks.length)
+		
+		if (aitemstack[slotID] != null)
 		{
-			ItemStack var2 = this.itemStacks[slotID];
-			this.itemStacks[slotID] = null;
-			return var2;
+			ItemStack itemstack;
+			
+			if (aitemstack[slotID].stackSize <= amount)
+			{
+				itemstack = aitemstack[slotID];
+				aitemstack[slotID] = null;
+				return itemstack;
+			}
+			else
+			{
+				itemstack = aitemstack[slotID].splitStack(amount);
+				
+				if (aitemstack[slotID].stackSize == 0)
+				{
+					aitemstack[slotID] = null;
+				}
+				
+				return itemstack;
+			}
 		}
 		else
 		{
@@ -277,9 +242,21 @@ public class TileEntityUnbrewingStand extends TileEntity implements ISidedInvent
 		}
 	}
 	
-	/**
-	 * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
-	 */
+	@Override
+	public ItemStack getStackInSlotOnClosing(int slotID)
+	{
+		if (slotID >= 0 && slotID < this.itemStacks.length)
+		{
+			ItemStack stack = this.itemStacks[slotID];
+			this.itemStacks[slotID] = null;
+			return stack;
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
 	@Override
 	public void setInventorySlotContents(int slotID, ItemStack stack)
 	{
@@ -289,32 +266,16 @@ public class TileEntityUnbrewingStand extends TileEntity implements ISidedInvent
 		}
 	}
 	
-	/**
-	 * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't this more of a set than a get?*
-	 */
 	@Override
 	public int getInventoryStackLimit()
 	{
 		return 1;
 	}
 	
-	/**
-	 * Do not make give this method the name canInteractWith because it clashes with Container
-	 */
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player)
 	{
-		return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
-	}
-	
-	@Override
-	public void openChest()
-	{
-	}
-	
-	@Override
-	public void closeChest()
-	{
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this && player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -324,7 +285,7 @@ public class TileEntityUnbrewingStand extends TileEntity implements ISidedInvent
 	}
 	
 	@Override
-	public boolean isInvNameLocalized()
+	public boolean hasCustomInventoryName()
 	{
 		return false;
 	}
@@ -351,5 +312,15 @@ public class TileEntityUnbrewingStand extends TileEntity implements ISidedInvent
 	public boolean canExtractItem(int slotID, ItemStack stack, int side)
 	{
 		return side == 0;
+	}
+	
+	@Override
+	public void openInventory()
+	{
+	}
+	
+	@Override
+	public void closeInventory()
+	{
 	}
 }

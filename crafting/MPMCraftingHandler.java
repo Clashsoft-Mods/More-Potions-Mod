@@ -1,15 +1,13 @@
 package clashsoft.mods.morepotions.crafting;
 
 import clashsoft.mods.morepotions.MorePotionsMod;
-import cpw.mods.fml.common.ICraftingHandler;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-public class MPMCraftingHandler implements ICraftingHandler
+public class MPMCraftingHandler
 {
-	@Override
 	public void onCrafting(EntityPlayer player, ItemStack item, IInventory craftMatrix)
 	{
 		for (int i = 0; i < craftMatrix.getSizeInventory(); i++)
@@ -28,10 +26,5 @@ public class MPMCraftingHandler implements ICraftingHandler
 				}
 			}
 		}
-	}
-	
-	@Override
-	public void onSmelting(EntityPlayer player, ItemStack item)
-	{
 	}
 }

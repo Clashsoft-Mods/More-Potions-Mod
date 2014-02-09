@@ -7,8 +7,8 @@ import clashsoft.brewingapi.brewing.PotionList;
 import clashsoft.brewingapi.brewing.PotionType;
 import clashsoft.mods.morepotions.MorePotionsMod;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -30,75 +30,75 @@ public class MPMPotionList
 	
 	public static void initializePotionBases()
 	{
-		awkward = new PotionBase("awkward", new ItemStack(Item.netherStalkSeeds));
-		mundane = new PotionBase("mundane", new ItemStack(Block.mushroomBrown));
-		uninteresting = new PotionBase("uninteresting", new ItemStack(Item.paper));
-		bland = new PotionBase("bland", new ItemStack(Item.melon));
+		awkward = new PotionBase("awkward", new ItemStack(Items.nether_wart));
+		mundane = new PotionBase("mundane", new ItemStack(Blocks.brown_mushroom_block));
+		uninteresting = new PotionBase("uninteresting", new ItemStack(Items.paper));
+		bland = new PotionBase("bland", new ItemStack(Items.melon));
 		clear = new PotionBase("clear", MorePotionsMod.dustClay);
-		milky = new PotionBase("milky", new ItemStack(Block.sapling));
-		diffuse = new PotionBase("diffuse", new ItemStack(Item.wheat));
-		artless = new PotionBase("artless", new ItemStack(Item.reed));
-		thin = new PotionBase("thin", new ItemStack(Item.redstone));
-		flat = new PotionBase("flat", new ItemStack(Block.waterlily));
-		bulky = new PotionBase("bulky", new ItemStack(Block.sand));
-		bungling = new PotionBase("bungling", new ItemStack(Block.mushroomRed));
-		buttered = new PotionBase("buttered", new ItemStack(Item.dyePowder, 1, 11));
-		smooth = new PotionBase("smooth", new ItemStack(Item.seeds));
-		suave = new PotionBase("suave", new ItemStack(Item.dyePowder, 1, 3));
-		debonair = new PotionBase("debonair", new ItemStack(Item.dyePowder, 1, 2));
-		thick = new PotionBase("thick", new ItemStack(Item.glowstone));
-		elegant = new PotionBase("elegant", new ItemStack(Item.enderPearl));
-		fancy = new PotionBase("fancy", new ItemStack(Item.flint));
-		charming = new PotionBase("charming", new ItemStack(Block.plantRed));
-		dashing = new PotionBase("dashing", new ItemStack(Item.silk));
-		refined = new PotionBase("refined", new ItemStack(Item.slimeBall));
-		cordial = new PotionBase("cordial", new ItemStack(Item.dyePowder, 1, 15));
-		sparkling = new PotionBase("sparkling", new ItemStack(Item.goldNugget));
-		potent = new PotionBase("potent", new ItemStack(Item.blazePowder));
-		foul = new PotionBase("foul", new ItemStack(Item.rottenFlesh));
-		odorless = new PotionBase("odorless", new ItemStack(Item.bread));
-		rank = new PotionBase("rank", new ItemStack(Item.egg));
-		harsh = new PotionBase("harsh", new ItemStack(Block.slowSand));
-		acrid = new PotionBase("acrid", new ItemStack(Item.fermentedSpiderEye));
-		gross = new PotionBase("gross", new ItemStack(Item.pumpkinSeeds));
-		stinky = new PotionBase("stinky", new ItemStack(Item.fishRaw));
+		milky = new PotionBase("milky", new ItemStack(Blocks.sapling));
+		diffuse = new PotionBase("diffuse", new ItemStack(Items.wheat));
+		artless = new PotionBase("artless", new ItemStack(Items.reeds));
+		thin = new PotionBase("thin", new ItemStack(Items.redstone));
+		flat = new PotionBase("flat", new ItemStack(Blocks.waterlily));
+		bulky = new PotionBase("bulky", new ItemStack(Blocks.sand));
+		bungling = new PotionBase("bungling", new ItemStack(Blocks.red_mushroom));
+		buttered = new PotionBase("buttered", new ItemStack(Items.dye, 1, 11));
+		smooth = new PotionBase("smooth", new ItemStack(Items.wheat_seeds));
+		suave = new PotionBase("suave", new ItemStack(Items.dye, 1, 3));
+		debonair = new PotionBase("debonair", new ItemStack(Items.dye, 1, 2));
+		thick = new PotionBase("thick", new ItemStack(Items.glowstone_dust));
+		elegant = new PotionBase("elegant", new ItemStack(Items.ender_pearl));
+		fancy = new PotionBase("fancy", new ItemStack(Items.flint));
+		charming = new PotionBase("charming", new ItemStack(Blocks.red_flower));
+		dashing = new PotionBase("dashing", new ItemStack(Items.string));
+		refined = new PotionBase("refined", new ItemStack(Items.slime_ball));
+		cordial = new PotionBase("cordial", new ItemStack(Items.dye, 1, 15));
+		sparkling = new PotionBase("sparkling", new ItemStack(Items.gold_nugget));
+		potent = new PotionBase("potent", new ItemStack(Items.blaze_powder));
+		foul = new PotionBase("foul", new ItemStack(Items.rotten_flesh));
+		odorless = new PotionBase("odorless", new ItemStack(Items.bread));
+		rank = new PotionBase("rank", new ItemStack(Items.egg));
+		harsh = new PotionBase("harsh", new ItemStack(Blocks.soul_sand));
+		acrid = new PotionBase("acrid", new ItemStack(Items.fermented_spider_eye));
+		gross = new PotionBase("gross", new ItemStack(Items.pumpkin_seeds));
+		stinky = new PotionBase("stinky", new ItemStack(Items.fish));
 	}
 	
 	public static void initializePotionTypes()
 	{
 		moveSlowdown = new PotionType(new PotionEffect(Potion.moveSlowdown.id, 20 * 90, 0), 4, 20 * 240);
-		moveSpeed = new PotionType(new PotionEffect(Potion.moveSpeed.id, 20 * 180, 0), 7, 20 * 360, PotionList.moveSlowdown, new ItemStack(Item.sugar), PotionType.getBaseBrewing(PotionList.dashing));
+		moveSpeed = new PotionType(new PotionEffect(Potion.moveSpeed.id, 20 * 180, 0), 7, 20 * 360, PotionList.moveSlowdown, new ItemStack(Items.sugar), PotionType.getBaseBrewing(PotionList.dashing));
 		digSlowdown = new PotionType(new PotionEffect(Potion.digSlowdown.id, 20 * 90, 0), 4, 20 * 240);
 		digSpeed = new PotionType(new PotionEffect(Potion.digSpeed.id, 20 * 180, 0), 7, 20 * 360, PotionList.digSlowdown, MorePotionsMod.dustGold, PotionType.getBaseBrewing(PotionList.dashing));
-		weakness = new PotionType(new PotionEffect(Potion.weakness.id, 20 * 90, 0), 2, 20 * 240, new ItemStack(Item.fermentedSpiderEye), PotionList.awkward);
-		damageBoost = new PotionType(new PotionEffect(Potion.damageBoost.id, 20 * 180, 0), 4, 20 * 300, PotionList.weakness, new ItemStack(Item.blazePowder), PotionList.awkward);
+		weakness = new PotionType(new PotionEffect(Potion.weakness.id, 20 * 90, 0), 2, 20 * 240, new ItemStack(Items.fermented_spider_eye), PotionList.awkward);
+		damageBoost = new PotionType(new PotionEffect(Potion.damageBoost.id, 20 * 180, 0), 4, 20 * 300, PotionList.weakness, new ItemStack(Items.blaze_powder), PotionList.awkward);
 		harm = new PotionType(new PotionEffect(Potion.harm.id, 1, 0), 1, 0);
-		heal = new PotionType(new PotionEffect(Potion.heal.id, 1, 0), 1, 0, PotionList.harm, new ItemStack(Item.speckledMelon), PotionType.getBaseBrewing(PotionList.thick));
+		heal = new PotionType(new PotionEffect(Potion.heal.id, 1, 0), 1, 0, PotionList.harm, new ItemStack(Items.speckled_melon), PotionType.getBaseBrewing(PotionList.thick));
 		doubleLife = new PotionType(new PotionEffect(MorePotionsMod.doubleLife.id, 1625000, 0), 0, 0, PotionList.harm, MorePotionsMod.dustNetherstar, PotionType.getBaseBrewing(PotionList.thick));
 		healthBoost = new PotionType(new PotionEffect(Potion.field_76434_w.id, 45 * 20, 0), 4, 120 * 20);
-		absorption = new PotionType(new PotionEffect(Potion.field_76444_x.id, 45 * 20, 0), 4, 120 * 20, PotionList.healthBoost, new ItemStack(Item.appleGold), PotionType.getBaseBrewing(PotionList.thick));
+		absorption = new PotionType(new PotionEffect(Potion.field_76444_x.id, 45 * 20, 0), 4, 120 * 20, PotionList.healthBoost, new ItemStack(Items.golden_apple), PotionType.getBaseBrewing(PotionList.thick));
 		doubleJump = new PotionType(new PotionEffect(MorePotionsMod.doubleJump.id, 20 * 60, 0), 2, 20 * 120, null);
 		jump = new PotionType(new PotionEffect(Potion.jump.id, 20 * 180, 0), 4, 20 * 300, doubleJump);
-		confusion = new PotionType(new PotionEffect(Potion.confusion.id, 20 * 90, 0), 2, 20 * 180, new ItemStack(Item.poisonousPotato), PotionList.awkward);
-		regeneration = new PotionType(new PotionEffect(Potion.regeneration.id, 20 * 45, 0), 2, 20 * 180, PotionList.moveSlowdown, new ItemStack(Item.ghastTear), PotionList.awkward);
+		confusion = new PotionType(new PotionEffect(Potion.confusion.id, 20 * 90, 0), 2, 20 * 180, new ItemStack(Items.poisonous_potato), PotionList.awkward);
+		regeneration = new PotionType(new PotionEffect(Potion.regeneration.id, 20 * 45, 0), 2, 20 * 180, PotionList.moveSlowdown, new ItemStack(Items.ghast_tear), PotionList.awkward);
 		resistance = new PotionType(new PotionEffect(Potion.resistance.id, 20 * 180, 0), 3, 20 * 240, MorePotionsMod.dustDiamond, PotionType.getBaseBrewing(PotionList.thick));
 		ironSkin = new PotionType(new PotionEffect(MorePotionsMod.ironSkin.id, 20 * 120, 0), 1, 20 * 240, MorePotionsMod.dustIron, PotionType.getBaseBrewing(PotionList.thick));
 		obsidianSkin = new PotionType(new PotionEffect(MorePotionsMod.obsidianSkin.id, 20 * 120, 0), 1, 20 * 240, MorePotionsMod.dustObsidian, PotionType.getBaseBrewing(PotionList.thick));
-		fireResistance = new PotionType(new PotionEffect(Potion.fireResistance.id, 20 * 180, 0), 0, 20 * 360, PotionList.moveSlowdown, new ItemStack(Item.magmaCream), PotionList.awkward);
+		fireResistance = new PotionType(new PotionEffect(Potion.fireResistance.id, 20 * 180, 0), 0, 20 * 360, PotionList.moveSlowdown, new ItemStack(Items.magma_cream), PotionList.awkward);
 		waterWalking = new PotionType(new PotionEffect(MorePotionsMod.waterWalking.id, 20 * 120, 0), 0, 240 * 20);
 		waterBreathing = new PotionType(new PotionEffect(Potion.waterBreathing.id, 20 * 180, 0), 2, 20 * 360, waterWalking, MorePotionsMod.dustClay, PotionList.awkward);
-		coldness = new PotionType(new PotionEffect(MorePotionsMod.coldness.id, 20 * 180, 0), 1, 20 * 360, new ItemStack(Item.snowball), PotionList.awkward);
+		coldness = new PotionType(new PotionEffect(MorePotionsMod.coldness.id, 20 * 180, 0), 1, 20 * 360, new ItemStack(Items.snowball), PotionList.awkward);
 		invisibility = new PotionType(new PotionEffect(Potion.invisibility.id, 20 * 180, 0), 0, 720 * 20);
-		blindness = new PotionType(new PotionEffect(Potion.blindness.id, 20 * 90, 0), 0, 20 * 240, new ItemStack(Item.dyePowder, 1, 0), PotionType.getBaseBrewing(PotionList.thin));
-		nightVision = new PotionType(new PotionEffect(Potion.nightVision.id, 20 * 180, 0), 0, 20 * 300, PotionList.invisibility, new ItemStack(Item.goldenCarrot), PotionType.getBaseBrewing(PotionList.thin));
-		poison = new PotionType(new PotionEffect(Potion.poison.id, 20 * 45, 0), 2, 20 * 60, new ItemStack(Item.spiderEye), PotionType.getBaseBrewing(PotionList.acrid));
+		blindness = new PotionType(new PotionEffect(Potion.blindness.id, 20 * 90, 0), 0, 20 * 240, new ItemStack(Items.dye, 1, 0), PotionType.getBaseBrewing(PotionList.thin));
+		nightVision = new PotionType(new PotionEffect(Potion.nightVision.id, 20 * 180, 0), 0, 20 * 300, PotionList.invisibility, new ItemStack(Items.golden_carrot), PotionType.getBaseBrewing(PotionList.thin));
+		poison = new PotionType(new PotionEffect(Potion.poison.id, 20 * 45, 0), 2, 20 * 60, new ItemStack(Items.spider_eye), PotionType.getBaseBrewing(PotionList.acrid));
 		hunger = new PotionType(new PotionEffect(Potion.hunger.id, 20 * 45, 0), 3, 20 * 60);
-		saturation = new PotionType(new PotionEffect(Potion.field_76443_y.id, 20 * 45, 0), 3, 20 * 60, PotionList.hunger, new ItemStack(Item.bread), PotionType.getBaseBrewing(PotionList.awkward));
+		saturation = new PotionType(new PotionEffect(Potion.field_76443_y.id, 20 * 45, 0), 3, 20 * 60, PotionList.hunger, new ItemStack(Items.bread), PotionType.getBaseBrewing(PotionList.awkward));
 		wither = new PotionType(new PotionEffect(Potion.wither.id, 450, 0), 1, 20 * 60, MorePotionsMod.dustWither, PotionType.getBaseBrewing(PotionList.acrid));
 		explosiveness = new PotionType(new PotionEffect(MorePotionsMod.explosiveness.id, 20 * 10, 0), 4, 20 * 20);
-		fire = new PotionType(new PotionEffect(MorePotionsMod.fire.id, 20 * 10, 0), 0, 20 * 20, explosiveness, new ItemStack(Item.fireballCharge), PotionList.awkward);
+		fire = new PotionType(new PotionEffect(MorePotionsMod.fire.id, 20 * 10, 0), 0, 20 * 20, explosiveness, new ItemStack(Items.fire_charge), PotionList.awkward);
 		random = new PotionType(new PotionEffect(MorePotionsMod.random.id, MorePotionsMod.randomMode == 0 ? 1 : 20 * 45, 0), 0, MorePotionsMod.randomMode == 0 ? 1 : 20 * 90, new ItemStack(BrewingAPI.potion2), PotionList.awkward);
-		effectRemove = new PotionType(new PotionEffect(MorePotionsMod.effectRemove.id, 20 * 45, 0), 0, 20 * 90, random, new ItemStack(Item.bucketMilk), PotionList.awkward)
+		effectRemove = new PotionType(new PotionEffect(MorePotionsMod.effectRemove.id, 20 * 45, 0), 0, 20 * 90, random, new ItemStack(Items.milk_bucket), PotionList.awkward)
 		{
 			@Override
 			public boolean isCombinable()
@@ -107,9 +107,9 @@ public class MPMPotionList
 			}
 		};
 		
-		thorns = new PotionType(new PotionEffect(MorePotionsMod.thorns.id, 20 * 60, 0), 3, 20 * 120, null, new ItemStack(Block.cactus), PotionList.awkward);
-		greenThumb = new PotionType(new PotionEffect(MorePotionsMod.greenThumb.id, 20 * 60, 0), 2, 20 * 120, null, new ItemStack(Block.leaves), PotionList.awkward);
-		projectile = new PotionType(new PotionEffect(MorePotionsMod.projectile.id, 20 * 60, 0), 2, 20 * 120, null, new ItemStack(Item.arrow), PotionList.awkward);
+		thorns = new PotionType(new PotionEffect(MorePotionsMod.thorns.id, 20 * 60, 0), 3, 20 * 120, null, new ItemStack(Blocks.cactus), PotionList.awkward);
+		greenThumb = new PotionType(new PotionEffect(MorePotionsMod.greenThumb.id, 20 * 60, 0), 2, 20 * 120, null, new ItemStack(Blocks.leaves), PotionList.awkward);
+		projectile = new PotionType(new PotionEffect(MorePotionsMod.projectile.id, 20 * 60, 0), 2, 20 * 120, null, new ItemStack(Items.arrow), PotionList.awkward);
 	}
 	
 	public static void registerPotionBases()

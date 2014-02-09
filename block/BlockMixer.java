@@ -4,32 +4,35 @@ import java.util.Random;
 
 import clashsoft.mods.morepotions.MorePotionsMod;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
-import cpw.mods.fml.common.network.FMLNetworkHandler;
+import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class BlockMixer extends BlockContainer
 {
 	private Random	rand	= new Random();
-	public Icon		top;
-	public Icon		side;
-	public Icon		bottom;
+	public IIcon		top;
+	public IIcon		side;
+	public IIcon		bottom;
 	
-	public BlockMixer(int blockID)
+	public BlockMixer()
 	{
-		super(blockID, Material.rock);
+		super(Material.rock);
+		this.setCreativeTab(CreativeTabs.tabBrewing);
 		this.setBlockBounds(0.25F, 0F, 0.25F, 0.75F, 0.8125F, 0.75F);
 	}
 	
@@ -40,14 +43,14 @@ public class BlockMixer extends BlockContainer
 	}
 	
 	@Override
-	public Icon getIcon(int side, int metadata)
+	public IIcon getIcon(int side, int metadata)
 	{
 		return side == 0 ? this.top : side == 1 ? this.top : this.side;
 	}
 	
-	@SideOnly(Side.CLIENT)
 	@Override
-	public void registerIcons(IconRegister iconRegister)
+	@SideOnly(Side.CLIENT)
+	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		this.top = iconRegister.registerIcon("mixer_top");
 		this.bottom = iconRegister.registerIcon("mixer_bottom");
@@ -64,11 +67,11 @@ public class BlockMixer extends BlockContainer
 	public void onBlockAdded(World world, int x, int y, int z)
 	{
 		super.onBlockAdded(world, x, y, z);
-		world.setBlockTileEntity(x, y, z, this.createNewTileEntity(world));
+		world.setTileEntity(x, y, z, this.createNewTileEntity(world, 0));
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world)
+	public TileEntity createNewTileEntity(World world, int metadata)
 	{
 		return new TileEntityMixer();
 	}
@@ -88,7 +91,7 @@ public class BlockMixer extends BlockContainer
 		}
 		else
 		{
-			TileEntityMixer mixer = (TileEntityMixer) world.getBlockTileEntity(x, y, z);
+			TileEntityMixer mixer = (TileEntityMixer) world.getTileEntity(x, y, z);
 			
 			if (mixer != null)
 			{
@@ -100,9 +103,9 @@ public class BlockMixer extends BlockContainer
 	}
 	
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int oldBlockID, int oldBlockMetadata)
+	public void breakBlock(World world, int x, int y, int z, Block oldBlock, int oldBlockMetadata)
 	{
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
 		
 		if (tileEntity instanceof TileEntityMixer)
 		{
@@ -128,7 +131,7 @@ public class BlockMixer extends BlockContainer
 						}
 						
 						stack.stackSize -= randInt;
-						EntityItem entityItem = new EntityItem(world, x + offsetX, y + offsetY, z + offsetZ, new ItemStack(stack.itemID, randInt, stack.getItemDamage()));
+						EntityItem entityItem = new EntityItem(world, x + offsetX, y + offsetY, z + offsetZ, new ItemStack(stack.getItem(), randInt, stack.getItemDamage()));
 						float velocityMultiplier = 0.05F;
 						entityItem.motionX = (float) this.rand.nextGaussian() * velocityMultiplier;
 						entityItem.motionY = (float) this.rand.nextGaussian() * velocityMultiplier + 0.2F;
@@ -139,12 +142,12 @@ public class BlockMixer extends BlockContainer
 			}
 		}
 		
-		super.breakBlock(world, x, y, z, oldBlockID, oldBlockMetadata);
+		super.breakBlock(world, x, y, z, oldBlock, oldBlockMetadata);
 	}
 	
 	@Override
 	public int getComparatorInputOverride(World world, int x, int y, int z, int side)
 	{
-		return Container.calcRedstoneFromInventory((IInventory) world.getBlockTileEntity(x, y, z));
+		return Container.calcRedstoneFromInventory((IInventory) world.getTileEntity(x, y, z));
 	}
 }

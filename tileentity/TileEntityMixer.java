@@ -10,16 +10,16 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.Constants;
 
 public class TileEntityMixer extends TileEntity implements IInventory
 {
-	/** The itemstacks currently placed in the slots of the brewing stand */
 	private ItemStack[]	mixingItemStacks	= new ItemStack[4];
 	public int			mixTime;
 	
@@ -32,29 +32,18 @@ public class TileEntityMixer extends TileEntity implements IInventory
 	{
 	}
 	
-	/**
-	 * Returns the name of the inventory.
-	 */
 	@Override
-	public String getInvName()
+	public String getInventoryName()
 	{
 		return "container.mixer";
 	}
 	
-	/**
-	 * Returns the number of slots in the inventory.
-	 */
 	@Override
 	public int getSizeInventory()
 	{
 		return this.mixingItemStacks.length;
 	}
 	
-	/**
-	 * Allows the entity to update its state. Overridden in most subclasses,
-	 * e.g. the mob spawner uses this to count ticks and creates a new spawn
-	 * inside its implementation.
-	 */
 	@Override
 	public void updateEntity()
 	{
@@ -65,17 +54,17 @@ public class TileEntityMixer extends TileEntity implements IInventory
 			if (this.mixTime == 0)
 			{
 				this.mixPotions();
-				this.onInventoryChanged();
+				this.markDirty();
 			}
 			else if (!this.canMix())
 			{
 				this.mixTime = 0;
-				this.onInventoryChanged();
+				this.markDirty();
 			}
 			else if (this.output != this.mixingItemStacks[3])
 			{
 				this.mixTime = 0;
-				this.onInventoryChanged();
+				this.markDirty();
 			}
 		}
 		else if (this.canMix())
@@ -90,9 +79,9 @@ public class TileEntityMixer extends TileEntity implements IInventory
 	private void mixPotions()
 	{
 		mixingItemStacks[3] = getOutput();
-		for (int var1 = 0; var1 < 3; var1++)
+		for (int i = 0; i < 3; i++)
 		{
-			mixingItemStacks[var1] = null;
+			mixingItemStacks[i] = null;
 		}
 	}
 	
@@ -155,33 +144,27 @@ public class TileEntityMixer extends TileEntity implements IInventory
 		return this.mixTime;
 	}
 	
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		NBTTagList tagList = nbt.getTagList("Items");
+		NBTTagList tagList = nbt.getTagList("Items", Constants.NBT.TAG_COMPOUND);
 		this.mixingItemStacks = new ItemStack[this.getSizeInventory()];
 		
-		for (int index = 0; index < tagList.tagCount(); ++index)
+		for (int i = 0; i < tagList.tagCount(); ++i)
 		{
-			NBTTagCompound slotCompound = (NBTTagCompound) tagList.tagAt(index);
-			byte slotID = slotCompound.getByte("Slot");
+			NBTTagCompound compound = tagList.getCompoundTagAt(i);
+			byte slotID = compound.getByte("Slot");
 			
 			if (slotID >= 0 && slotID < this.mixingItemStacks.length)
 			{
-				this.mixingItemStacks[slotID] = ItemStack.loadItemStackFromNBT(slotCompound);
+				this.mixingItemStacks[slotID] = ItemStack.loadItemStackFromNBT(compound);
 			}
 		}
 		
 		this.mixTime = nbt.getShort("BrewTime");
 	}
 	
-	/**
-	 * Writes a tile entity to NBT.
-	 */
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
@@ -189,41 +172,34 @@ public class TileEntityMixer extends TileEntity implements IInventory
 		nbt.setShort("BrewTime", (short) this.mixTime);
 		NBTTagList tagList = new NBTTagList();
 		
-		for (int index = 0; index < this.mixingItemStacks.length; ++index)
+		for (int i = 0; i < this.mixingItemStacks.length; ++i)
 		{
-			if (this.mixingItemStacks[index] != null)
+			if (this.mixingItemStacks[i] != null)
 			{
-				NBTTagCompound var4 = new NBTTagCompound();
-				var4.setByte("Slot", (byte) index);
-				this.mixingItemStacks[index].writeToNBT(var4);
-				tagList.appendTag(var4);
+				NBTTagCompound compound = new NBTTagCompound();
+				compound.setByte("Slot", (byte) i);
+				this.mixingItemStacks[i].writeToNBT(compound);
+				tagList.appendTag(compound);
 			}
 		}
 		
 		nbt.setTag("Items", tagList);
 	}
 	
-	/**
-	 * Returns the stack in slot i
-	 */
 	@Override
 	public ItemStack getStackInSlot(int slotID)
 	{
 		return slotID >= 0 && slotID < this.mixingItemStacks.length ? this.mixingItemStacks[slotID] : null;
 	}
 	
-	/**
-	 * Removes from an inventory slot (first arg) up to a specified number
-	 * (second arg) of items and returns them in a new stack.
-	 */
 	@Override
 	public ItemStack decrStackSize(int slotID, int amount)
 	{
 		if (slotID >= 0 && slotID < this.mixingItemStacks.length)
 		{
-			ItemStack var3 = this.mixingItemStacks[slotID];
+			ItemStack stack = this.mixingItemStacks[slotID];
 			this.mixingItemStacks[slotID] = null;
-			return var3;
+			return stack;
 		}
 		else
 		{
@@ -231,19 +207,14 @@ public class TileEntityMixer extends TileEntity implements IInventory
 		}
 	}
 	
-	/**
-	 * When some containers are closed they call this on each slot, then drop
-	 * whatever it returns as an EntityItem - like when you close a workbench
-	 * GUI.
-	 */
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slotID)
 	{
 		if (slotID >= 0 && slotID < this.mixingItemStacks.length)
 		{
-			ItemStack var2 = this.mixingItemStacks[slotID];
+			ItemStack stack = this.mixingItemStacks[slotID];
 			this.mixingItemStacks[slotID] = null;
-			return var2;
+			return stack;
 		}
 		else
 		{
@@ -251,10 +222,6 @@ public class TileEntityMixer extends TileEntity implements IInventory
 		}
 	}
 	
-	/**
-	 * Sets the given item stack to the specified slot in the inventory (can be
-	 * crafting or armor sections).
-	 */
 	@Override
 	public void setInventorySlotContents(int slotID, ItemStack stack)
 	{
@@ -264,34 +231,16 @@ public class TileEntityMixer extends TileEntity implements IInventory
 		}
 	}
 	
-	/**
-	 * Returns the maximum stack size for a inventory slot. Seems to always be
-	 * 64, possibly will be extended. *Isn't this more of a set than a get?*
-	 */
 	@Override
 	public int getInventoryStackLimit()
 	{
 		return 1;
 	}
 	
-	/**
-	 * Do not make give this method the name canInteractWith because it clashes
-	 * with Container
-	 */
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player)
 	{
-		return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
-	}
-	
-	@Override
-	public void openChest()
-	{
-	}
-	
-	@Override
-	public void closeChest()
-	{
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this && player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -300,10 +249,6 @@ public class TileEntityMixer extends TileEntity implements IInventory
 		this.mixTime = brewTime;
 	}
 	
-	/**
-	 * returns an integer with each bit specifying wether that slot of the stand
-	 * contains a potion
-	 */
 	public int getFilledSlots()
 	{
 		int filledSlots = 0;
@@ -318,14 +263,24 @@ public class TileEntityMixer extends TileEntity implements IInventory
 	}
 	
 	@Override
-	public boolean isInvNameLocalized()
+	public boolean hasCustomInventoryName()
 	{
 		return false;
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
+	public boolean isItemValidForSlot(int slotID, ItemStack stack)
 	{
-		return (par2ItemStack.itemID == Item.potion.itemID || par2ItemStack.itemID == Item.glassBottle.itemID) && par1 != 3;
+		return stack.getItem() == Items.potionitem && slotID != 3;
+	}
+	
+	@Override
+	public void openInventory()
+	{
+	}
+	
+	@Override
+	public void closeInventory()
+	{
 	}
 }
