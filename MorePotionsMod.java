@@ -13,7 +13,7 @@ import clashsoft.cslib.minecraft.item.CSItems;
 import clashsoft.cslib.minecraft.lang.CSLang;
 import clashsoft.cslib.minecraft.potion.CustomPotion;
 import clashsoft.cslib.minecraft.update.CSUpdate;
-import clashsoft.cslib.minecraft.util.*;
+import clashsoft.cslib.minecraft.util.CSConfig;
 import clashsoft.cslib.util.CSLog;
 import clashsoft.cslib.util.CSString;
 import clashsoft.cslib.util.CSUtil;

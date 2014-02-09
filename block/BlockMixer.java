@@ -25,9 +25,9 @@ import net.minecraft.world.World;
 public class BlockMixer extends BlockContainer
 {
 	private Random	rand	= new Random();
-	public IIcon		top;
-	public IIcon		side;
-	public IIcon		bottom;
+	public IIcon	top;
+	public IIcon	side;
+	public IIcon	bottom;
 	
 	public BlockMixer()
 	{

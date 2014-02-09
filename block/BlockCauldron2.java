@@ -75,7 +75,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{
-		return onItemAdded(world, x, y, z, player, player.getCurrentEquippedItem());
+		return this.onItemAdded(world, x, y, z, player, player.getCurrentEquippedItem());
 	}
 	
 	public boolean onItemAdded(World world, int x, int y, int z, EntityPlayer player, ItemStack stack)
@@ -180,7 +180,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 				
 				if (flag)
 				{
-					world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), "random.fizz", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
+					world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, "random.fizz", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 					
 					if (MorePotionsMod.cauldronInfo && player != null && message != null)
 					{

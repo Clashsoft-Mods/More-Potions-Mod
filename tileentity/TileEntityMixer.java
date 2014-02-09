@@ -78,10 +78,10 @@ public class TileEntityMixer extends TileEntity implements IInventory
 	
 	private void mixPotions()
 	{
-		mixingItemStacks[3] = getOutput();
+		this.mixingItemStacks[3] = this.getOutput();
 		for (int i = 0; i < 3; i++)
 		{
-			mixingItemStacks[i] = null;
+			this.mixingItemStacks[i] = null;
 		}
 	}
 	
@@ -90,16 +90,16 @@ public class TileEntityMixer extends TileEntity implements IInventory
 		List<PotionType> potionTypes = new ArrayList<PotionType>();
 		for (int potionIndex = 0; potionIndex < 3; potionIndex++)
 		{
-			if (mixingItemStacks[potionIndex] != null && mixingItemStacks[potionIndex].getItem() instanceof ItemPotion2)
+			if (this.mixingItemStacks[potionIndex] != null && this.mixingItemStacks[potionIndex].getItem() instanceof ItemPotion2)
 			{
-				ItemPotion2 item = (ItemPotion2) mixingItemStacks[potionIndex].getItem();
-				potionTypes.addAll(item.getEffects(mixingItemStacks[potionIndex]));
+				ItemPotion2 item = (ItemPotion2) this.mixingItemStacks[potionIndex].getItem();
+				potionTypes.addAll(item.getEffects(this.mixingItemStacks[potionIndex]));
 			}
 		}
 		if (!potionTypes.isEmpty())
 		{
 			potionTypes = (List<PotionType>) PotionType.removeDuplicates(potionTypes);
-			int damage = mixingItemStacks[0] != null ? mixingItemStacks[0].getItemDamage() : mixingItemStacks[1] != null ? mixingItemStacks[1].getItemDamage() : mixingItemStacks[2] != null ? mixingItemStacks[2].getItemDamage() : 0;
+			int damage = this.mixingItemStacks[0] != null ? this.mixingItemStacks[0].getItemDamage() : this.mixingItemStacks[1] != null ? this.mixingItemStacks[1].getItemDamage() : this.mixingItemStacks[2] != null ? this.mixingItemStacks[2].getItemDamage() : 0;
 			ItemStack ret = new ItemStack(BrewingAPI.potion2, 1, damage);
 			for (PotionType b : potionTypes)
 			{
@@ -113,14 +113,14 @@ public class TileEntityMixer extends TileEntity implements IInventory
 	
 	private boolean canMix()
 	{
-		if (this.mixingItemStacks[3] == null && getFilledSlots() >= 2 && mixingItemStacks[3] == null)
+		if (this.mixingItemStacks[3] == null && this.getFilledSlots() >= 2 && this.mixingItemStacks[3] == null)
 		{
 			boolean flag = false;
 			for (int index = 0; index < 3; index++)
 			{
-				if (mixingItemStacks[index] != null && mixingItemStacks[index].getItem() instanceof ItemPotion2)
+				if (this.mixingItemStacks[index] != null && this.mixingItemStacks[index].getItem() instanceof ItemPotion2)
 				{
-					if (((ItemPotion2) mixingItemStacks[index].getItem()).getEffects(mixingItemStacks[index]) == null)
+					if (((ItemPotion2) this.mixingItemStacks[index].getItem()).getEffects(this.mixingItemStacks[index]) == null)
 					{
 						flag = false;
 						break;
@@ -254,7 +254,7 @@ public class TileEntityMixer extends TileEntity implements IInventory
 		int filledSlots = 0;
 		for (int i = 0; i < 3; i++)
 		{
-			if (mixingItemStacks[i] != null)
+			if (this.mixingItemStacks[i] != null)
 			{
 				filledSlots++;
 			}

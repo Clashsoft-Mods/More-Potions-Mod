@@ -44,10 +44,10 @@ public class MPMPacketHandler extends CSPacketHandler
 		public void write(PacketBuffer buf)
 		{
 			this.writeWorld(buf, this.world);
-			buf.writeInt(x);
-			buf.writeInt(y);
-			buf.writeInt(z);
-			buf.writeInt(color);
+			buf.writeInt(this.x);
+			buf.writeInt(this.y);
+			buf.writeInt(this.z);
+			buf.writeInt(this.color);
 			this.writeItemStack(buf, this.output);
 		}
 		

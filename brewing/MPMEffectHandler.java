@@ -78,7 +78,7 @@ public class MPMEffectHandler implements IPotionEffectHandler
 		}
 		else if (effect.getPotionID() == MorePotionsMod.explosiveness.id)
 		{
-			if ((int) tick % 40 == 0)
+			if (tick % 40 == 0)
 			{
 				living.worldObj.createExplosion(living, living.posX, living.posY, living.posZ, (effect.getAmplifier() + 1) * 2, true);
 			}
@@ -92,7 +92,7 @@ public class MPMEffectHandler implements IPotionEffectHandler
 			}
 			else
 			{
-				if ((int) tick % 40 == 0)
+				if (tick % 40 == 0)
 				{
 					PotionEffect pe = PotionType.getRandom(living.getRNG()).getEffect();
 					if (pe.getDuration() > 1)
