@@ -1,21 +1,14 @@
 package clashsoft.mods.morepotions;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.Properties;
-
 import clashsoft.brewingapi.BrewingAPI;
 import clashsoft.cslib.minecraft.block.CSBlocks;
 import clashsoft.cslib.minecraft.block.CustomItem;
 import clashsoft.cslib.minecraft.crafting.CSCrafting;
 import clashsoft.cslib.minecraft.item.CSItems;
-import clashsoft.cslib.minecraft.lang.CSLang;
 import clashsoft.cslib.minecraft.potion.CustomPotion;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.util.CSConfig;
 import clashsoft.cslib.util.CSLog;
-import clashsoft.cslib.util.CSString;
 import clashsoft.cslib.util.CSUtil;
 import clashsoft.mods.morepotions.block.BlockCauldron2;
 import clashsoft.mods.morepotions.block.BlockMixer;
@@ -29,9 +22,6 @@ import clashsoft.mods.morepotions.item.ItemMortar;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
 import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
-
-import com.google.common.base.Charsets;
-
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -41,7 +31,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -49,7 +38,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -58,6 +46,7 @@ public class MorePotionsMod
 {
 	public static final String			MODID						= "morepotions";
 	public static final String			NAME						= "More Potions Mod";
+	public static final String			ACRONYM						= "mpm";
 	public static final int				REVISION					= 0;
 	public static final String			VERSION						= CSUpdate.CURRENT_VERSION + "-" + REVISION;
 	
@@ -75,11 +64,6 @@ public class MorePotionsMod
 	public static int					mixerTileEntityID			= 12;
 	public static int					cauldronTileEntityID		= 13;
 	public static int					unbrewingStandTileEntityID	= 14;
-	
-	public static int					mixerBlockID				= 2700;
-	public static int					unbrewingStandBlockID		= 2701;
-	public static int					dustItemID					= 14000;
-	public static int					mortarItemID				= 14001;
 	
 	public static boolean				cauldronInfo				= false;
 	
@@ -139,64 +123,53 @@ public class MorePotionsMod
 		cauldronInfo = CSConfig.getBool("Cauldrons", "CauldronInfo", true);
 		
 		CSConfig.saveConfig();
-	}
-	
-	@EventHandler
-	public void load(FMLInitializationEvent event)
-	{
-		BrewingAPI.registerEffectHandler(new MPMEffectHandler());
-		BrewingAPI.registerIngredientHandler(new MPMIngredientHandler());
-		
-		GameRegistry.registerTileEntity(TileEntityMixer.class, "Mixxer");
-		GameRegistry.registerTileEntity(TileEntityCauldron.class, "Cauldron2");
-		GameRegistry.registerTileEntity(TileEntityUnbrewingStand.class, "UnbrewingStand");
 		
 		cauldron2 = (BlockCauldron2) new BlockCauldron2().setBlockName("cauldron").setBlockTextureName("cauldron");
 		mixer = (BlockMixer) new BlockMixer().setBlockName("mixer");
 		unbrewingStand = (BlockUnbrewingStand) new BlockUnbrewingStand().setBlockName("unbrewingStand");
 		
-		mortar = new ItemMortar().setUnlocalizedName("mortar").setTextureName("mortar");
-		dust = new CustomItem(CSString.concatAll(new String[] {
-				"dustCoal",
-				"dustIron",
-				"dustGold",
-				"dustDiamond",
-				"dustEmerald",
-				"dustObsidian",
-				"dustQuartz",
-				"dustWither",
-				"dustEnderpearl",
-				"dustClay",
-				"dustBrick",
-				"dustFlint",
-				"dustGlass",
-				"dustCharcoal",
-				"dustWoodOak",
-				"dustWoodBirch",
-				"dustWoodSpruce",
-				"dustWoodJungle",
-				"dustNetherstar",
-				"dustNetherbrick" }, "item.", ".name"), new String[] {
-				"dustCoal",
-				"dustIron",
-				"dustGold",
-				"dustDiamond",
-				"dustEmerald",
-				"dustObsidian",
-				"dustQuartz",
-				"dustWither",
-				"dustEnderpearl",
-				"dustClay",
-				"dustBrick",
-				"dustFlint",
-				"dustGlass",
-				"dustCoal",
-				"dustWoodOak",
-				"dustWoodBirch",
-				"dustWoodSpruce",
-				"dustWoodJungle",
-				"dustNetherstar",
-				"dustNetherbrick" }, new String[] {
+		mortar = new ItemMortar().setUnlocalizedName("mortar").setTextureName("morepotions:mortar");
+		dust = new CustomItem(new String[] {
+				"item.dustCoal.name",
+				"item.dustIron.name",
+				"item.dustGold.name",
+				"item.dustDiamond.name",
+				"item.dustEmerald.name",
+				"item.dustObsidian.name",
+				"item.dustQuartz.name",
+				"item.dustWither.name",
+				"item.dustEnderpearl.name",
+				"item.dustClay.name",
+				"item.dustBrick.name",
+				"item.dustFlint.name",
+				"item.dustGlass.name",
+				"item.dustCharcoal.name",
+				"item.dustWoodOak.name",
+				"item.dustWoodBirch.name",
+				"item.dustWoodSpruce.name",
+				"item.dustWoodJungle.name",
+				"item.dustNetherstar.name",
+				"item.dustNetherbrick.name" }, new String[] {
+				"morepotions:dustCoal",
+				"morepotions:dustIron",
+				"morepotions:dustGold",
+				"morepotions:dustDiamond",
+				"morepotions:dustEmerald",
+				"morepotions:dustObsidian",
+				"morepotions:dustQuartz",
+				"morepotions:dustWither",
+				"morepotions:dustEnderpearl",
+				"morepotions:dustClay",
+				"morepotions:dustBrick",
+				"morepotions:dustFlint",
+				"morepotions:dustGlass",
+				"morepotions:dustCoal",
+				"morepotions:dustWoodOak",
+				"morepotions:dustWoodBirch",
+				"morepotions:dustWoodSpruce",
+				"morepotions:dustWoodJungle",
+				"morepotions:dustNetherstar",
+				"morepotions:dustNetherbrick" }, new String[] {
 				"C2",
 				"Fe",
 				"Au",
@@ -225,12 +198,22 @@ public class MorePotionsMod
 		
 		CSItems.addItem(mortar, "Mortar");
 		CSItems.addItem(dust, "Dust");
+	}
+	
+	@EventHandler
+	public void load(FMLInitializationEvent event)
+	{
+		BrewingAPI.registerEffectHandler(new MPMEffectHandler());
+		BrewingAPI.registerIngredientHandler(new MPMIngredientHandler());
+		
+		GameRegistry.registerTileEntity(TileEntityMixer.class, "Mixxer");
+		GameRegistry.registerTileEntity(TileEntityCauldron.class, "Cauldron2");
+		GameRegistry.registerTileEntity(TileEntityUnbrewingStand.class, "UnbrewingStand");
 		
 		Items.sugar.setCreativeTab(CreativeTabs.tabBrewing);
 		Items.nether_wart.setCreativeTab(CreativeTabs.tabBrewing);
 		
 		this.addRecipes();
-		this.addLocalizations();
 		this.registerPotionTypes();
 		
 		MinecraftForge.EVENT_BUS.register(new MPMEventHandler());
@@ -279,41 +262,6 @@ public class MorePotionsMod
 				Items.iron_ingot,
 				'p',
 				Items.glass_bottle });
-	}
-	
-	private void addLocalizations()
-	{
-		new Thread(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				MorePotionsMod.this.loadLanguageFile("mpm_en_US", "en_US");
-				MorePotionsMod.this.loadLanguageFile("mpm_de_DE", "de_DE");
-			}
-		}).start();
-	}
-	
-	public void loadLanguageFile(String fileName, String language)
-	{
-		try
-		{
-			Properties langPack = new Properties();
-			ResourceLocation resourceLocation = new ResourceLocation("lang/" + fileName + ".lang");
-			
-			InputStream stream = Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation).getInputStream();
-			Reader reader = new InputStreamReader(stream, Charsets.UTF_8);
-			langPack.load(reader);
-			
-			if (!langPack.isEmpty())
-			{
-				CSLang.addLangPack(langPack, language);
-			}
-		}
-		catch (Exception ex)
-		{
-			CSLog.error(ex);
-		}
 	}
 	
 	private void addDusts()

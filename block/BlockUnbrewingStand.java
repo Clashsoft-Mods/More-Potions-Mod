@@ -51,9 +51,9 @@ public class BlockUnbrewingStand extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		this.top = iconRegister.registerIcon("unbrewingstand_top");
-		this.bottom = iconRegister.registerIcon("unbrewingstand_bottom");
-		this.side = iconRegister.registerIcon("unbrewingstand_side");
+		this.top = iconRegister.registerIcon("morepotions:unbrewingstand_top");
+		this.bottom = iconRegister.registerIcon("morepotions:unbrewingstand_bottom");
+		this.side = iconRegister.registerIcon("morepotions:unbrewingstand_side");
 	}
 	
 	@Override

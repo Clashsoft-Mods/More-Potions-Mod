@@ -1,6 +1,5 @@
 package clashsoft.mods.morepotions.common;
 
-import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.mods.morepotions.MorePotionsMod;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -16,22 +15,12 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 public class MPMEventHandler
 {
-	@SubscribeEvent
-	public void playerJoined(EntityJoinWorldEvent event)
-	{
-		if (event.entity instanceof EntityPlayer)
-		{
-			CSUpdate.doClashsoftUpdateCheck((EntityPlayer) event.entity, "More Potions Mod", "mpm", MorePotionsMod.VERSION);
-		}
-	}
-	
 	@SubscribeEvent(priority = EventPriority.LOW)
 	public void onEntityDamaged(LivingAttackEvent event)
 	{

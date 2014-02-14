@@ -52,9 +52,9 @@ public class BlockMixer extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		this.top = iconRegister.registerIcon("mixer_top");
-		this.bottom = iconRegister.registerIcon("mixer_bottom");
-		this.side = iconRegister.registerIcon("mixer_side");
+		this.top = iconRegister.registerIcon("morepotions:mixer_top");
+		this.bottom = iconRegister.registerIcon("morepotions:mixer_bottom");
+		this.side = iconRegister.registerIcon("morepotions:mixer_side");
 	}
 	
 	@Override

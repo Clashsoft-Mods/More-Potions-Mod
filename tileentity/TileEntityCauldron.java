@@ -7,7 +7,7 @@ import clashsoft.brewingapi.BrewingAPI;
 import clashsoft.brewingapi.brewing.PotionBase;
 import clashsoft.brewingapi.brewing.PotionType;
 import clashsoft.cslib.minecraft.lang.I18n;
-import clashsoft.mods.morepotions.common.MPMPacketHandler;
+import clashsoft.mods.morepotions.network.MPMPacketHandler;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
