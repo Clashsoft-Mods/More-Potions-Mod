@@ -5,11 +5,10 @@ import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 
 public class MPMPacketHandler extends CSNetHandler
 {
-	public static MPMPacketHandler	instance	= new MPMPacketHandler();
-	
 	public MPMPacketHandler()
 	{
 		super("MPM");
+		this.registerPacket(PacketCauldronData.class);
 	}
 	
 	public void syncCauldron(TileEntityCauldron cauldron)

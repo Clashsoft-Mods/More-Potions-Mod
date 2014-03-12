@@ -103,7 +103,7 @@ public class TileEntityMixer extends TileEntity implements IInventory
 			ItemStack ret = new ItemStack(BrewingAPI.potion2, 1, damage);
 			for (PotionType b : potionTypes)
 			{
-				b.addPotionTypeToItemStack(ret);
+				b.apply(ret);
 			}
 			return ret;
 		}

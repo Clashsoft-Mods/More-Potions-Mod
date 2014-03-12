@@ -13,7 +13,7 @@ import net.minecraft.util.StatCollector;
 public class GuiMixer extends GuiContainer
 {
 	private TileEntityMixer			mixer;
-	public static ResourceLocation	mixer_gui	= new ResourceLocation("gui/mixer_gui.png");
+	public static ResourceLocation	mixer_gui	= new ResourceLocation("morepotions", "textures/gui/mixer.png");
 	
 	public GuiMixer(InventoryPlayer inventory, TileEntityMixer mixer)
 	{

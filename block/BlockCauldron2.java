@@ -11,7 +11,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -45,8 +44,6 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		super.registerBlockIcons(iconRegister);
-		Blocks.cauldron.registerBlockIcons(iconRegister);
-		
 		this.liquid = iconRegister.registerIcon("cauldron_liquid");
 	}
 	

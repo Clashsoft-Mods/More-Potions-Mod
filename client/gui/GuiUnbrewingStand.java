@@ -13,7 +13,7 @@ import net.minecraft.util.StatCollector;
 public class GuiUnbrewingStand extends GuiContainer
 {
 	public TileEntityUnbrewingStand	unbrewingStand;
-	public static ResourceLocation	unbrewingStandGUI	= new ResourceLocation("gui/unbrewingstand_gui.png");
+	public static ResourceLocation	unbrewingStandGUI	= new ResourceLocation("morepotions", "textures/gui/unbrewing_stand.png");
 	
 	public GuiUnbrewingStand(InventoryPlayer inventory, TileEntityUnbrewingStand unbrewingStand)
 	{

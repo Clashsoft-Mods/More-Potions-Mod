@@ -95,7 +95,7 @@ public class TileEntityUnbrewingStand extends TileEntity implements ISidedInvent
 				
 				int redstoneAmount = 0;
 				int glowstoneAmount = 0;
-				int gunPowderAmount = potionItem.isSplash(potion.getItemDamage()) ? potionCount : 0;
+				int gunPowderAmount = potionItem.isSplashDamage(potion.getItemDamage()) ? potionCount : 0;
 				int bottleAmount = potionCount;
 				
 				ItemStack ingredient = null;

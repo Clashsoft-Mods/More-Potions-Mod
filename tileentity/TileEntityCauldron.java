@@ -7,7 +7,7 @@ import clashsoft.brewingapi.BrewingAPI;
 import clashsoft.brewingapi.brewing.PotionBase;
 import clashsoft.brewingapi.brewing.PotionType;
 import clashsoft.cslib.minecraft.lang.I18n;
-import clashsoft.mods.morepotions.network.MPMPacketHandler;
+import clashsoft.mods.morepotions.MorePotionsMod;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -37,8 +37,10 @@ public class TileEntityCauldron extends TileEntity
 	{
 		if (stack != null)
 		{
-			if (PotionType.getPotionTypeFromIngredient(stack) != null && stack.getItem() != Items.gunpowder)
+			if (stack.getItem() != Items.gunpowder && PotionType.getFromIngredient(stack) != null)
+			{
 				return true;
+			}
 		}
 		return false;
 	}
@@ -58,7 +60,9 @@ public class TileEntityCauldron extends TileEntity
 				out = new ChatComponentTranslation("cauldron.effects.durations.decrease");
 			}
 			else
+			{
 				out = new ChatComponentTranslation("cauldron.addwater");
+			}
 		}
 		else if (ingredient.getItem() == Items.glowstone_dust && !this.isWater()) // Improving
 		{
@@ -89,7 +93,7 @@ public class TileEntityCauldron extends TileEntity
 		}
 		else if (this.isWater()) // Other Base Ingredients
 		{
-			PotionBase base = PotionBase.getBrewingBaseFromIngredient(ingredient);
+			PotionBase base = PotionBase.getFromIngredient(ingredient);
 			if (base != null)
 			{
 				this.setBaseBrewing(base);
@@ -99,7 +103,7 @@ public class TileEntityCauldron extends TileEntity
 		else
 		// Normal ingredients
 		{
-			PotionType potionType = PotionType.getPotionTypeFromIngredient(ingredient);
+			PotionType potionType = PotionType.getFromIngredient(ingredient);
 			if (this.potionTypes.size() > 0 && potionType != null)
 			{
 				boolean contains = this.potionTypes.contains(potionType);
@@ -114,9 +118,13 @@ public class TileEntityCauldron extends TileEntity
 					}
 				}
 				else if (contains)
+				{
 					out = new ChatComponentTranslation("cauldron.failed.existing");
+				}
 				else if (requiredBase != null)
+				{
 					out = new ChatComponentTranslation("cauldron.failed.wrongbase", requiredBase.basename);
+				}
 			}
 		}
 		
@@ -153,7 +161,7 @@ public class TileEntityCauldron extends TileEntity
 	{
 		if (this.worldObj != null && !this.worldObj.isRemote)
 		{
-			MPMPacketHandler.instance.syncCauldron(this);
+			MorePotionsMod.netHandler.syncCauldron(this);
 		}
 	}
 	
@@ -166,10 +174,16 @@ public class TileEntityCauldron extends TileEntity
 		this.potionTypes = removeDuplicates ? (List<PotionType>) PotionType.removeDuplicates(this.potionTypes) : this.potionTypes;
 		
 		if (this.potionTypes.size() == 1)
-			this.potionTypes.get(0).addPotionTypeToItemStack(is);
+		{
+			this.potionTypes.get(0).apply(is);
+		}
 		else
+		{
 			for (int i = 1; i < this.potionTypes.size(); i++)
-				this.potionTypes.get(i).addPotionTypeToItemStack(is);
+			{
+				this.potionTypes.get(i).apply(is);
+			}
+		}
 		
 		return is;
 	}
@@ -192,7 +206,7 @@ public class TileEntityCauldron extends TileEntity
 			for (int i = 0; i < tagList.tagCount(); ++i)
 			{
 				NBTTagCompound brewingCompound = tagList.getCompoundTagAt(i);
-				PotionType potionType = PotionType.getPotionTypeFromNBT(brewingCompound);
+				PotionType potionType = PotionType.getFromNBT(brewingCompound);
 				result.add(potionType);
 			}
 			this.potionTypes = result;
