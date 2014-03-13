@@ -77,7 +77,7 @@ public class MPMPotionList
 		doubleLife = new PotionType(new PotionEffect(MorePotionsMod.doubleLife.id, 1625000, 0), 0, 0, PotionList.harm, MorePotionsMod.dustNetherstar, PotionType.getBaseBrewing(PotionList.thick));
 		healthBoost = new PotionType(new PotionEffect(Potion.field_76434_w.id, 45 * 20, 0), 4, 120 * 20);
 		absorption = new PotionType(new PotionEffect(Potion.field_76444_x.id, 45 * 20, 0), 4, 120 * 20, PotionList.healthBoost, new ItemStack(Items.golden_apple), PotionType.getBaseBrewing(PotionList.thick));
-		doubleJump = new PotionType(new PotionEffect(MorePotionsMod.doubleJump.id, 20 * 60, 0), 2, 20 * 120, null);
+		doubleJump = new PotionType(new PotionEffect(MorePotionsMod.doubleJump.id, 20 * 60, 0), 2, 20 * 120, PotionList.doublejump, new ItemStack(Items.feather), PotionType.getBaseBrewing(PotionList.awkward));
 		jump = new PotionType(new PotionEffect(Potion.jump.id, 20 * 180, 0), 4, 20 * 300, doubleJump);
 		confusion = new PotionType(new PotionEffect(Potion.confusion.id, 20 * 90, 0), 2, 20 * 180, new ItemStack(Items.poisonous_potato), PotionList.awkward);
 		regeneration = new PotionType(new PotionEffect(Potion.regeneration.id, 20 * 45, 0), 2, 20 * 180, PotionList.moveSlowdown, new ItemStack(Items.ghast_tear), PotionList.awkward);
