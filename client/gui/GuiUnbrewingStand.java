@@ -13,7 +13,7 @@ import net.minecraft.util.StatCollector;
 public class GuiUnbrewingStand extends GuiContainer
 {
 	public TileEntityUnbrewingStand	unbrewingStand;
-	public static ResourceLocation	unbrewingStandGUI	= new ResourceLocation("morepotions", "textures/gui/unbrewing_stand.png");
+	public static ResourceLocation	unbrewingTexture	= new ResourceLocation("morepotions", "textures/gui/unbrewing_stand.png");
 	
 	public GuiUnbrewingStand(InventoryPlayer inventory, TileEntityUnbrewingStand unbrewingStand)
 	{
@@ -25,7 +25,7 @@ public class GuiUnbrewingStand extends GuiContainer
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String title = StatCollector.translateToLocal("tile.unbrewingStand.name");
+		String title = StatCollector.translateToLocal("tile.unbrewing_stand.name");
 		this.fontRendererObj.drawString(title, (this.xSize - this.fontRendererObj.getStringWidth(title)) / 2, 6, 4210752);
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 94, 4210752);
 	}
@@ -34,7 +34,7 @@ public class GuiUnbrewingStand extends GuiContainer
 	protected void drawGuiContainerBackgroundLayer(float partialTickTime, int mouseX, int mouseY)
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.bindTexture(unbrewingStandGUI);
+		this.mc.renderEngine.bindTexture(unbrewingTexture);
 		int centerX = (this.width - this.xSize) / 2;
 		int centerY = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(centerX, centerY, 0, 0, this.xSize, this.ySize);

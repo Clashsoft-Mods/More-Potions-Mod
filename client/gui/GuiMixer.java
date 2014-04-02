@@ -13,7 +13,7 @@ import net.minecraft.util.StatCollector;
 public class GuiMixer extends GuiContainer
 {
 	private TileEntityMixer			mixer;
-	public static ResourceLocation	mixer_gui	= new ResourceLocation("morepotions", "textures/gui/mixer.png");
+	public static ResourceLocation	mixerTexture	= new ResourceLocation("morepotions", "textures/gui/mixer.png");
 	
 	public GuiMixer(InventoryPlayer inventory, TileEntityMixer mixer)
 	{
@@ -23,17 +23,30 @@ public class GuiMixer extends GuiContainer
 	}
 	
 	@Override
+	public void initGui()
+	{
+		super.initGui();
+	}
+	
+	@Override
+	public void onGuiClosed()
+	{
+		super.onGuiClosed();
+	}
+	
+	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("tile.mixer.name"), 60, 6, 4210752);
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+		String title = StatCollector.translateToLocal("tile.mixer.name");
+		this.fontRendererObj.drawString(title, (this.xSize - this.fontRendererObj.getStringWidth(title)) / 2, 6, 4210752);
+		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 94, 4210752);
 	}
 	
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTickTime, int mouseX, int mouseY)
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.bindTexture(mixer_gui);
+		this.mc.renderEngine.bindTexture(mixerTexture);
 		int x = (this.width - this.xSize) / 2;
 		int y = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);

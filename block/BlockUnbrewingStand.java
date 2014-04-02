@@ -84,21 +84,11 @@ public class BlockUnbrewingStand extends BlockContainer
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{
-		if (world.isRemote)
+		if (!world.isRemote && world.getTileEntity(x, y, z) != null)
 		{
-			return true;
+			FMLNetworkHandler.openGui(player, MorePotionsMod.instance, MorePotionsMod.unbrewingStandTileEntityID, world, x, y, z);
 		}
-		else
-		{
-			TileEntityUnbrewingStand unbrewingStand = (TileEntityUnbrewingStand) world.getTileEntity(x, y, z);
-			
-			if (unbrewingStand != null)
-			{
-				FMLNetworkHandler.openGui(player, MorePotionsMod.INSTANCE, MorePotionsMod.unbrewingStandTileEntityID, world, x, y, z);
-			}
-			
-			return true;
-		}
+		return true;
 	}
 	
 	@Override

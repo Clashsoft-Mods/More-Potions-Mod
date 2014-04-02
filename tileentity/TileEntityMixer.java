@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import clashsoft.brewingapi.BrewingAPI;
+import clashsoft.brewingapi.brewing.IPotionType;
 import clashsoft.brewingapi.brewing.PotionType;
 import clashsoft.brewingapi.item.ItemPotion2;
 import cpw.mods.fml.relauncher.Side;
@@ -87,7 +88,7 @@ public class TileEntityMixer extends TileEntity implements IInventory
 	
 	public ItemStack getOutput()
 	{
-		List<PotionType> potionTypes = new ArrayList<PotionType>();
+		List<IPotionType> potionTypes = new ArrayList();
 		for (int potionIndex = 0; potionIndex < 3; potionIndex++)
 		{
 			if (this.mixingItemStacks[potionIndex] != null && this.mixingItemStacks[potionIndex].getItem() instanceof ItemPotion2)
@@ -98,10 +99,10 @@ public class TileEntityMixer extends TileEntity implements IInventory
 		}
 		if (!potionTypes.isEmpty())
 		{
-			potionTypes = (List<PotionType>) PotionType.removeDuplicates(potionTypes);
+			potionTypes = PotionType.removeDuplicates(potionTypes);
 			int damage = this.mixingItemStacks[0] != null ? this.mixingItemStacks[0].getItemDamage() : this.mixingItemStacks[1] != null ? this.mixingItemStacks[1].getItemDamage() : this.mixingItemStacks[2] != null ? this.mixingItemStacks[2].getItemDamage() : 0;
 			ItemStack ret = new ItemStack(BrewingAPI.potion2, 1, damage);
-			for (PotionType b : potionTypes)
+			for (IPotionType b : potionTypes)
 			{
 				b.apply(ret);
 			}
@@ -240,7 +241,7 @@ public class TileEntityMixer extends TileEntity implements IInventory
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this && player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 	
 	@SideOnly(Side.CLIENT)

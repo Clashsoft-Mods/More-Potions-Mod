@@ -2,7 +2,7 @@ package clashsoft.mods.morepotions.tileentity;
 
 import java.util.List;
 
-import clashsoft.brewingapi.brewing.PotionType;
+import clashsoft.brewingapi.brewing.IPotionType;
 import clashsoft.brewingapi.item.ItemPotion2;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -82,7 +82,7 @@ public class TileEntityUnbrewingStand extends TileEntity implements ISidedInvent
 		if (potion != null && potion.getItem() instanceof ItemPotion2)
 		{
 			ItemPotion2 potionItem = (ItemPotion2) potion.getItem();
-			List<PotionType> potionTypes = potionItem.getEffects(potion);
+			List<IPotionType> potionTypes = potionItem.getEffects(potion);
 			
 			int potionCount = potion.stackSize;
 			
@@ -100,7 +100,7 @@ public class TileEntityUnbrewingStand extends TileEntity implements ISidedInvent
 				
 				ItemStack ingredient = null;
 				
-				for (PotionType pt : potionTypes)
+				for (IPotionType pt : potionTypes)
 				{
 					redstoneAmount += pt.getRedstoneAmount();
 					glowstoneAmount += pt.getGlowstoneAmount();
@@ -275,7 +275,7 @@ public class TileEntityUnbrewingStand extends TileEntity implements ISidedInvent
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this && player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
+		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
 	}
 	
 	@SideOnly(Side.CLIENT)

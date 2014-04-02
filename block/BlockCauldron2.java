@@ -55,16 +55,16 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
 	{
-		if (world.isRemote)
-			return;
-		else if (entity instanceof EntityItem)
+		if (!world.isRemote && entity instanceof EntityItem)
 		{
 			EntityItem item = (EntityItem) entity;
 			
-			if (item.posX >= x + 0.125D && item.posX <= x + 0.875D && item.posY >= y + 0.125D && item.posY <= y + 1D && item.posZ >= z + 0.125D && item.posZ <= z + 0.875D)
+			if (item.posX > x + 0.125D && item.posX < x + 0.875D && item.posY > y + 0.125D && item.posY < y + 1D && item.posZ > z + 0.125D && item.posZ < z + 0.875D)
 			{
 				if (this.onItemAdded(world, x, y, z, null, item.getEntityItem()))
+				{
 					item.setDead();
+				}
 			}
 		}
 	}
@@ -77,11 +77,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	
 	public boolean onItemAdded(World world, int x, int y, int z, EntityPlayer player, ItemStack stack)
 	{
-		if (world.isRemote)
-		{
-			return true;
-		}
-		else
+		if (!world.isRemote)
 		{
 			TileEntity te = world.getTileEntity(x, y, z);
 			if (te instanceof TileEntityCauldron)
@@ -190,6 +186,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 			}
 			return false;
 		}
+		return true;
 	}
 	
 	@Override
