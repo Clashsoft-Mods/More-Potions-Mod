@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import clashsoft.brewingapi.BrewingAPI;
-import clashsoft.brewingapi.brewing.IPotionType;
-import clashsoft.brewingapi.brewing.PotionType;
 import clashsoft.brewingapi.item.ItemPotion2;
+import clashsoft.brewingapi.potion.type.IPotionType;
+import clashsoft.brewingapi.potion.type.PotionType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

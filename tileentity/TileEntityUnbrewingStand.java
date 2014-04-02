@@ -2,8 +2,8 @@ package clashsoft.mods.morepotions.tileentity;
 
 import java.util.List;
 
-import clashsoft.brewingapi.brewing.IPotionType;
 import clashsoft.brewingapi.item.ItemPotion2;
+import clashsoft.brewingapi.potion.type.IPotionType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

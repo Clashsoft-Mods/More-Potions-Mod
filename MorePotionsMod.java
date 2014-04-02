@@ -11,17 +11,16 @@ import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.util.CSConfig;
 import clashsoft.cslib.minecraft.util.CSResourceHelper;
 import clashsoft.cslib.util.CSString;
-import clashsoft.cslib.util.CSUtil;
 import clashsoft.mods.morepotions.block.BlockCauldron2;
 import clashsoft.mods.morepotions.block.BlockMixer;
 import clashsoft.mods.morepotions.block.BlockUnbrewingStand;
-import clashsoft.mods.morepotions.brewing.MPMEffectHandler;
-import clashsoft.mods.morepotions.brewing.MPMIngredientHandler;
-import clashsoft.mods.morepotions.brewing.MPMPotionList;
 import clashsoft.mods.morepotions.common.MPMCommonProxy;
 import clashsoft.mods.morepotions.common.MPMEventHandler;
 import clashsoft.mods.morepotions.item.ItemMortar;
 import clashsoft.mods.morepotions.network.MPMPacketHandler;
+import clashsoft.mods.morepotions.potion.MPMEffectHandler;
+import clashsoft.mods.morepotions.potion.MPMIngredientHandler;
+import clashsoft.mods.morepotions.potion.MPMPotionList;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
 import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
@@ -74,15 +73,14 @@ public class MorePotionsMod
 	
 	public static boolean				cauldronInfo				= false;
 	
-	public static Potion				fire						= new CustomPotion("potion.fire", true, 0xFFE500, false, customEffects, 0, 0);
 	public static Potion				effectRemove				= new CustomPotion("potion.effectRemove", false, 0xFFFFFF, false, customEffects, 1, 0);
 	public static Potion				waterWalking				= new CustomPotion("potion.waterWalking", false, 0x124EFE, false, customEffects, 2, 0);
 	public static Potion				coldness					= new CustomPotion("potion.coldness", false, 0x00DDFF, false, customEffects, 3, 0);
 	public static Potion				ironSkin					= new CustomPotion("potion.ironSkin", false, 0xD8D8D8, false, customEffects, 4, 0);
 	public static Potion				obsidianSkin				= new CustomPotion("potion.obsidianSkin", false, 0x101023, false, customEffects, 5, 0);
-	public static Potion				doubleLife					= new CustomPotion("potion.doubleLife", false, 0xFF2222, false, customEffects, 7, 0, CSUtil.fontColorInt(0, 0, 1, 1));
+	public static Potion				doubleLife					= new CustomPotion("potion.doubleLife", false, 0xFF2222, false, customEffects, 7, 0, 3);
 	public static Potion				explosiveness				= new CustomPotion("potion.explosiveness", true, 0xCC0000, false, customEffects, 1, 1);
-	public static Potion				random						= new CustomPotion("potion.random", false, 0x000000, randomMode == 0, customEffects, 2, 1, CSUtil.fontColorInt(0, 1, 1, 1));
+	public static Potion				random						= new CustomPotion("potion.random", false, 0x000000, randomMode == 0, customEffects, 2, 1, 7);
 	public static Potion				thorns						= new CustomPotion("potion.thorns", false, 0x810081, false, customEffects, 3, 1);
 	public static Potion				greenThumb					= new CustomPotion("potion.greenThumb", false, 0x008100, false, customEffects, 4, 1);
 	public static Potion				projectile					= new CustomPotion("potion.projectile", false, 0x101010, false, customEffects, 5, 1);

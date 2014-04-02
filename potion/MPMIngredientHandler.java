@@ -1,6 +1,6 @@
-package clashsoft.mods.morepotions.brewing;
+package clashsoft.mods.morepotions.potion;
 
-import clashsoft.brewingapi.api.IIngredientHandler;
+import clashsoft.brewingapi.potion.IIngredientHandler;
 
 import net.minecraft.item.ItemStack;
 

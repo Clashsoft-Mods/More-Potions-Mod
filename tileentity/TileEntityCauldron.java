@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import clashsoft.brewingapi.BrewingAPI;
-import clashsoft.brewingapi.brewing.IPotionType;
-import clashsoft.brewingapi.brewing.PotionBase;
-import clashsoft.brewingapi.brewing.PotionType;
+import clashsoft.brewingapi.potion.type.IPotionType;
+import clashsoft.brewingapi.potion.type.PotionBase;
+import clashsoft.brewingapi.potion.type.PotionType;
 import clashsoft.cslib.minecraft.lang.I18n;
 import clashsoft.mods.morepotions.MorePotionsMod;
 

@@ -1,12 +1,12 @@
-package clashsoft.mods.morepotions.brewing;
+package clashsoft.mods.morepotions.potion;
 
-import static clashsoft.brewingapi.brewing.PotionList.*;
+import static clashsoft.brewingapi.potion.PotionList.*;
 import clashsoft.brewingapi.BrewingAPI;
-import clashsoft.brewingapi.api.IPotionList;
-import clashsoft.brewingapi.brewing.IPotionType;
-import clashsoft.brewingapi.brewing.PotionBase;
-import clashsoft.brewingapi.brewing.PotionList;
-import clashsoft.brewingapi.brewing.PotionType;
+import clashsoft.brewingapi.potion.IPotionList;
+import clashsoft.brewingapi.potion.PotionList;
+import clashsoft.brewingapi.potion.type.IPotionType;
+import clashsoft.brewingapi.potion.type.PotionBase;
+import clashsoft.brewingapi.potion.type.PotionType;
 import clashsoft.mods.morepotions.MorePotionsMod;
 
 import net.minecraft.init.Blocks;
@@ -24,13 +24,12 @@ public class MPMPotionList implements IPotionList
 	public static IPotionType	obsidianSkin;
 	public static IPotionType	waterWalking;
 	public static IPotionType	explosiveness;
-	public static IPotionType	fire;
-	public static IPotionType	random;
 	public static IPotionType	effectRemove;
 	public static IPotionType	thorns;
 	public static IPotionType	greenThumb;
 	public static IPotionType	projectile;
 	public static IPotionType	doubleJump;
+	public static IPotionType	random;
 	
 	private MPMPotionList()
 	{
@@ -102,7 +101,6 @@ public class MPMPotionList implements IPotionList
 		saturation = new PotionType(new PotionEffect(Potion.field_76443_y.id, 20 * 45, 0), 3, 20 * 60, PotionList.hunger, new ItemStack(Items.bread), (PotionList.awkward));
 		wither = new PotionType(new PotionEffect(Potion.wither.id, 450, 0), 1, 20 * 60, MorePotionsMod.dustWither, (PotionList.acrid));
 		explosiveness = new PotionType(new PotionEffect(MorePotionsMod.explosiveness.id, 20 * 10, 0), 4, 20 * 20);
-		fire = new PotionType(new PotionEffect(MorePotionsMod.fire.id, 20 * 10, 0), 0, 20 * 20, explosiveness, new ItemStack(Items.fire_charge), PotionList.awkward);
 		random = new PotionType(new PotionEffect(MorePotionsMod.random.id, MorePotionsMod.randomMode == 0 ? 1 : 20 * 45, 0), 0, MorePotionsMod.randomMode == 0 ? 1 : 20 * 90, new ItemStack(BrewingAPI.potion2), PotionList.awkward);
 		effectRemove = new PotionType(new PotionEffect(MorePotionsMod.effectRemove.id, 20 * 45, 0), 0, 20 * 90, random, new ItemStack(Items.milk_bucket), PotionList.awkward)
 		{
@@ -174,7 +172,6 @@ public class MPMPotionList implements IPotionList
 		healthBoost.register();
 		absorption.register();
 		poison.register();
-		fire.register();
 		explosiveness.register();
 		wither.register();
 		saturation.register();
@@ -194,6 +191,6 @@ public class MPMPotionList implements IPotionList
 		ironSkin.register(); //
 		obsidianSkin.register(); //
 		effectRemove.register(); //
-		random.register();
+		random.register(); //
 	}
 }

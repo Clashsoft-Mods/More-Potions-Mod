@@ -1,7 +1,7 @@
-package clashsoft.mods.morepotions.brewing;
+package clashsoft.mods.morepotions.potion;
 
-import clashsoft.brewingapi.api.IPotionEffectHandler;
-import clashsoft.brewingapi.brewing.PotionType;
+import clashsoft.brewingapi.potion.IPotionEffectHandler;
+import clashsoft.brewingapi.potion.type.PotionType;
 import clashsoft.mods.morepotions.MorePotionsMod;
 
 import net.minecraft.block.Block;
@@ -16,20 +16,6 @@ public class MPMEffectHandler implements IPotionEffectHandler
 	@Override
 	public void onPotionUpdate(int tick, EntityLivingBase living, PotionEffect effect)
 	{
-		if (effect.getPotionID() == MorePotionsMod.fire.id)
-		{
-			int x = (int) living.posX;
-			int y = (int) living.posY;
-			int z = (int) living.posZ;
-			
-			Block block = living.worldObj.getBlock(x, y - 1, z);
-			if (block != null && block.isSideSolid(living.worldObj, x, y - 1, z, ForgeDirection.UP) && living.worldObj.isAirBlock(x, y, z))
-			{
-				living.worldObj.setBlock(x, y, z, Blocks.fire);
-			}
-			
-			living.setFire(1);
-		}
 		if (effect.getPotionID() == (MorePotionsMod.effectRemove.id))
 		{
 			for (int i = 0; i < Potion.potionTypes.length; i++)
@@ -80,7 +66,7 @@ public class MPMEffectHandler implements IPotionEffectHandler
 		{
 			if (tick % 40 == 0)
 			{
-				living.worldObj.createExplosion(living, living.posX, living.posY, living.posZ, (effect.getAmplifier() + 1) * 2, true);
+				living.worldObj.createExplosion(living, living.posX, living.posY, living.posZ, effect.getAmplifier() * 2 + 1, true);
 			}
 		}
 		else if (effect.getPotionID() == MorePotionsMod.random.id)
@@ -103,7 +89,6 @@ public class MPMEffectHandler implements IPotionEffectHandler
 				}
 			}
 		}
-		tick += 1F / (living.getActivePotionEffects().size());
 	}
 	
 	@Override
