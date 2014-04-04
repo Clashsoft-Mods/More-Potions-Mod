@@ -3,12 +3,14 @@ package clashsoft.mods.morepotions.network;
 import clashsoft.cslib.minecraft.network.CSNetHandler;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 
-public class MPMPacketHandler extends CSNetHandler
+public class MPMNetHandler extends CSNetHandler
 {
-	public MPMPacketHandler()
+	public MPMNetHandler()
 	{
 		super("MPM");
 		this.registerPacket(PacketCauldronData.class);
+		this.registerPacket(PacketGreenThumb.class);
+		this.registerPacket(PacketProjectile.class);
 	}
 	
 	public void syncCauldron(TileEntityCauldron cauldron)

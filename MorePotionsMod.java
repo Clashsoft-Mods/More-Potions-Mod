@@ -17,7 +17,7 @@ import clashsoft.mods.morepotions.block.BlockUnbrewingStand;
 import clashsoft.mods.morepotions.common.MPMCommonProxy;
 import clashsoft.mods.morepotions.common.MPMEventHandler;
 import clashsoft.mods.morepotions.item.ItemMortar;
-import clashsoft.mods.morepotions.network.MPMPacketHandler;
+import clashsoft.mods.morepotions.network.MPMNetHandler;
 import clashsoft.mods.morepotions.potion.MPMEffectHandler;
 import clashsoft.mods.morepotions.potion.MPMIngredientHandler;
 import clashsoft.mods.morepotions.potion.MPMPotionList;
@@ -59,7 +59,7 @@ public class MorePotionsMod
 	@SidedProxy(clientSide = "clashsoft.mods.morepotions.client.MPMClientProxy", serverSide = "clashsoft.mods.morepotions.common.MPMCommonProxy")
 	public static MPMCommonProxy		proxy;
 	
-	public static MPMPacketHandler		netHandler					= new MPMPacketHandler();
+	public static MPMNetHandler		netHandler					= new MPMNetHandler();
 	
 	public static ResourceLocation		customEffects				= CSResourceHelper.getResource("morepotions:gui/potions.png");
 	

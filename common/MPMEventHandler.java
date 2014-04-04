@@ -1,20 +1,17 @@
 package clashsoft.mods.morepotions.common;
 
 import clashsoft.mods.morepotions.MorePotionsMod;
+import clashsoft.mods.morepotions.network.PacketGreenThumb;
+import clashsoft.mods.morepotions.network.PacketProjectile;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntitySnowball;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
@@ -69,42 +66,13 @@ public class MPMEventHandler
 	@SubscribeEvent
 	public void playerRightClick(PlayerInteractEvent event)
 	{
-		if (!event.entityPlayer.worldObj.isRemote)
+		if (event.action == Action.RIGHT_CLICK_BLOCK && event.entityLiving.isPotionActive(MorePotionsMod.greenThumb))
 		{
-			if (event.action == Action.RIGHT_CLICK_BLOCK && event.entityLiving.isPotionActive(MorePotionsMod.greenThumb))
-			{
-				if (event.entityPlayer.getCurrentEquippedItem() == null)
-				{
-					int amplifier = event.entityPlayer.getActivePotionEffect(MorePotionsMod.greenThumb).getAmplifier();
-					
-					for (int i = 0; i < amplifier + 1; i++)
-					{
-						Items.dye.onItemUse(new ItemStack(Items.dye, 1, 15), event.entityPlayer, event.entityPlayer.worldObj, event.x, event.y, event.z, event.face, 0F, 0F, 0F);
-					}
-				}
-			}
-			if (event.action == Action.RIGHT_CLICK_AIR && event.entityLiving.isPotionActive(MorePotionsMod.projectile))
-			{
-				if (event.entityPlayer.getCurrentEquippedItem() == null)
-				{
-					int amplifier = event.entityPlayer.getActivePotionEffect(MorePotionsMod.projectile).getAmplifier();
-					World world = event.entityPlayer.worldObj;
-					
-					if (amplifier == 0)
-					{
-						world.spawnEntityInWorld(new EntitySnowball(world, event.entityPlayer));
-					}
-					else
-					{
-						EntityArrow projectile = new EntityArrow(world, event.entityPlayer, 1F + 0.5F * amplifier);
-						projectile.canBePickedUp = 2;
-						projectile.setDamage(projectile.getDamage() + 0.5D * amplifier);
-						projectile.setKnockbackStrength(1);
-						
-						world.spawnEntityInWorld(projectile);
-					}
-				}
-			}
+			MorePotionsMod.netHandler.sendToServer(new PacketGreenThumb(event.x, event.y, event.z, event.face));
+		}
+		if (event.action == Action.RIGHT_CLICK_AIR && event.entityLiving.isPotionActive(MorePotionsMod.projectile))
+		{
+			MorePotionsMod.netHandler.sendToServer(new PacketProjectile());
 		}
 	}
 }

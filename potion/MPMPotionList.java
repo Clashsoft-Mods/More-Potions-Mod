@@ -113,7 +113,7 @@ public class MPMPotionList implements IPotionList
 		
 		thorns = new PotionType(new PotionEffect(MorePotionsMod.thorns.id, 20 * 60, 0), 3, 20 * 120, null, new ItemStack(Blocks.cactus), PotionList.awkward);
 		greenThumb = new PotionType(new PotionEffect(MorePotionsMod.greenThumb.id, 20 * 60, 0), 2, 20 * 120, null, new ItemStack(Blocks.leaves), PotionList.awkward);
-		projectile = new PotionType(new PotionEffect(MorePotionsMod.projectile.id, 20 * 60, 0), 2, 20 * 120, null, new ItemStack(Items.arrow), PotionList.awkward);
+		projectile = new PotionType(new PotionEffect(MorePotionsMod.projectile.id, 20 * 60, 0), 3, 20 * 120, null, new ItemStack(Items.arrow), PotionList.awkward);
 	}
 	
 	@Override
