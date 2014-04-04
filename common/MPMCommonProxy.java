@@ -27,11 +27,11 @@ public class MPMCommonProxy implements IGuiHandler
 	{
 		if (ID == MorePotionsMod.mixerTileEntityID)
 		{
-			return new ContainerMixer(player.inventory, (TileEntityMixer) world.getTileEntity(x, y, z));
+			return new ContainerMixer(player, (TileEntityMixer) world.getTileEntity(x, y, z));
 		}
 		else if (ID == MorePotionsMod.unbrewingStandTileEntityID)
 		{
-			return new ContainerUnbrewingStand(player.inventory, (TileEntityUnbrewingStand) world.getTileEntity(x, y, z));
+			return new ContainerUnbrewingStand(player, (TileEntityUnbrewingStand) world.getTileEntity(x, y, z));
 		}
 		return null;
 	}

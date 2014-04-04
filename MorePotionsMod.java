@@ -40,7 +40,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
@@ -73,18 +72,18 @@ public class MorePotionsMod
 	
 	public static boolean				cauldronInfo				= false;
 	
-	public static Potion				effectRemove				= new CustomPotion("potion.effectRemove", false, 0xFFFFFF, false, customEffects, 1, 0);
-	public static Potion				waterWalking				= new CustomPotion("potion.waterWalking", false, 0x124EFE, false, customEffects, 2, 0);
-	public static Potion				coldness					= new CustomPotion("potion.coldness", false, 0x00DDFF, false, customEffects, 3, 0);
-	public static Potion				ironSkin					= new CustomPotion("potion.ironSkin", false, 0xD8D8D8, false, customEffects, 4, 0);
-	public static Potion				obsidianSkin				= new CustomPotion("potion.obsidianSkin", false, 0x101023, false, customEffects, 5, 0);
-	public static Potion				doubleLife					= new CustomPotion("potion.doubleLife", false, 0xFF2222, false, customEffects, 7, 0, 3);
-	public static Potion				explosiveness				= new CustomPotion("potion.explosiveness", true, 0xCC0000, false, customEffects, 1, 1);
-	public static Potion				random						= new CustomPotion("potion.random", false, 0x000000, randomMode == 0, customEffects, 2, 1, 7);
-	public static Potion				thorns						= new CustomPotion("potion.thorns", false, 0x810081, false, customEffects, 3, 1);
-	public static Potion				greenThumb					= new CustomPotion("potion.greenThumb", false, 0x008100, false, customEffects, 4, 1);
-	public static Potion				projectile					= new CustomPotion("potion.projectile", false, 0x101010, false, customEffects, 5, 1);
-	public static Potion				doubleJump					= new CustomPotion("potion.doubleJump", false, 0x157490, false, customEffects, 6, 1);
+	public static CustomPotion				effectRemove				= new CustomPotion("potion.effect_removing", 0xFFFFFF, false).setIcon(customEffects, 1, 0);
+	public static CustomPotion				waterWalking				= new CustomPotion("potion.water_walking", 0x124EFE, false).setIcon(customEffects, 2, 0);
+	public static CustomPotion				coldness					= new CustomPotion("potion.coldness", 0x00DDFF, false).setIcon(customEffects, 3, 0);
+	public static CustomPotion				ironSkin					= new CustomPotion("potion.iron_skin", 0xD8D8D8, false).setIcon(customEffects, 4, 0);
+	public static CustomPotion				obsidianSkin				= new CustomPotion("potion.obsidian_skin", 0x101023, false).setIcon(customEffects, 5, 0);
+	public static CustomPotion				doubleJump					= new CustomPotion("potion.double_jump", 0x157490, false).setIcon(customEffects, 6, 0);
+	public static CustomPotion				doubleLife					= new CustomPotion("potion.double_life", 0xFF2222, false).setIcon(customEffects, 7, 0);
+	public static CustomPotion				explosiveness				= new CustomPotion("potion.explosiveness", 0xCC0000, true).setIcon(customEffects, 1, 1);
+	public static CustomPotion				random						= new CustomPotion("potion.random", 0x000000, false).setIcon(customEffects, 2, 1);
+	public static CustomPotion				thorns						= new CustomPotion("potion.thorns", 0x810081, false).setIcon(customEffects, 3, 1);
+	public static CustomPotion				greenThumb					= new CustomPotion("potion.green_thumb", 0x008100, false).setIcon(customEffects, 4, 1);
+	public static CustomPotion				projectile					= new CustomPotion("potion.projectile", 0x101010, false).setIcon(customEffects, 5, 1);
 	
 	public static BlockMixer			mixer;
 	public static BlockCauldron2		cauldron2;
@@ -121,6 +120,7 @@ public class MorePotionsMod
 		
 		randomMode = CSConfig.getInt("potions", "RandomPotionMode", "Determines how the random potion works, if this is 0 the effect is instant and you get a random potion effect when you drink the potion, 1 will give you a new effect every 2 seconds.", 0);
 		cauldronInfo = CSConfig.getBool("cauldrons", "CauldronInfo", true);
+		random.setIsInstant(randomMode == 0);
 		
 		CSConfig.saveConfig();
 		

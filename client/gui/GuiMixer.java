@@ -6,7 +6,7 @@ import clashsoft.mods.morepotions.inventory.ContainerMixer;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
@@ -15,11 +15,11 @@ public class GuiMixer extends GuiContainer
 	private TileEntityMixer			mixer;
 	public static ResourceLocation	mixerTexture	= new ResourceLocation("morepotions", "textures/gui/mixer.png");
 	
-	public GuiMixer(InventoryPlayer inventory, TileEntityMixer mixer)
+	public GuiMixer(EntityPlayer player, TileEntityMixer mixer)
 	{
-		super(new ContainerMixer(inventory, mixer));
+		super(new ContainerMixer(player, mixer));
 		this.mixer = mixer;
-		mixer.player = inventory.player;
+		mixer.player = player;
 	}
 	
 	@Override
@@ -54,7 +54,7 @@ public class GuiMixer extends GuiContainer
 		
 		if (time > 0)
 		{
-			int progress = (int) (28.0F * (1.0F - (float) time / TileEntityMixer.maxMixTime));
+			int progress = (int) (28.0F * (1.0F - (float) time / TileEntityMixer.maxTime));
 			
 			if (progress > 0)
 			{

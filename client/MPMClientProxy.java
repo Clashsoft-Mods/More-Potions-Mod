@@ -32,11 +32,11 @@ public class MPMClientProxy extends MPMCommonProxy
 	{
 		if (ID == MorePotionsMod.mixerTileEntityID)
 		{
-			return new GuiMixer(player.inventory, (TileEntityMixer) world.getTileEntity(x, y, z));
+			return new GuiMixer(player, (TileEntityMixer) world.getTileEntity(x, y, z));
 		}
 		else if (ID == MorePotionsMod.unbrewingStandTileEntityID)
 		{
-			return new GuiUnbrewingStand(player.inventory, (TileEntityUnbrewingStand) world.getTileEntity(x, y, z));
+			return new GuiUnbrewingStand(player, (TileEntityUnbrewingStand) world.getTileEntity(x, y, z));
 		}
 		return null;
 	}

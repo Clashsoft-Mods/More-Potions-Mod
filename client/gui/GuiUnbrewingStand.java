@@ -6,7 +6,7 @@ import clashsoft.mods.morepotions.inventory.ContainerUnbrewingStand;
 import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
@@ -15,11 +15,11 @@ public class GuiUnbrewingStand extends GuiContainer
 	public TileEntityUnbrewingStand	unbrewingStand;
 	public static ResourceLocation	unbrewingTexture	= new ResourceLocation("morepotions", "textures/gui/unbrewing_stand.png");
 	
-	public GuiUnbrewingStand(InventoryPlayer inventory, TileEntityUnbrewingStand unbrewingStand)
+	public GuiUnbrewingStand(EntityPlayer player, TileEntityUnbrewingStand unbrewingStand)
 	{
-		super(new ContainerUnbrewingStand(inventory, unbrewingStand));
+		super(new ContainerUnbrewingStand(player, unbrewingStand));
 		this.unbrewingStand = unbrewingStand;
-		unbrewingStand.player = inventory.player;
+		this.unbrewingStand.player = player;
 	}
 	
 	@Override
@@ -47,37 +47,6 @@ public class GuiUnbrewingStand extends GuiContainer
 			if (scaledUnbrewTime > 0)
 			{
 				this.drawTexturedModalRect(centerX + 97, centerY + 16, 176, 0, 9, scaledUnbrewTime);
-			}
-			
-			int bubbleIndex = unbrewTime / 2 % 7;
-			
-			switch (bubbleIndex)
-			{
-				case 0:
-					scaledUnbrewTime = 29;
-					break;
-				case 1:
-					scaledUnbrewTime = 24;
-					break;
-				case 2:
-					scaledUnbrewTime = 20;
-					break;
-				case 3:
-					scaledUnbrewTime = 16;
-					break;
-				case 4:
-					scaledUnbrewTime = 11;
-					break;
-				case 5:
-					scaledUnbrewTime = 6;
-					break;
-				case 6:
-					scaledUnbrewTime = 0;
-			}
-			
-			if (scaledUnbrewTime > 0)
-			{
-				this.drawTexturedModalRect(centerX + 65, centerY + 14 + 29 - scaledUnbrewTime, 185, 29 - scaledUnbrewTime, 12, scaledUnbrewTime);
 			}
 		}
 	}
