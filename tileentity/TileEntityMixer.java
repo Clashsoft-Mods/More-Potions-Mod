@@ -11,19 +11,22 @@ import clashsoft.cslib.minecraft.tileentity.TileEntityInventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class TileEntityMixer extends TileEntityInventory implements IInventory
+public class TileEntityMixer extends TileEntityInventory implements ISidedInventory
 {
-	public int			time;
+	private static int[]	inputSlots	= { 0, 1, 2 };
+	private static int[]	outputSlots	= { 3 };
 	
-	public static int	maxTime	= 100;
-	private ItemStack	output;
+	public int				time;
 	
-	public EntityPlayer	player;
+	public static int		maxTime		= 100;
+	private ItemStack		output;
+	
+	public EntityPlayer		player;
 	
 	public TileEntityMixer()
 	{
@@ -180,5 +183,23 @@ public class TileEntityMixer extends TileEntityInventory implements IInventory
 	{
 		super.writeToNBT(nbt);
 		nbt.setShort("BrewTime", (short) this.time);
+	}
+	
+	@Override
+	public int[] getAccessibleSlotsFromSide(int side)
+	{
+		return side == 0 ? outputSlots : inputSlots;
+	}
+	
+	@Override
+	public boolean canInsertItem(int slot, ItemStack stack, int side)
+	{
+		return side != 0 && this.isItemValidForSlot(slot, stack);
+	}
+	
+	@Override
+	public boolean canExtractItem(int slot, ItemStack stack, int side)
+	{
+		return side == 0;
 	}
 }

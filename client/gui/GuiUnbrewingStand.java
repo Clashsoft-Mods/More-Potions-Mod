@@ -46,7 +46,7 @@ public class GuiUnbrewingStand extends GuiContainer
 			
 			if (scaledUnbrewTime > 0)
 			{
-				this.drawTexturedModalRect(centerX + 97, centerY + 16, 176, 0, 9, scaledUnbrewTime);
+				this.drawTexturedModalRect(centerX + 35, centerY + 7, 176, 0, 9, scaledUnbrewTime);
 			}
 		}
 	}

@@ -58,8 +58,8 @@ public class GuiMixer extends GuiContainer
 			
 			if (progress > 0)
 			{
-				this.drawTexturedModalRect(x + 97, y + 41, 176, 0, 9, progress);
-				this.drawTexturedModalRect(x + 68, y + 41, 176, 0, 9, progress);
+				this.drawTexturedModalRect(x + 96, y + 41, 176, 0, 9, progress);
+				this.drawTexturedModalRect(x + 67, y + 41, 176, 0, 9, progress);
 			}
 			
 			int bubbles = time / 2 % 7;
