@@ -159,7 +159,7 @@ public class TileEntityCauldron extends TileEntity
 	{
 		if (this.worldObj != null && !this.worldObj.isRemote)
 		{
-			MorePotionsMod.netHandler.syncCauldron(this);
+			MorePotionsMod.instance.netHandler.syncCauldron(this);
 		}
 	}
 	

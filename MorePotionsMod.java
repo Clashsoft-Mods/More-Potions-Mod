@@ -1,6 +1,8 @@
 package clashsoft.mods.morepotions;
 
 import clashsoft.brewingapi.BrewingAPI;
+import clashsoft.cslib.minecraft.CSLib;
+import clashsoft.cslib.minecraft.ClashsoftMod;
 import clashsoft.cslib.minecraft.block.CSBlocks;
 import clashsoft.cslib.minecraft.crafting.CSCrafting;
 import clashsoft.cslib.minecraft.item.CSItems;
@@ -45,12 +47,12 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 
 @Mod(modid = MorePotionsMod.MODID, name = MorePotionsMod.NAME, version = MorePotionsMod.VERSION, dependencies = MorePotionsMod.DEPENDENCIES)
-public class MorePotionsMod
+public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 {
 	public static final String			MODID						= "morepotions";
 	public static final String			NAME						= "More Potions Mod";
 	public static final String			ACRONYM						= "mpm";
-	public static final String			DEPENDENCIES				= "after:" + BrewingAPI.MODID;
+	public static final String			DEPENDENCIES				= CSLib.DEPENDENCY + ";required-after:" + BrewingAPI.MODID;
 	public static final String			VERSION						= CSUpdate.CURRENT_VERSION + "-1.0.0";
 	
 	@Instance(MODID)
@@ -58,8 +60,6 @@ public class MorePotionsMod
 	
 	@SidedProxy(clientSide = "clashsoft.mods.morepotions.client.MPMClientProxy", serverSide = "clashsoft.mods.morepotions.common.MPMCommonProxy")
 	public static MPMCommonProxy		proxy;
-	
-	public static MPMNetHandler		netHandler					= new MPMNetHandler();
 	
 	public static ResourceLocation		customEffects				= CSResourceHelper.getResource("morepotions:gui/potions.png");
 	
@@ -72,18 +72,18 @@ public class MorePotionsMod
 	
 	public static boolean				cauldronInfo				= false;
 	
-	public static CustomPotion				effectRemove				= new CustomPotion("potion.effect_removing", 0xFFFFFF, false).setIcon(customEffects, 1, 0);
-	public static CustomPotion				waterWalking				= new CustomPotion("potion.water_walking", 0x124EFE, false).setIcon(customEffects, 2, 0);
-	public static CustomPotion				coldness					= new CustomPotion("potion.coldness", 0x00DDFF, false).setIcon(customEffects, 3, 0);
-	public static CustomPotion				ironSkin					= new CustomPotion("potion.iron_skin", 0xD8D8D8, false).setIcon(customEffects, 4, 0);
-	public static CustomPotion				obsidianSkin				= new CustomPotion("potion.obsidian_skin", 0x101023, false).setIcon(customEffects, 5, 0);
-	public static CustomPotion				doubleJump					= new CustomPotion("potion.double_jump", 0x157490, false).setIcon(customEffects, 6, 0);
-	public static CustomPotion				doubleLife					= new CustomPotion("potion.double_life", 0xFF2222, false).setIcon(customEffects, 7, 0);
-	public static CustomPotion				explosiveness				= new CustomPotion("potion.explosiveness", 0xCC0000, true).setIcon(customEffects, 1, 1);
-	public static CustomPotion				random						= new CustomPotion("potion.random", 0x000000, false).setIcon(customEffects, 2, 1);
-	public static CustomPotion				thorns						= new CustomPotion("potion.thorns", 0x810081, false).setIcon(customEffects, 3, 1);
-	public static CustomPotion				greenThumb					= new CustomPotion("potion.green_thumb", 0x008100, false).setIcon(customEffects, 4, 1);
-	public static CustomPotion				projectile					= new CustomPotion("potion.projectile", 0x101010, false).setIcon(customEffects, 5, 1);
+	public static CustomPotion			effectRemove				= new CustomPotion("potion.effect_removing", 0xFFFFFF, false).setIcon(customEffects, 1, 0);
+	public static CustomPotion			waterWalking				= new CustomPotion("potion.water_walking", 0x124EFE, false).setIcon(customEffects, 2, 0);
+	public static CustomPotion			coldness					= new CustomPotion("potion.coldness", 0x00DDFF, false).setIcon(customEffects, 3, 0);
+	public static CustomPotion			ironSkin					= new CustomPotion("potion.iron_skin", 0xD8D8D8, false).setIcon(customEffects, 4, 0);
+	public static CustomPotion			obsidianSkin				= new CustomPotion("potion.obsidian_skin", 0x101023, false).setIcon(customEffects, 5, 0);
+	public static CustomPotion			doubleJump					= new CustomPotion("potion.double_jump", 0x157490, false).setIcon(customEffects, 6, 0);
+	public static CustomPotion			doubleLife					= new CustomPotion("potion.double_life", 0xFF2222, false).setIcon(customEffects, 7, 0);
+	public static CustomPotion			explosiveness				= new CustomPotion("potion.explosiveness", 0xCC0000, true).setIcon(customEffects, 1, 1);
+	public static CustomPotion			random						= new CustomPotion("potion.random", 0x000000, false).setIcon(customEffects, 2, 1);
+	public static CustomPotion			thorns						= new CustomPotion("potion.thorns", 0x810081, false).setIcon(customEffects, 3, 1);
+	public static CustomPotion			greenThumb					= new CustomPotion("potion.green_thumb", 0x008100, false).setIcon(customEffects, 4, 1);
+	public static CustomPotion			projectile					= new CustomPotion("potion.projectile", 0x101010, false).setIcon(customEffects, 5, 1);
 	
 	public static BlockMixer			mixer;
 	public static BlockCauldron2		cauldron2;
@@ -113,16 +113,27 @@ public class MorePotionsMod
 	public static ItemStack				dustNetherstar;
 	public static ItemStack				dustNetherbrick;
 	
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event)
+	public MorePotionsMod()
 	{
-		CSConfig.loadConfig(event.getSuggestedConfigurationFile());
-		
+		super(MODID, NAME, ACRONYM, VERSION);
+		this.hasConfig = true;
+		this.netHandlerClass = MPMNetHandler.class;
+		this.url = "https://github.com/Clashsoft/More-Potions-Mod/wiki";
+	}
+	
+	@Override
+	public void readConfig()
+	{
 		randomMode = CSConfig.getInt("potions", "RandomPotionMode", "Determines how the random potion works, if this is 0 the effect is instant and you get a random potion effect when you drink the potion, 1 will give you a new effect every 2 seconds.", 0);
 		cauldronInfo = CSConfig.getBool("cauldrons", "CauldronInfo", true);
 		random.setIsInstant(randomMode == 0);
-		
-		CSConfig.saveConfig();
+	}
+	
+	@Override
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent event)
+	{
+		super.preInit(event);
 		
 		cauldron2 = (BlockCauldron2) new BlockCauldron2().setBlockName("cauldron").setBlockTextureName("cauldron");
 		mixer = (BlockMixer) new BlockMixer().setBlockName("mixer");
@@ -165,10 +176,12 @@ public class MorePotionsMod
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 	}
 	
+	@Override
 	@EventHandler
-	public void load(FMLInitializationEvent event)
+	public void init(FMLInitializationEvent event)
 	{
-		netHandler.init();
+		super.init(event);
+		
 		MinecraftForge.EVENT_BUS.register(new MPMEventHandler());
 		proxy.registerRenderInformation();
 		proxy.registerRenderers();
@@ -183,12 +196,11 @@ public class MorePotionsMod
 		this.addRecipes();
 	}
 	
+	@Override
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		CSUpdate.updateCheckCS(NAME, ACRONYM, VERSION);
-		
-		netHandler.postInit();
+		super.postInit(event);
 	}
 	
 	private void addRecipes()

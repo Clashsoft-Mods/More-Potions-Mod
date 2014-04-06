@@ -5,6 +5,7 @@ import clashsoft.cslib.minecraft.network.CSPacket;
 import clashsoft.mods.morepotions.MorePotionsMod;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.network.PacketBuffer;
 
@@ -51,7 +52,7 @@ public class PacketGreenThumb extends CSPacket
 	}
 	
 	@Override
-	public void handleServer(EntityPlayer player)
+	public void handleServer(EntityPlayerMP player)
 	{
 		if (player.getCurrentEquippedItem() == null)
 		{

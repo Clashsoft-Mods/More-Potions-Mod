@@ -4,6 +4,7 @@ import clashsoft.cslib.minecraft.network.CSPacket;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
@@ -64,7 +65,7 @@ public class PacketCauldronData extends CSPacket
 	}
 	
 	@Override
-	public void handleServer(EntityPlayer player)
+	public void handleServer(EntityPlayerMP player)
 	{
 	}
 }

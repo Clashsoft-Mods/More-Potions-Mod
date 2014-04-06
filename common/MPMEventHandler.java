@@ -68,11 +68,11 @@ public class MPMEventHandler
 	{
 		if (event.action == Action.RIGHT_CLICK_BLOCK && event.entityLiving.isPotionActive(MorePotionsMod.greenThumb))
 		{
-			MorePotionsMod.netHandler.sendToServer(new PacketGreenThumb(event.x, event.y, event.z, event.face));
+			MorePotionsMod.instance.netHandler.sendToServer(new PacketGreenThumb(event.x, event.y, event.z, event.face));
 		}
 		if (event.action == Action.RIGHT_CLICK_AIR && event.entityLiving.isPotionActive(MorePotionsMod.projectile))
 		{
-			MorePotionsMod.netHandler.sendToServer(new PacketProjectile());
+			MorePotionsMod.instance.netHandler.sendToServer(new PacketProjectile());
 		}
 	}
 }
