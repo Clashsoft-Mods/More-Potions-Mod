@@ -55,12 +55,12 @@ public class PacketCauldronData extends CSPacket
 	@Override
 	public void handleClient(EntityPlayer player)
 	{
-		TileEntity te = this.world.getTileEntity(x, y, z);
+		TileEntity te = this.world.getTileEntity(this.x, this.y, this.z);
 		if (te instanceof TileEntityCauldron)
 		{
 			TileEntityCauldron cauldron = (TileEntityCauldron) te;
-			cauldron.color = color;
-			cauldron.output = output;
+			cauldron.color = this.color;
+			cauldron.output = this.output;
 		}
 	}
 	

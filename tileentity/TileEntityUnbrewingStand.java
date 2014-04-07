@@ -157,7 +157,6 @@ public class TileEntityUnbrewingStand extends TileEntityInventory implements ISi
 		nbt.setShort("UnbrewTime", (short) this.unbrewTime);
 	}
 	
-	
 	public void setBrewTime(int brewTime)
 	{
 		this.unbrewTime = brewTime;

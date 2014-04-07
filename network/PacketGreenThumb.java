@@ -11,10 +11,10 @@ import net.minecraft.network.PacketBuffer;
 
 public class PacketGreenThumb extends CSPacket
 {
-	public int x;
-	public int y;
-	public int z;
-	public int face;
+	public int	x;
+	public int	y;
+	public int	z;
+	public int	face;
 	
 	public PacketGreenThumb()
 	{
@@ -27,7 +27,7 @@ public class PacketGreenThumb extends CSPacket
 		this.z = z;
 		this.face = face;
 	}
-
+	
 	@Override
 	public void write(PacketBuffer buf)
 	{

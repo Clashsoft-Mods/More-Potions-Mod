@@ -13,7 +13,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.World;
 
 public class PacketProjectile extends CSPacket
-{	
+{
 	@Override
 	public void write(PacketBuffer buf)
 	{

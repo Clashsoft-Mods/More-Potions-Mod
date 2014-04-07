@@ -23,7 +23,7 @@ public class TileEntityCauldron extends TileEntity
 {
 	public static final String	CHANNEL	= "MPMCauldron";
 	
-	public List<IPotionType>		potionTypes;
+	public List<IPotionType>	potionTypes;
 	
 	public ItemStack			output;
 	public int					color;
@@ -99,7 +99,8 @@ public class TileEntityCauldron extends TileEntity
 				out = new ChatComponentTranslation("cauldron.effects.add.base", base.getName());
 			}
 		}
-		else // Normal ingredients
+		else
+		// Normal ingredients
 		{
 			IPotionType potionType = PotionType.getFromIngredient(ingredient);
 			if (this.potionTypes.size() > 0 && potionType != null)
