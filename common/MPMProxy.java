@@ -1,27 +1,17 @@
 package clashsoft.mods.morepotions.common;
 
+import clashsoft.cslib.minecraft.common.BaseProxy;
 import clashsoft.mods.morepotions.MorePotionsMod;
 import clashsoft.mods.morepotions.inventory.ContainerMixer;
 import clashsoft.mods.morepotions.inventory.ContainerUnbrewingStand;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
 import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
-import cpw.mods.fml.common.network.IGuiHandler;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-public class MPMCommonProxy implements IGuiHandler
+public class MPMProxy extends BaseProxy
 {
-	public void registerRenderInformation()
-	{
-	}
-	
-	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
-	{
-		return null;
-	}
-	
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
@@ -39,9 +29,5 @@ public class MPMCommonProxy implements IGuiHandler
 	public World getClientWorld()
 	{
 		return null;
-	}
-	
-	public void registerRenderers()
-	{
 	}
 }

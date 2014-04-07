@@ -4,28 +4,23 @@ import clashsoft.mods.morepotions.MorePotionsMod;
 import clashsoft.mods.morepotions.client.gui.GuiMixer;
 import clashsoft.mods.morepotions.client.gui.GuiUnbrewingStand;
 import clashsoft.mods.morepotions.client.renderer.tileentity.CauldronRenderer;
-import clashsoft.mods.morepotions.common.MPMCommonProxy;
+import clashsoft.mods.morepotions.common.MPMProxy;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
 import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-public class MPMClientProxy extends MPMCommonProxy
+public class MPMClientProxy extends MPMProxy
 {
 	public static int	mixerRenderType;
 	public static int	cauldronRenderType;
 	public static int	splashpotioncolor;
-	
-	@Override
-	public void registerRenderers()
-	{
-		setCustomRenderers();
-	}
 	
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
@@ -41,7 +36,8 @@ public class MPMClientProxy extends MPMCommonProxy
 		return null;
 	}
 	
-	public static void setCustomRenderers()
+	@Override
+	public void init(FMLInitializationEvent event)
 	{
 		mixerRenderType = RenderingRegistry.getNextAvailableRenderId();
 		cauldronRenderType = 24;

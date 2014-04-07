@@ -16,7 +16,7 @@ import clashsoft.cslib.util.CSString;
 import clashsoft.mods.morepotions.block.BlockCauldron2;
 import clashsoft.mods.morepotions.block.BlockMixer;
 import clashsoft.mods.morepotions.block.BlockUnbrewingStand;
-import clashsoft.mods.morepotions.common.MPMCommonProxy;
+import clashsoft.mods.morepotions.common.MPMProxy;
 import clashsoft.mods.morepotions.common.MPMEventHandler;
 import clashsoft.mods.morepotions.item.ItemMortar;
 import clashsoft.mods.morepotions.network.MPMNetHandler;
@@ -33,7 +33,6 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -43,7 +42,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 
 @Mod(modid = MorePotionsMod.MODID, name = MorePotionsMod.NAME, version = MorePotionsMod.VERSION, dependencies = MorePotionsMod.DEPENDENCIES)
@@ -58,8 +56,8 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 	@Instance(MODID)
 	public static MorePotionsMod		instance;
 	
-	@SidedProxy(clientSide = "clashsoft.mods.morepotions.client.MPMClientProxy", serverSide = "clashsoft.mods.morepotions.common.MPMCommonProxy")
-	public static MPMCommonProxy		proxy;
+	@SidedProxy(clientSide = "clashsoft.mods.morepotions.client.MPMClientProxy", serverSide = "clashsoft.mods.morepotions.common.MPMProxy")
+	public static MPMProxy				proxy;
 	
 	public static ResourceLocation		customEffects				= CSResourceHelper.getResource("morepotions:gui/potions.png");
 	
@@ -115,9 +113,10 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 	
 	public MorePotionsMod()
 	{
-		super(MODID, NAME, ACRONYM, VERSION);
+		super(proxy, MODID, NAME, ACRONYM, VERSION);
 		this.hasConfig = true;
 		this.netHandlerClass = MPMNetHandler.class;
+		this.eventHandler = new MPMEventHandler();
 		this.url = "https://github.com/Clashsoft/More-Potions-Mod/wiki";
 	}
 	
@@ -172,8 +171,6 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 		CSItems.addItem(dust, "dust");
 		
 		BrewingAPI.setPotionList(MPMPotionList.instance);
-		
-		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 	}
 	
 	@Override
@@ -181,10 +178,6 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 	public void init(FMLInitializationEvent event)
 	{
 		super.init(event);
-		
-		MinecraftForge.EVENT_BUS.register(new MPMEventHandler());
-		proxy.registerRenderInformation();
-		proxy.registerRenderers();
 		
 		BrewingAPI.registerEffectHandler(new MPMEffectHandler());
 		BrewingAPI.registerIngredientHandler(new MPMIngredientHandler());
