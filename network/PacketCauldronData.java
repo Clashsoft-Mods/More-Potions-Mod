@@ -5,7 +5,6 @@ import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -18,16 +17,14 @@ public class PacketCauldronData extends CSPacket
 	public int			z;
 	
 	public int			color;
-	public ItemStack	output;
 	
-	public PacketCauldronData(World world, int x, int y, int z, int color, ItemStack output)
+	public PacketCauldronData(World world, int x, int y, int z, int color)
 	{
 		this.world = world;
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.color = color;
-		this.output = output;
 	}
 	
 	@Override
@@ -38,7 +35,6 @@ public class PacketCauldronData extends CSPacket
 		buf.writeInt(this.y);
 		buf.writeInt(this.z);
 		buf.writeInt(this.color);
-		this.writeItemStack(buf, this.output);
 	}
 	
 	@Override
@@ -49,7 +45,6 @@ public class PacketCauldronData extends CSPacket
 		this.y = buf.readInt();
 		this.z = buf.readInt();
 		this.color = buf.readInt();
-		this.output = this.readItemStack(buf);
 	}
 	
 	@Override
@@ -60,7 +55,6 @@ public class PacketCauldronData extends CSPacket
 		{
 			TileEntityCauldron cauldron = (TileEntityCauldron) te;
 			cauldron.color = this.color;
-			cauldron.output = this.output;
 		}
 	}
 	

@@ -64,5 +64,4 @@ public class PacketGreenThumb extends CSPacket
 			}
 		}
 	}
-	
 }
