@@ -148,22 +148,24 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 							--i1;
 							
 							world.setBlockMetadataWithNotify(x, y, z, i1, 3);
-							flag = true;
 						}
 						
 						if (i1 == 0)
+						{
 							cauldron.potionTypes.clear();
+							cauldron.updateOutput();
+						}
 					}
-					else if (i1 > 0 && stack.getItem() instanceof ItemArmor && ((ItemArmor) stack.getItem()).getArmorMaterial() == ArmorMaterial.CLOTH)
+					else if (i1 > 0)
 					{
-						ItemArmor itemarmor = (ItemArmor) stack.getItem();
-						itemarmor.removeColor(stack);
-						world.setBlockMetadataWithNotify(x, y, z, i1 - 1, 3);
-						flag = true;
-					}
-					else
-					{
-						if (cauldron.isItemValid(stack) && i1 > 0)
+						if (stack.getItem() instanceof ItemArmor && ((ItemArmor) stack.getItem()).getArmorMaterial() == ArmorMaterial.CLOTH)
+						{
+							ItemArmor itemarmor = (ItemArmor) stack.getItem();
+							itemarmor.removeColor(stack);
+							world.setBlockMetadataWithNotify(x, y, z, i1 - 1, 3);
+							flag = true;
+						}
+						else if (cauldron.isItemValid(stack))
 						{
 							message = cauldron.addIngredient(stack);
 							flag = true;
@@ -181,7 +183,6 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 					}
 				}
 				
-				cauldron.sync();
 				return flag;
 			}
 			return false;

@@ -149,7 +149,7 @@ public class TileEntityCauldron extends TileEntity
 		return this.potionTypes.size() <= 0;
 	}
 	
-	protected void updateOutput()
+	public void updateOutput()
 	{
 		this.output = this.brew(false);
 		this.color = this.output.getItem().getColorFromItemStack(this.output, 0);
@@ -197,10 +197,10 @@ public class TileEntityCauldron extends TileEntity
 	{
 		super.readFromNBT(nbt);
 		
-		if (nbt.hasKey("PotionType"))
+		if (nbt.hasKey("PotionTypes"))
 		{
 			List result = new ArrayList();
-			NBTTagList tagList = nbt.getTagList("PotionType", Constants.NBT.TAG_COMPOUND);
+			NBTTagList tagList = nbt.getTagList("PotionTypes", Constants.NBT.TAG_COMPOUND);
 			
 			for (int i = 0; i < tagList.tagCount(); ++i)
 			{
@@ -219,17 +219,13 @@ public class TileEntityCauldron extends TileEntity
 	{
 		super.writeToNBT(nbt);
 		
-		if (!nbt.hasKey("PotionType"))
-		{
-			nbt.setTag("PotionType", new NBTTagList());
-		}
-		
-		NBTTagList tagList = (NBTTagList) nbt.getTag("PotionType");
+		NBTTagList tagList = new NBTTagList();
 		for (IPotionType potionType : this.potionTypes)
 		{
 			NBTTagCompound brewingCompound = new NBTTagCompound();
 			potionType.writeToNBT(brewingCompound);
 			tagList.appendTag(brewingCompound);
 		}
+		nbt.setTag("PotionTypes", tagList);
 	}
 }
