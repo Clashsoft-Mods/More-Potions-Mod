@@ -11,13 +11,12 @@ import clashsoft.cslib.minecraft.item.CustomItem;
 import clashsoft.cslib.minecraft.potion.CustomPotion;
 import clashsoft.cslib.minecraft.update.CSUpdate;
 import clashsoft.cslib.minecraft.util.CSConfig;
-import clashsoft.cslib.minecraft.util.CSResourceHelper;
 import clashsoft.cslib.util.CSString;
 import clashsoft.mods.morepotions.block.BlockCauldron2;
 import clashsoft.mods.morepotions.block.BlockMixer;
 import clashsoft.mods.morepotions.block.BlockUnbrewingStand;
-import clashsoft.mods.morepotions.common.MPMProxy;
 import clashsoft.mods.morepotions.common.MPMEventHandler;
+import clashsoft.mods.morepotions.common.MPMProxy;
 import clashsoft.mods.morepotions.item.ItemMortar;
 import clashsoft.mods.morepotions.network.MPMNetHandler;
 import clashsoft.mods.morepotions.potion.MPMEffectHandler;
@@ -60,7 +59,7 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 	@SidedProxy(clientSide = "clashsoft.mods.morepotions.client.MPMClientProxy", serverSide = "clashsoft.mods.morepotions.common.MPMProxy")
 	public static MPMProxy				proxy;
 	
-	public static ResourceLocation		customEffects				= CSResourceHelper.getResource("morepotions:gui/potions.png");
+	public static ResourceLocation		customEffects				= new ResourceLocation("morepotions", "textures/gui/potions.png");
 	
 	// Configurables
 	public static int					randomMode					= 0;
