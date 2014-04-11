@@ -40,6 +40,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemReed;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
@@ -87,6 +88,7 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 	public static BlockCauldron2		cauldron2;
 	public static BlockUnbrewingStand	unbrewingStand;
 	
+	public static ItemReed				cauldronItem2;
 	public static Item					dust;
 	public static Item					mortar;
 	
@@ -138,35 +140,17 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 		mixer = (BlockMixer) new BlockMixer().setBlockName("mixer");
 		unbrewingStand = (BlockUnbrewingStand) new BlockUnbrewingStand().setBlockName("unbrewing_stand");
 		
+		cauldronItem2 = (ItemReed) new ItemReed(cauldron2).setUnlocalizedName("cauldron").setTextureName("cauldron").setCreativeTab(CreativeTabs.tabBrewing);
 		mortar = new ItemMortar().setUnlocalizedName("mortar").setTextureName("morepotions:mortar");
 		
-		String[] dusts = new String[] {
-				"coal",
-				"iron",
-				"gold",
-				"diamond",
-				"emerald",
-				"obsidian",
-				"quartz",
-				"wither",
-				"ender_pearl",
-				"clay",
-				"brick",
-				"flint",
-				"glass",
-				"charcoal",
-				"oak_wood",
-				"birch_wood",
-				"spruce_wood",
-				"jungle_wood",
-				"nether_star",
-				"nether_brick" };
+		String[] dusts = new String[] { "coal", "iron", "gold", "diamond", "emerald", "obsidian", "quartz", "wither", "ender_pearl", "clay", "brick", "flint", "glass", "charcoal", "oak_wood", "birch_wood", "spruce_wood", "jungle_wood", "nether_star", "nether_brick" };
 		dust = new CustomItem(dusts, CSString.concatAll(dusts, "morepotions:", "_dust"), new CreativeTabs[] { CreativeTabs.tabMaterials });
 		
 		CSBlocks.replaceBlock(Blocks.cauldron, cauldron2);
 		CSBlocks.addBlock(mixer, ItemBlock.class, "mixer");
 		CSBlocks.addBlock(unbrewingStand, ItemBlock.class, "unbrewing_stand");
 		
+		CSItems.replaceItem(Items.cauldron, cauldronItem2);
 		CSItems.addItem(mortar, "mortar");
 		CSItems.addItem(dust, "dust");
 		
@@ -198,33 +182,9 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 	
 	private void addRecipes()
 	{
-		CSCrafting.addRecipe(new ItemStack(mortar), new Object[] {
-				"SfS",
-				" S ",
-				'S',
-				Blocks.stone,
-				'f',
-				Items.flint });
-		CSCrafting.addRecipe(new ItemStack(mixer), new Object[] {
-				"gSg",
-				"g g",
-				"SiS",
-				'g',
-				Blocks.glass_pane,
-				'S',
-				Blocks.stone,
-				'i',
-				Items.iron_ingot });
-		CSCrafting.addRecipe(new ItemStack(unbrewingStand), new Object[] {
-				"bib",
-				"bpb",
-				"bbb",
-				'b',
-				Items.brick,
-				'i',
-				Items.iron_ingot,
-				'p',
-				Items.glass_bottle });
+		CSCrafting.addRecipe(new ItemStack(mortar), new Object[] { "SfS", " S ", 'S', Blocks.stone, 'f', Items.flint });
+		CSCrafting.addRecipe(new ItemStack(mixer), new Object[] { "gSg", "g g", "SiS", 'g', Blocks.glass_pane, 'S', Blocks.stone, 'i', Items.iron_ingot });
+		CSCrafting.addRecipe(new ItemStack(unbrewingStand), new Object[] { "bib", "bpb", "bbb", 'b', Items.brick, 'i', Items.iron_ingot, 'p', Items.glass_bottle });
 		
 		ItemStack mortarStack = new ItemStack(mortar, 1, OreDictionary.WILDCARD_VALUE);
 		
