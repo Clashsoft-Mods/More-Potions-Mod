@@ -22,9 +22,9 @@ public class CauldronRenderer extends TileEntitySpecialRenderer
 	
 	public void renderBlockCauldron(RenderBlocks renderer, TileEntityCauldron tileentity, BlockCauldron2 cauldron, int x, int y, int z)
 	{
-		Tessellator tess = Tessellator.instance;
+		Tessellator tessellator = Tessellator.instance;
 		
-		int i1 = tileentity.blockMetadata;
+		int i1 = tileentity.getWorldObj().getBlockMetadata(x, y, z);
 		
 		if (i1 > 0)
 		{
@@ -36,28 +36,24 @@ public class CauldronRenderer extends TileEntitySpecialRenderer
 			int color = tileentity.getColor();
 			if (color != -1)
 			{
-				float r = (color >> 16 & 255) / 255.0F;
-				float g = (color >> 8 & 255) / 255.0F;
-				float b = (color & 255) / 255.0F;
-				
 				IIcon icon2;
 				
-				if (color == 0x0C0CFF)
+				if (color == 0x0C0CFF || color == 0)
 				{
 					icon2 = Blocks.water.getIcon(0, 0);
-					r = g = b = 1F;
 				}
 				else
 				{
 					icon2 = BlockCauldron2.getLiquidIcon();
+					tessellator.setColorOpaque_I(color);
 				}
 				
-				double yPos = (6D + (i1 * 3.0D)) / 16.0D;
+				float yPos = (6F + (i1 * 3)) / 16.0F;
 				
-				tess.setTranslation(-x, -y, -z);
-				renderer.setRenderBounds(0.125, yPos, 0.125, 0.875, yPos + 0.001D, 0.875);
+				tessellator.setTranslation(-x, -y, -z);
+				renderer.setRenderBounds(0.125D, yPos, 0.125D, 0.875D, yPos + 0.0001D, 0.875D);
 				renderer.setOverrideBlockTexture(icon2);
-				renderer.renderStandardBlockWithColorMultiplier(Blocks.grass, x, y, z, r, g, b);
+				renderer.renderFaceYPos(cauldron, x, y, z, icon2);
 			}
 		}
 	}

@@ -3,6 +3,7 @@ package clashsoft.mods.morepotions.client;
 import clashsoft.mods.morepotions.MorePotionsMod;
 import clashsoft.mods.morepotions.client.gui.GuiMixer;
 import clashsoft.mods.morepotions.client.gui.GuiUnbrewingStand;
+import clashsoft.mods.morepotions.client.renderer.block.RenderBlockCauldron;
 import clashsoft.mods.morepotions.client.renderer.tileentity.CauldronRenderer;
 import clashsoft.mods.morepotions.common.MPMProxy;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
@@ -40,8 +41,9 @@ public class MPMClientProxy extends MPMProxy
 	public void init(FMLInitializationEvent event)
 	{
 		mixerRenderType = RenderingRegistry.getNextAvailableRenderId();
-		cauldronRenderType = 24;
+		cauldronRenderType = RenderingRegistry.getNextAvailableRenderId();
 		
+		RenderingRegistry.registerBlockHandler(cauldronRenderType, new RenderBlockCauldron());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCauldron.class, new CauldronRenderer());
 	}
 	

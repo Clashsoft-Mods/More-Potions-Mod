@@ -3,6 +3,7 @@ package clashsoft.mods.morepotions.network;
 import clashsoft.cslib.minecraft.network.CSPacket;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
@@ -17,6 +18,10 @@ public class PacketCauldronData extends CSPacket
 	public int			z;
 	
 	public int			color;
+	
+	public PacketCauldronData()
+	{
+	}
 	
 	public PacketCauldronData(World world, int x, int y, int z, int color)
 	{
@@ -50,9 +55,10 @@ public class PacketCauldronData extends CSPacket
 	@Override
 	public void handleClient(EntityPlayer player)
 	{
-		TileEntity te = this.world.getTileEntity(this.x, this.y, this.z);
+		TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z);
 		if (te instanceof TileEntityCauldron)
 		{
+			System.out.println("Settings cauldron color of " + te.toString() + " to " +  Integer.toHexString(color));
 			TileEntityCauldron cauldron = (TileEntityCauldron) te;
 			cauldron.color = this.color;
 		}
