@@ -44,7 +44,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		super.registerBlockIcons(iconRegister);
-		this.liquid = iconRegister.registerIcon("cauldron_liquid");
+		this.liquid = iconRegister.registerIcon("morepotions:cauldron_liquid");
 	}
 	
 	public static IIcon getLiquidIcon()
