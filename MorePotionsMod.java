@@ -47,70 +47,69 @@ import net.minecraftforge.oredict.OreDictionary;
 @Mod(modid = MorePotionsMod.MODID, name = MorePotionsMod.NAME, version = MorePotionsMod.VERSION, dependencies = MorePotionsMod.DEPENDENCIES)
 public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 {
-	public static final String			MODID						= "morepotions";
-	public static final String			NAME						= "More Potions Mod";
-	public static final String			ACRONYM						= "mpm";
-	public static final String			DEPENDENCIES				= CSLib.DEPENDENCY + ";required-after:" + BrewingAPI.MODID;
-	public static final String			VERSION						= CSUpdate.CURRENT_VERSION + "-1.0.0";
+	public static final String				MODID						= "morepotions";
+	public static final String				NAME						= "More Potions Mod";
+	public static final String				ACRONYM						= "mpm";
+	public static final String				DEPENDENCIES				= CSLib.DEPENDENCY + ";required-after:" + BrewingAPI.MODID;
+	public static final String				VERSION						= CSUpdate.CURRENT_VERSION + "-1.0.0-pre";
 	
 	@Instance(MODID)
-	public static MorePotionsMod		instance;
+	public static MorePotionsMod			instance;
 	
 	@SidedProxy(clientSide = "clashsoft.mods.morepotions.client.MPMClientProxy", serverSide = "clashsoft.mods.morepotions.common.MPMProxy")
-	public static MPMProxy				proxy;
+	public static MPMProxy					proxy;
 	
-	public static ResourceLocation		customEffects				= new ResourceLocation("morepotions", "textures/gui/potions.png");
+	public static final ResourceLocation	customEffects				= new ResourceLocation("morepotions", "textures/gui/potions.png");
 	
-	// Configurables
-	public static int					randomMode					= 0;
+	public static int						randomMode					= 0;
 	
-	public static int					mixerTileEntityID			= 12;
-	public static int					cauldronTileEntityID		= 13;
-	public static int					unbrewingStandTileEntityID	= 14;
+	public static int						mixerTileEntityID			= 12;
+	public static int						cauldronTileEntityID		= 13;
+	public static int						unbrewingStandTileEntityID	= 14;
 	
-	public static boolean				cauldronInfo				= false;
+	public static boolean					cauldronInfo				= false;
 	
-	public static CustomPotion			effectRemove				= new CustomPotion("potion.effect_removing", 0xFFFFFF, false).setIcon(customEffects, 1, 0);
-	public static CustomPotion			waterWalking				= new CustomPotion("potion.water_walking", 0x124EFE, false).setIcon(customEffects, 2, 0);
-	public static CustomPotion			coldness					= new CustomPotion("potion.coldness", 0x00DDFF, false).setIcon(customEffects, 3, 0);
-	public static CustomPotion			ironSkin					= new CustomPotion("potion.iron_skin", 0xD8D8D8, false).setIcon(customEffects, 4, 0);
-	public static CustomPotion			obsidianSkin				= new CustomPotion("potion.obsidian_skin", 0x101023, false).setIcon(customEffects, 5, 0);
-	public static CustomPotion			doubleJump					= new CustomPotion("potion.double_jump", 0x157490, false).setIcon(customEffects, 6, 0);
-	public static CustomPotion			doubleLife					= new CustomPotion("potion.double_life", 0xFF2222, false).setIcon(customEffects, 7, 0);
-	public static CustomPotion			explosiveness				= new CustomPotion("potion.explosiveness", 0xCC0000, true).setIcon(customEffects, 1, 1);
-	public static CustomPotion			random						= new CustomPotion("potion.random", 0x000000, false).setIcon(customEffects, 2, 1);
-	public static CustomPotion			thorns						= new CustomPotion("potion.thorns", 0x810081, false).setIcon(customEffects, 3, 1);
-	public static CustomPotion			greenThumb					= new CustomPotion("potion.green_thumb", 0x008100, false).setIcon(customEffects, 4, 1);
-	public static CustomPotion			projectile					= new CustomPotion("potion.projectile", 0x101010, false).setIcon(customEffects, 5, 1);
+	public static CustomPotion				effectRemove				= new CustomPotion("potion.effect_removing", 0xFFFFFF, false).setIcon(customEffects, 1, 0);
+	public static CustomPotion				waterWalking				= new CustomPotion("potion.water_walking", 0x124EFE, false).setIcon(customEffects, 2, 0);
+	public static CustomPotion				coldness					= new CustomPotion("potion.coldness", 0x00DDFF, false).setIcon(customEffects, 3, 0);
+	public static CustomPotion				ironSkin					= new CustomPotion("potion.iron_skin", 0xD8D8D8, false).setIcon(customEffects, 4, 0);
+	public static CustomPotion				obsidianSkin				= new CustomPotion("potion.obsidian_skin", 0x101023, false).setIcon(customEffects, 5, 0);
+	public static CustomPotion				doubleJump					= new CustomPotion("potion.double_jump", 0x157490, false).setIcon(customEffects, 6, 0);
+	public static CustomPotion				doubleLife					= new CustomPotion("potion.double_life", 0xFF2222, false).setIcon(customEffects, 7, 0);
+	public static CustomPotion				explosiveness				= new CustomPotion("potion.explosiveness", 0xCC0000, true).setIcon(customEffects, 1, 1);
+	public static CustomPotion				random						= new CustomPotion("potion.random", 0x000000, false).setIcon(customEffects, 2, 1);
+	public static CustomPotion				thorns						= new CustomPotion("potion.thorns", 0x810081, false).setIcon(customEffects, 3, 1);
+	public static CustomPotion				greenThumb					= new CustomPotion("potion.green_thumb", 0x008100, false).setIcon(customEffects, 4, 1);
+	public static CustomPotion				projectile					= new CustomPotion("potion.projectile", 0x101010, false).setIcon(customEffects, 5, 1);
 	
-	public static BlockMixer			mixer;
-	public static BlockCauldron2		cauldron2;
-	public static BlockUnbrewingStand	unbrewingStand;
+	public static BlockMixer				mixer;
+	public static BlockCauldron2			cauldron2;
+	public static BlockUnbrewingStand		unbrewingStand;
 	
-	public static ItemReed				cauldronItem2;
-	public static Item					dust;
-	public static Item					mortar;
+	public static ItemReed					cauldronItem2;
+	public static Item						dust;
+	public static Item						mortar;
 	
-	public static ItemStack				dustCoal;
-	public static ItemStack				dustIron;
-	public static ItemStack				dustGold;
-	public static ItemStack				dustObsidian;
-	public static ItemStack				dustDiamond;
-	public static ItemStack				dustEmerald;
-	public static ItemStack				dustQuartz;
-	public static ItemStack				dustWither;
-	public static ItemStack				dustEnderpearl;
-	public static ItemStack				dustClay;
-	public static ItemStack				dustBrick;
-	public static ItemStack				dustFlint;
-	public static ItemStack				dustGlass;
-	public static ItemStack				dustCharcoal;
-	public static ItemStack				dustWoodOak;
-	public static ItemStack				dustWoodBirch;
-	public static ItemStack				dustWoodSpruce;
-	public static ItemStack				dustWoodJungle;
-	public static ItemStack				dustNetherstar;
-	public static ItemStack				dustNetherbrick;
+	public static ItemStack					dustCoal;
+	public static ItemStack					dustIron;
+	public static ItemStack					dustGold;
+	public static ItemStack					dustObsidian;
+	public static ItemStack					dustDiamond;
+	public static ItemStack					dustEmerald;
+	public static ItemStack					dustQuartz;
+	public static ItemStack					dustWither;
+	public static ItemStack					dustEnderpearl;
+	public static ItemStack					dustClay;
+	public static ItemStack					dustBrick;
+	public static ItemStack					dustFlint;
+	public static ItemStack					dustGlass;
+	public static ItemStack					dustCharcoal;
+	public static ItemStack					dustWoodOak;
+	public static ItemStack					dustWoodBirch;
+	public static ItemStack					dustWoodSpruce;
+	public static ItemStack					dustWoodJungle;
+	public static ItemStack					dustNetherstar;
+	public static ItemStack					dustNetherbrick;
 	
 	public MorePotionsMod()
 	{
