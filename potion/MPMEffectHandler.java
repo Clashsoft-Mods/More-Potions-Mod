@@ -66,27 +66,21 @@ public class MPMEffectHandler implements IPotionEffectHandler
 		{
 			if (tick % 40 == 0)
 			{
-				living.worldObj.createExplosion(living, living.posX, living.posY, living.posZ, effect.getAmplifier() * 2 + 1, true);
+				int amplifier = effect.getAmplifier();
+				float size = amplifier + 2F;
+				living.worldObj.createExplosion(living, living.posX, living.posY, living.posZ, size, true);
 			}
 		}
 		else if (effect.getPotionID() == MorePotionsMod.random.id)
 		{
-			if (MorePotionsMod.randomMode == 0)
+			if (tick % 40 == 0)
 			{
-				living.addPotionEffect(PotionType.getRandom(living.getRNG()).getEffect());
-				living.removePotionEffect(MorePotionsMod.random.id);
-			}
-			else
-			{
-				if (tick % 40 == 0)
+				PotionEffect pe = PotionType.getRandom(living.getRNG()).getEffect();
+				if (pe.getDuration() > 1)
 				{
-					PotionEffect pe = PotionType.getRandom(living.getRNG()).getEffect();
-					if (pe.getDuration() > 1)
-					{
-						pe = new PotionEffect(pe.getPotionID(), 40, pe.getAmplifier());
-					}
-					living.addPotionEffect(effect);
+					pe = new PotionEffect(pe.getPotionID(), 40, pe.getAmplifier());
 				}
+				living.addPotionEffect(effect);
 			}
 		}
 	}
