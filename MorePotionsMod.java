@@ -82,34 +82,36 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 	public static CustomPotion				greenThumb					= new CustomPotion("potion.green_thumb", 0x008100, false).setIcon(customEffects, 4, 1);
 	public static CustomPotion				projectile					= new CustomPotion("potion.projectile", 0x101010, false).setIcon(customEffects, 5, 1);
 	
-	public static BlockMixer				mixer;
-	public static BlockCauldron2			cauldron2;
-	public static BlockUnbrewingStand		unbrewingStand;
+	public static BlockMixer				mixer						= (BlockMixer) new BlockMixer().setBlockName("mixer");
+	public static BlockCauldron2			cauldron2					= (BlockCauldron2) new BlockCauldron2().setBlockName("cauldron").setBlockTextureName("cauldron");
+	public static BlockUnbrewingStand		unbrewingStand				= (BlockUnbrewingStand) new BlockUnbrewingStand().setBlockName("unbrewing_stand");
 	
-	public static ItemReed					cauldronItem2;
-	public static Item						dust;
-	public static Item						mortar;
+	public static ItemReed					cauldronItem2				= (ItemReed) new ItemReed(cauldron2).setUnlocalizedName("cauldron").setTextureName("cauldron").setCreativeTab(CreativeTabs.tabBrewing);																													;
+	public static Item						mortar						= new ItemMortar().setUnlocalizedName("mortar").setTextureName("morepotions:mortar");
 	
-	public static ItemStack					dustCoal;
-	public static ItemStack					dustIron;
-	public static ItemStack					dustGold;
-	public static ItemStack					dustObsidian;
-	public static ItemStack					dustDiamond;
-	public static ItemStack					dustEmerald;
-	public static ItemStack					dustQuartz;
-	public static ItemStack					dustWither;
-	public static ItemStack					dustEnderpearl;
-	public static ItemStack					dustClay;
-	public static ItemStack					dustBrick;
-	public static ItemStack					dustFlint;
-	public static ItemStack					dustGlass;
-	public static ItemStack					dustCharcoal;
-	public static ItemStack					dustWoodOak;
-	public static ItemStack					dustWoodBirch;
-	public static ItemStack					dustWoodSpruce;
-	public static ItemStack					dustWoodJungle;
-	public static ItemStack					dustNetherstar;
-	public static ItemStack					dustNetherbrick;
+	private static String[]					dustNames					= new String[] { "coal", "iron", "gold", "diamond", "emerald", "obsidian", "quartz", "wither", "ender_pearl", "clay", "brick", "flint", "glass", "charcoal", "oak_wood", "spruce_wood", "birch_wood", "jungle_wood", "nether_star", "nether_brick" };
+	public static Item						dust						= new CustomItem(dustNames, CSString.concatAll(dustNames, "morepotions:", "_dust"), new CreativeTabs[] { CreativeTabs.tabMaterials });
+	
+	public static ItemStack					dustCoal					= new ItemStack(dust, 1, 0);
+	public static ItemStack					dustIron					= new ItemStack(dust, 1, 1);
+	public static ItemStack					dustGold					= new ItemStack(dust, 1, 2);
+	public static ItemStack					dustDiamond					= new ItemStack(dust, 1, 3);
+	public static ItemStack					dustEmerald					= new ItemStack(dust, 1, 4);
+	public static ItemStack					dustObsidian				= new ItemStack(dust, 1, 5);
+	public static ItemStack					dustQuartz					= new ItemStack(dust, 1, 6);
+	public static ItemStack					dustWither					= new ItemStack(dust, 1, 7);
+	public static ItemStack					dustEnderpearl				= new ItemStack(dust, 1, 8);
+	public static ItemStack					dustClay					= new ItemStack(dust, 1, 9);
+	public static ItemStack					dustBrick					= new ItemStack(dust, 1, 10);
+	public static ItemStack					dustFlint					= new ItemStack(dust, 1, 11);
+	public static ItemStack					dustGlass					= new ItemStack(dust, 1, 12);
+	public static ItemStack					dustCharcoal				= new ItemStack(dust, 1, 13);
+	public static ItemStack					dustWoodOak					= new ItemStack(dust, 1, 14);
+	public static ItemStack					dustWoodSpruce				= new ItemStack(dust, 1, 15);
+	public static ItemStack					dustWoodBirch				= new ItemStack(dust, 1, 16);
+	public static ItemStack					dustWoodJungle				= new ItemStack(dust, 1, 17);
+	public static ItemStack					dustNetherstar				= new ItemStack(dust, 1, 18);
+	public static ItemStack					dustNetherbrick				= new ItemStack(dust, 1, 19);
 	
 	public MorePotionsMod()
 	{
@@ -133,16 +135,6 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		super.preInit(event);
-		
-		cauldron2 = (BlockCauldron2) new BlockCauldron2().setBlockName("cauldron").setBlockTextureName("cauldron");
-		mixer = (BlockMixer) new BlockMixer().setBlockName("mixer");
-		unbrewingStand = (BlockUnbrewingStand) new BlockUnbrewingStand().setBlockName("unbrewing_stand");
-		
-		cauldronItem2 = (ItemReed) new ItemReed(cauldron2).setUnlocalizedName("cauldron").setTextureName("cauldron").setCreativeTab(CreativeTabs.tabBrewing);
-		mortar = new ItemMortar().setUnlocalizedName("mortar").setTextureName("morepotions:mortar");
-		
-		String[] dusts = new String[] { "coal", "iron", "gold", "diamond", "emerald", "obsidian", "quartz", "wither", "ender_pearl", "clay", "brick", "flint", "glass", "charcoal", "oak_wood", "birch_wood", "spruce_wood", "jungle_wood", "nether_star", "nether_brick" };
-		dust = new CustomItem(dusts, CSString.concatAll(dusts, "morepotions:", "_dust"), new CreativeTabs[] { CreativeTabs.tabMaterials });
 		
 		CSBlocks.replaceBlock(Blocks.cauldron, cauldron2);
 		CSBlocks.addBlock(mixer, ItemBlock.class, "mixer");
@@ -186,26 +178,26 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 		
 		ItemStack mortarStack = new ItemStack(mortar, 1, OreDictionary.WILDCARD_VALUE);
 		
-		dustCoal = CSCrafting.registerOre("dustCoal", new ItemStack(dust, 1, 0));
-		dustIron = CSCrafting.registerOre("dustIron", new ItemStack(dust, 1, 1));
-		dustGold = CSCrafting.registerOre("dustGold", new ItemStack(dust, 1, 2));
-		dustDiamond = CSCrafting.registerOre("dustDiamond", new ItemStack(dust, 1, 3));
-		dustEmerald = CSCrafting.registerOre("dustEmerald", new ItemStack(dust, 1, 4));
-		dustObsidian = CSCrafting.registerOre("dustObsidian", new ItemStack(dust, 1, 5));
-		dustQuartz = CSCrafting.registerOre("dustQuartz", new ItemStack(dust, 1, 6));
-		dustWither = CSCrafting.registerOre("dustWither", new ItemStack(dust, 1, 7));
-		dustEnderpearl = CSCrafting.registerOre("dustEnderpearl", new ItemStack(dust, 1, 8));
-		dustClay = CSCrafting.registerOre("dustClay", new ItemStack(dust, 1, 9));
-		dustBrick = CSCrafting.registerOre("dustBrick", new ItemStack(dust, 1, 10));
-		dustFlint = CSCrafting.registerOre("dustFlint", new ItemStack(dust, 1, 11));
-		dustGlass = CSCrafting.registerOre("dustGlass", new ItemStack(dust, 1, 12));
-		dustCharcoal = CSCrafting.registerOre("dustCharcoal", new ItemStack(dust, 1, 13));
-		dustWoodOak = CSCrafting.registerOre("dustWoodOak", CSCrafting.registerOre("dustWood", new ItemStack(dust, 1, 14)));
-		dustWoodBirch = CSCrafting.registerOre("dustWoodBirch", CSCrafting.registerOre("dustWood", new ItemStack(dust, 1, 15)));
-		dustWoodSpruce = CSCrafting.registerOre("dustWoodSpruce", CSCrafting.registerOre("dustWood", new ItemStack(dust, 1, 16)));
-		dustWoodJungle = CSCrafting.registerOre("dustWoodJungle", CSCrafting.registerOre("dustWood", new ItemStack(dust, 1, 17)));
-		dustNetherstar = CSCrafting.registerOre("dustNetherstar", new ItemStack(dust, 1, 18));
-		dustNetherbrick = CSCrafting.registerOre("dustNetherbrick", new ItemStack(dust, 1, 19));
+		dustCoal = CSCrafting.registerOre("dustCoal", dustCoal);
+		dustIron = CSCrafting.registerOre("dustIron", dustIron);
+		dustGold = CSCrafting.registerOre("dustGold", dustGold);
+		dustDiamond = CSCrafting.registerOre("dustDiamond", dustDiamond);
+		dustEmerald = CSCrafting.registerOre("dustEmerald", dustEmerald);
+		dustObsidian = CSCrafting.registerOre("dustObsidian", dustObsidian);
+		dustQuartz = CSCrafting.registerOre("dustQuartz", dustQuartz);
+		dustWither = CSCrafting.registerOre("dustWither", dustWither);
+		dustEnderpearl = CSCrafting.registerOre("dustEnderpearl", dustEnderpearl);
+		dustClay = CSCrafting.registerOre("dustClay", dustClay);
+		dustBrick = CSCrafting.registerOre("dustBrick", dustBrick);
+		dustFlint = CSCrafting.registerOre("dustFlint", dustFlint);
+		dustGlass = CSCrafting.registerOre("dustGlass", dustGlass);
+		dustCharcoal = CSCrafting.registerOre("dustCharcoal", dustCharcoal);
+		dustWoodOak = CSCrafting.registerOre("dustWoodOak", CSCrafting.registerOre("dustWood", dustWoodOak));
+		dustWoodSpruce = CSCrafting.registerOre("dustWoodSpruce", CSCrafting.registerOre("dustWood", dustWoodSpruce));
+		dustWoodBirch = CSCrafting.registerOre("dustWoodBirch", CSCrafting.registerOre("dustWood", dustWoodBirch));
+		dustWoodJungle = CSCrafting.registerOre("dustWoodJungle", CSCrafting.registerOre("dustWood", dustWoodJungle));
+		dustNetherstar = CSCrafting.registerOre("dustNetherstar", dustNetherstar);
+		dustNetherbrick = CSCrafting.registerOre("dustNetherbrick", dustNetherbrick);
 		
 		CSCrafting.addShapelessRecipe(dustCoal, CSStacks.coal, mortarStack);
 		CSCrafting.addShapelessRecipe(dustIron, CSStacks.iron_ingot, mortarStack);
@@ -222,8 +214,8 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 		CSCrafting.addShapelessRecipe(dustGlass, CSStacks.glass_block, mortarStack);
 		CSCrafting.addShapelessRecipe(dustCharcoal, CSStacks.char_coal, mortarStack);
 		CSCrafting.addShapelessRecipe(dustWoodOak, CSStacks.oak_planks, mortarStack);
-		CSCrafting.addShapelessRecipe(dustWoodBirch, CSStacks.birch_planks, mortarStack);
 		CSCrafting.addShapelessRecipe(dustWoodSpruce, CSStacks.spruce_planks, mortarStack);
+		CSCrafting.addShapelessRecipe(dustWoodBirch, CSStacks.birch_planks, mortarStack);
 		CSCrafting.addShapelessRecipe(dustWoodJungle, CSStacks.jungle_planks, mortarStack);
 		CSCrafting.addShapelessRecipe(dustNetherstar, CSStacks.nether_star, mortarStack);
 		CSCrafting.addShapelessRecipe(dustNetherbrick, CSStacks.nether_brick, mortarStack);
