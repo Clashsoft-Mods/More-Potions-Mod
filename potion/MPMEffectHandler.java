@@ -16,7 +16,7 @@ public class MPMEffectHandler implements IPotionEffectHandler
 	@Override
 	public void onPotionUpdate(int tick, EntityLivingBase living, PotionEffect effect)
 	{
-		if (effect.getPotionID() == (MorePotionsMod.effectRemove.id))
+		if (effect.getPotionID() == MorePotionsMod.effectRemove.id)
 		{
 			for (int i = 0; i < Potion.potionTypes.length; i++)
 			{
@@ -26,7 +26,7 @@ public class MPMEffectHandler implements IPotionEffectHandler
 				}
 			}
 		}
-		else if (effect.getPotionID() == (MorePotionsMod.waterWalking.id))
+		else if (effect.getPotionID() == MorePotionsMod.waterWalking.id)
 		{
 			int x = (int) Math.floor(living.posX);
 			int y = (int) (living.posY - living.getYOffset());
@@ -46,7 +46,7 @@ public class MPMEffectHandler implements IPotionEffectHandler
 				}
 			}
 		}
-		else if (effect.getPotionID() == (MorePotionsMod.coldness.id))
+		else if (effect.getPotionID() == MorePotionsMod.coldness.id)
 		{
 			int x = (int) Math.floor(living.posX);
 			int y = (int) (living.posY - living.getYOffset());

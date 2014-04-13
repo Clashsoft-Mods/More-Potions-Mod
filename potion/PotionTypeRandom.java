@@ -13,7 +13,7 @@ import net.minecraft.potion.PotionEffect;
 
 public class PotionTypeRandom extends PotionType
 {
-	protected Random rand = new Random();
+	protected Random	rand	= new Random();
 	
 	public PotionTypeRandom(ItemStack ingredient, PotionBase base)
 	{

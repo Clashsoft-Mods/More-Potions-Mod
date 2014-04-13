@@ -112,7 +112,9 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 							flag = true;
 						}
 						else
+						{
 							flag = false;
+						}
 					}
 					else if (stack.getItem() == Items.glass_bottle)
 					{

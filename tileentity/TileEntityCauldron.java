@@ -167,7 +167,9 @@ public class TileEntityCauldron extends TileEntity
 	private ItemStack brew(boolean removeDuplicates)
 	{
 		if (this.isWater())
+		{
 			return new ItemStack(BrewingAPI.potion2, 1, 0);
+		}
 		
 		ItemStack is = new ItemStack(BrewingAPI.potion2, 1, 1);
 		this.potionTypes = removeDuplicates ? PotionType.removeDuplicates(this.potionTypes) : this.potionTypes;

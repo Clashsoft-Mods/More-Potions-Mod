@@ -12,12 +12,12 @@ import net.minecraft.world.World;
 
 public class PacketCauldronData extends CSPacket
 {
-	public World		world;
-	public int			x;
-	public int			y;
-	public int			z;
+	public World	world;
+	public int		x;
+	public int		y;
+	public int		z;
 	
-	public int			color;
+	public int		color;
 	
 	public PacketCauldronData()
 	{
@@ -55,10 +55,10 @@ public class PacketCauldronData extends CSPacket
 	@Override
 	public void handleClient(EntityPlayer player)
 	{
-		TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z);
+		TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity(this.x, this.y, this.z);
 		if (te instanceof TileEntityCauldron)
 		{
-			System.out.println("Settings cauldron color of " + te.toString() + " to " +  Integer.toHexString(color));
+			System.out.println("Settings cauldron color of " + te.toString() + " to " + Integer.toHexString(this.color));
 			TileEntityCauldron cauldron = (TileEntityCauldron) te;
 			cauldron.color = this.color;
 		}

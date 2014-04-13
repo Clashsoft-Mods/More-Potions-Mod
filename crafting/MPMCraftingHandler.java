@@ -17,7 +17,7 @@ public class MPMCraftingHandler
 				ItemStack j = craftMatrix.getStackInSlot(i);
 				if (j.getItem() != null && j.getItem() == MorePotionsMod.mortar)
 				{
-					ItemStack k = new ItemStack(MorePotionsMod.mortar, 2, (j.getItemDamage() + 1));
+					ItemStack k = new ItemStack(MorePotionsMod.mortar, 2, j.getItemDamage() + 1);
 					if (k.getItemDamage() >= k.getMaxDamage())
 					{
 						k.stackSize--;
