@@ -103,7 +103,7 @@ public class TileEntityMixer extends TileEntityInventory implements ISidedInvent
 				{
 					potions++;
 					
-					List<IPotionType> types1 = ((ItemPotion2) item).getEffects(stack);
+					List<IPotionType> types1 = ((ItemPotion2) item).getPotionTypes(stack);
 					types.addAll(types1);
 				}
 			}

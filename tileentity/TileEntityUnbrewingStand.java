@@ -67,7 +67,7 @@ public class TileEntityUnbrewingStand extends TileEntityInventory implements ISi
 		if (potion != null && potion.getItem() instanceof ItemPotion2)
 		{
 			ItemPotion2 potionItem = (ItemPotion2) potion.getItem();
-			List<IPotionType> potionTypes = potionItem.getEffects(potion);
+			List<IPotionType> potionTypes = potionItem.getPotionTypes(potion);
 			
 			int redstone = this.itemStacks[1] == null ? 0 : this.itemStacks[1].stackSize;
 			int glowstone = this.itemStacks[2] == null ? 0 : this.itemStacks[2].stackSize;
