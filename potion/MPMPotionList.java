@@ -28,7 +28,7 @@ public class MPMPotionList implements IPotionList
 	public static IPotionType	thorns;
 	public static IPotionType	greenThumb;
 	public static IPotionType	projectile;
-	public static IPotionType	doubleJump;
+	// public static IPotionType doubleJump;
 	public static IPotionType	random;
 	
 	private MPMPotionList()
@@ -82,8 +82,10 @@ public class MPMPotionList implements IPotionList
 		doubleLife = new PotionType(new PotionEffect(MorePotionsMod.doubleLife.id, 1625000, 0), 0, 0, PotionList.harm, MorePotionsMod.dustNetherstar, PotionList.thick);
 		healthBoost = new PotionType(new PotionEffect(Potion.field_76434_w.id, 45 * 20, 0), 4, 120 * 20);
 		absorption = new PotionType(new PotionEffect(Potion.field_76444_x.id, 45 * 20, 0), 4, 120 * 20, PotionList.healthBoost, new ItemStack(Items.golden_apple), PotionList.thick);
-		doubleJump = new PotionType(new PotionEffect(MorePotionsMod.doubleJump.id, 20 * 60, 0), 2, 20 * 120, null);
-		jump = new PotionType(new PotionEffect(Potion.jump.id, 20 * 180, 0), 4, 20 * 300, doubleJump);
+		// doubleJump = new PotionType(new
+		// PotionEffect(MorePotionsMod.doubleJump.id, 20 * 60, 0), 2, 20 * 120,
+		// null);
+		jump = new PotionType(new PotionEffect(Potion.jump.id, 20 * 180, 0), 4, 20 * 300);
 		confusion = new PotionType(new PotionEffect(Potion.confusion.id, 20 * 90, 0), 2, 20 * 180, new ItemStack(Items.poisonous_potato), PotionList.awkward);
 		regeneration = new PotionType(new PotionEffect(Potion.regeneration.id, 20 * 45, 0), 2, 20 * 180, PotionList.moveSlowdown, new ItemStack(Items.ghast_tear), PotionList.awkward);
 		resistance = new PotionType(new PotionEffect(Potion.resistance.id, 20 * 180, 0), 3, 20 * 240, MorePotionsMod.dustDiamond, PotionList.thick);
@@ -183,7 +185,7 @@ public class MPMPotionList implements IPotionList
 		damageBoost.register();
 		weakness.register();
 		jump.register();
-		doubleJump.register(); //
+		// doubleJump.register(); //
 		resistance.register();
 		thorns.register(); //
 		projectile.register();

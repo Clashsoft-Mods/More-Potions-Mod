@@ -77,7 +77,9 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 	public static CustomPotion				coldness					= new CustomPotion("potion.coldness", 0x00DDFF, false).setIcon(customEffects, 3, 0);
 	public static CustomPotion				ironSkin					= new CustomPotion("potion.iron_skin", 0xD8D8D8, false).setIcon(customEffects, 4, 0);
 	public static CustomPotion				obsidianSkin				= new CustomPotion("potion.obsidian_skin", 0x101023, false).setIcon(customEffects, 5, 0);
-	public static CustomPotion				doubleJump					= new CustomPotion("potion.double_jump", 0x157490, false).setIcon(customEffects, 6, 0);
+	// public static CustomPotion doubleJump = new
+	// CustomPotion("potion.double_jump", 0x157490,
+	// false).setIcon(customEffects, 6, 0);
 	public static CustomPotion				doubleLife					= new CustomPotion("potion.double_life", 0xFF2222, false).setIcon(customEffects, 7, 0);
 	public static CustomPotion				explosiveness				= new CustomPotion("potion.explosiveness", 0xCC0000, true).setIcon(customEffects, 1, 1);
 	public static CustomPotion				random						= new CustomPotion("potion.random", 0x000000, false).setIcon(customEffects, 2, 1);
