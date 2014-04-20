@@ -59,6 +59,9 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 	@SidedProxy(clientSide = "clashsoft.mods.morepotions.client.MPMClientProxy", serverSide = "clashsoft.mods.morepotions.common.MPMProxy")
 	public static MPMProxy					proxy;
 	
+	public static MPMEffectHandler			effectHandler				= new MPMEffectHandler();
+	public static MPMIngredientHandler		ingredientHandler			= new MPMIngredientHandler();
+	
 	public static final ResourceLocation	customEffects				= new ResourceLocation("morepotions", "textures/gui/potions.png");
 	
 	public static int						randomMode					= 0;
@@ -122,6 +125,11 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 		this.url = "https://github.com/Clashsoft/More-Potions-Mod/wiki";
 	}
 	
+	public static MPMEventHandler getEventHandler()
+	{
+		return (MPMEventHandler) instance.eventHandler;
+	}
+	
 	@Override
 	public void readConfig()
 	{
@@ -153,8 +161,8 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 	{
 		super.init(event);
 		
-		BrewingAPI.registerEffectHandler(new MPMEffectHandler());
-		BrewingAPI.registerIngredientHandler(new MPMIngredientHandler());
+		BrewingAPI.registerEffectHandler(effectHandler);
+		BrewingAPI.registerIngredientHandler(ingredientHandler);
 		
 		GameRegistry.registerTileEntityWithAlternatives(TileEntityMixer.class, "Mixer", "Mixxer");
 		GameRegistry.registerTileEntity(TileEntityCauldron.class, "Cauldron2");
