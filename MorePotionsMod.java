@@ -51,7 +51,7 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 	public static final String				NAME						= "More Potions Mod";
 	public static final String				ACRONYM						= "mpm";
 	public static final String				DEPENDENCIES				= CSLib.DEPENDENCY + ";required-after:" + BrewingAPI.MODID;
-	public static final String				VERSION						= CSUpdate.CURRENT_VERSION + "-1.0.0";
+	public static final String				VERSION						= CSUpdate.CURRENT_VERSION + "-1.0.1";
 	
 	@Instance(MODID)
 	public static MorePotionsMod			instance;
