@@ -3,7 +3,6 @@ package clashsoft.mods.morepotions.common;
 import clashsoft.mods.morepotions.MorePotionsMod;
 import clashsoft.mods.morepotions.network.PacketGreenThumb;
 import clashsoft.mods.morepotions.network.PacketProjectile;
-import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 import net.minecraft.entity.Entity;
@@ -18,7 +17,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 public class MPMEventHandler
 {
-	@SubscribeEvent(priority = EventPriority.LOW)
+	@SubscribeEvent
 	public void onEntityDamaged(LivingAttackEvent event)
 	{
 		if (event.entityLiving.isPotionActive(MorePotionsMod.doubleLife))

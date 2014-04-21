@@ -17,6 +17,7 @@ import clashsoft.mods.morepotions.block.BlockMixer;
 import clashsoft.mods.morepotions.block.BlockUnbrewingStand;
 import clashsoft.mods.morepotions.common.MPMEventHandler;
 import clashsoft.mods.morepotions.common.MPMProxy;
+import clashsoft.mods.morepotions.crafting.MortarRecipe;
 import clashsoft.mods.morepotions.item.ItemMortar;
 import clashsoft.mods.morepotions.network.MPMNetHandler;
 import clashsoft.mods.morepotions.potion.MPMEffectHandler;
@@ -209,26 +210,26 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 		dustNetherstar = CSCrafting.registerOre("dustNetherstar", dustNetherstar);
 		dustNetherbrick = CSCrafting.registerOre("dustNetherbrick", dustNetherbrick);
 		
-		CSCrafting.addShapelessRecipe(dustCoal, CSStacks.coal, mortarStack);
-		CSCrafting.addShapelessRecipe(dustIron, CSStacks.iron_ingot, mortarStack);
-		CSCrafting.addShapelessRecipe(dustGold, CSStacks.gold_ingot, mortarStack);
-		CSCrafting.addShapelessRecipe(dustDiamond, CSStacks.diamond, mortarStack);
-		CSCrafting.addShapelessRecipe(dustEmerald, CSStacks.emerald, mortarStack);
-		CSCrafting.addShapelessRecipe(dustObsidian, CSStacks.obsidian, mortarStack);
-		CSCrafting.addShapelessRecipe(dustQuartz, CSStacks.quartz, mortarStack);
-		CSCrafting.addShapelessRecipe(dustWither, CSStacks.wither_skull, dustCoal, dustQuartz);
-		CSCrafting.addShapelessRecipe(dustEnderpearl, CSStacks.ender_pearl, mortarStack);
-		CSCrafting.addShapelessRecipe(dustClay, CSStacks.clay, mortarStack);
-		CSCrafting.addShapelessRecipe(dustBrick, CSStacks.brick, mortarStack);
-		CSCrafting.addShapelessRecipe(dustFlint, CSStacks.flint, mortarStack);
-		CSCrafting.addShapelessRecipe(dustGlass, CSStacks.glass_block, mortarStack);
-		CSCrafting.addShapelessRecipe(dustCharcoal, CSStacks.char_coal, mortarStack);
-		CSCrafting.addShapelessRecipe(dustWoodOak, CSStacks.oak_planks, mortarStack);
-		CSCrafting.addShapelessRecipe(dustWoodSpruce, CSStacks.spruce_planks, mortarStack);
-		CSCrafting.addShapelessRecipe(dustWoodBirch, CSStacks.birch_planks, mortarStack);
-		CSCrafting.addShapelessRecipe(dustWoodJungle, CSStacks.jungle_planks, mortarStack);
-		CSCrafting.addShapelessRecipe(dustNetherstar, CSStacks.nether_star, mortarStack);
-		CSCrafting.addShapelessRecipe(dustNetherbrick, CSStacks.nether_brick, mortarStack);
+		addMortarRecipe(dustCoal, CSStacks.coal);
+		addMortarRecipe(dustIron, CSStacks.iron_ingot);
+		addMortarRecipe(dustGold, CSStacks.gold_ingot);
+		addMortarRecipe(dustDiamond, CSStacks.diamond);
+		addMortarRecipe(dustEmerald, CSStacks.emerald);
+		addMortarRecipe(dustObsidian, CSStacks.obsidian);
+		addMortarRecipe(dustQuartz, CSStacks.quartz);
+		addMortarRecipe(dustWither, CSStacks.wither_skull);
+		addMortarRecipe(dustEnderpearl, CSStacks.ender_pearl);
+		addMortarRecipe(dustClay, CSStacks.clay);
+		addMortarRecipe(dustBrick, CSStacks.brick);
+		addMortarRecipe(dustFlint, CSStacks.flint);
+		addMortarRecipe(dustGlass, CSStacks.glass_block);
+		addMortarRecipe(dustCharcoal, CSStacks.char_coal);
+		addMortarRecipe(dustWoodOak, CSStacks.oak_planks);
+		addMortarRecipe(dustWoodSpruce, CSStacks.spruce_planks);
+		addMortarRecipe(dustWoodBirch, CSStacks.birch_planks);
+		addMortarRecipe(dustWoodJungle, CSStacks.jungle_planks);
+		addMortarRecipe(dustNetherstar, CSStacks.nether_star);
+		addMortarRecipe(dustNetherbrick, CSStacks.nether_brick);
 		
 		CSCrafting.addFurnaceRecipe(dustIron, CSStacks.iron_ingot, 0F);
 		CSCrafting.addFurnaceRecipe(dustGold, CSStacks.gold_ingot, 0F);
@@ -236,5 +237,10 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 		CSCrafting.addFurnaceRecipe(dustClay, CSStacks.brick, 0.1F);
 		CSCrafting.addFurnaceRecipe(dustBrick, CSStacks.brick, 0F);
 		CSCrafting.addFurnaceRecipe(dustGlass, CSStacks.glass_block, 0F);
+	}
+	
+	public static void addMortarRecipe(ItemStack input, ItemStack output)
+	{
+		CSCrafting.registerRecipe(new MortarRecipe(input, output));
 	}
 }
