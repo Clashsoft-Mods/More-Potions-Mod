@@ -43,7 +43,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemReed;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.oredict.OreDictionary;
 
 @Mod(modid = MorePotionsMod.MODID, name = MorePotionsMod.NAME, version = MorePotionsMod.VERSION, dependencies = MorePotionsMod.DEPENDENCIES)
 public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
@@ -186,8 +185,6 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 		CSCrafting.addRecipe(new ItemStack(mortar), new Object[] { "SfS", " S ", 'S', Blocks.stone, 'f', Items.flint });
 		CSCrafting.addRecipe(new ItemStack(mixer), new Object[] { "gSg", "g g", "SiS", 'g', Blocks.glass_pane, 'S', Blocks.stone, 'i', Items.iron_ingot });
 		CSCrafting.addRecipe(new ItemStack(unbrewingStand), new Object[] { "bib", "bpb", "bbb", 'b', Items.brick, 'i', Items.iron_ingot, 'p', Items.glass_bottle });
-		
-		ItemStack mortarStack = new ItemStack(mortar, 1, OreDictionary.WILDCARD_VALUE);
 		
 		dustCoal = CSCrafting.registerOre("dustCoal", dustCoal);
 		dustIron = CSCrafting.registerOre("dustIron", dustIron);

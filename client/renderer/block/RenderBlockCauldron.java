@@ -6,7 +6,6 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
@@ -21,7 +20,6 @@ public class RenderBlockCauldron implements ISimpleBlockRenderingHandler
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
 	{
 		BlockCauldron2 cauldron = (BlockCauldron2) block;
-		Tessellator tessellator = Tessellator.instance;
 		IIcon icon = cauldron.getBlockTextureFromSide(2);
 		IIcon icon2 = BlockCauldron2.getCauldronIcon("inner");
 		
