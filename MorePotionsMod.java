@@ -91,7 +91,7 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 	public static BlockCauldron2			cauldron2					= (BlockCauldron2) new BlockCauldron2().setBlockName("cauldron").setBlockTextureName("cauldron");
 	public static BlockUnbrewingStand		unbrewingStand				= (BlockUnbrewingStand) new BlockUnbrewingStand().setBlockName("unbrewing_stand");
 	
-	public static ItemReed					cauldronItem2				= (ItemReed) new ItemReed(cauldron2).setUnlocalizedName("cauldron").setTextureName("cauldron").setCreativeTab(CreativeTabs.tabBrewing);																													;
+	public static ItemReed					cauldronItem2				= (ItemReed) new ItemReed(cauldron2).setUnlocalizedName("cauldron").setTextureName("cauldron").setCreativeTab(CreativeTabs.tabBrewing);
 	public static Item						mortar						= new ItemMortar().setUnlocalizedName("mortar").setTextureName("morepotions:mortar");
 	
 	private static String[]					dustNames					= new String[] { "coal", "iron", "gold", "diamond", "emerald", "obsidian", "quartz", "wither", "ender_pearl", "clay", "brick", "flint", "glass", "charcoal", "oak_wood", "spruce_wood", "birch_wood", "jungle_wood", "nether_star", "nether_brick" };
