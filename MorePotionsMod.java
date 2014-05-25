@@ -1,10 +1,10 @@
 package clashsoft.mods.morepotions;
 
 import clashsoft.brewingapi.BrewingAPI;
-import clashsoft.cslib.minecraft.CSLib;
-import clashsoft.cslib.minecraft.ClashsoftMod;
 import clashsoft.cslib.minecraft.block.CSBlocks;
 import clashsoft.cslib.minecraft.crafting.CSCrafting;
+import clashsoft.cslib.minecraft.init.CSLib;
+import clashsoft.cslib.minecraft.init.ClashsoftMod;
 import clashsoft.cslib.minecraft.item.CSItems;
 import clashsoft.cslib.minecraft.item.CSStacks;
 import clashsoft.cslib.minecraft.item.CustomItem;
