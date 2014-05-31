@@ -1,6 +1,7 @@
 package clashsoft.mods.morepotions;
 
 import clashsoft.brewingapi.BrewingAPI;
+import clashsoft.cslib.config.CSConfig;
 import clashsoft.cslib.minecraft.block.CSBlocks;
 import clashsoft.cslib.minecraft.crafting.CSCrafting;
 import clashsoft.cslib.minecraft.init.CSLib;
@@ -10,7 +11,6 @@ import clashsoft.cslib.minecraft.item.CSStacks;
 import clashsoft.cslib.minecraft.item.CustomItem;
 import clashsoft.cslib.minecraft.potion.CustomPotion;
 import clashsoft.cslib.minecraft.update.CSUpdate;
-import clashsoft.cslib.minecraft.util.CSConfig;
 import clashsoft.cslib.util.CSString;
 import clashsoft.mods.morepotions.block.BlockCauldron2;
 import clashsoft.mods.morepotions.block.BlockMixer;
