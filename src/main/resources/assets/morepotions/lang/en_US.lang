@@ -1,0 +1,110 @@
+tile.mixer.name=Mixer
+tile.unbrewing_stand.name=Unbrewing Stand
+
+item.dust.coal.name=Coal Dust
+item.dust.charcoal.name=Charcoal Dust
+item.dust.iron.name=Iron Dust
+item.dust.gold.name=Gold Dust
+item.dust.diamond.name=Diamond Dust
+item.dust.emerald.name=Emerald Dust
+item.dust.obsidian.name=Obsidian Dust
+item.dust.quartz.name=Nether Quartz Dust
+item.dust.wither.name=Wither Dust
+item.dust.ender_pearl.name=Enderpearl Dust
+item.dust.clay.name=Clay Dust
+item.dust.brick.name=Brick Dust
+item.dust.flint.name=Flint Dust
+item.dust.glass.name=Glass Dust
+item.dust.oak_wood.name=Oak Wood Dust
+item.dust.birch_wood.name=Birch Wood Dust
+item.dust.spruce_wood.name=Spruce Wood Dust
+item.dust.jungle_wood.name=Jungle Wood Dust
+item.dust.nether_star.name=Star Dust
+item.dust.nether_brick.name=Nether Brick Dust
+
+item.dust.coal.desc=C2
+item.dust.charcoal.desc=C
+item.dust.iron.desc=Fe
+item.dust.gold.desc=Au
+item.dust.diamond.desc=C128
+item.dust.emerald.desc=Be3Al2Si6O18
+item.dust.obsidian.desc=MgFeSi2O8
+item.dust.quartz.desc=SiO2
+item.dust.wither.desc=§k???
+item.dust.ender_pearl.desc=BeK4N5Cl6
+item.dust.clay.desc=Na2LiAl2Si2
+item.dust.brick.desc=Na2LiAl2Si2
+item.dust.flint.desc=SiO2
+item.dust.glass.desc=SiO4
+item.dust.oak_wood.desc=C
+item.dust.birch_wood.desc=C
+item.dust.spruce_wood.desc=C
+item.dust.jungle_wood.desc=C
+item.dust.nether_star.desc=§k???
+item.dust.nether_brick.desc=
+
+item.mortar.name=Mortar
+
+potion.fire.postfix=Potion of Fire
+potion.fire=Fire
+potion.fire.description=Makes you burn.
+
+potion.effect_removing.postfix=Potion of Effect Removing
+potion.effect_removing=Effect Removing
+potion.effect_removing.description=Prevents any effects.
+
+potion.water_walking.postfix=Potion of Water Walking
+potion.water_walking=Water Walking
+potion.water_walking.description=Lets you walk over water.
+
+potion.coldness.postfix=Potion of Coldness
+potion.coldness=Coldness
+potion.coldness.description=Makes you really cold, freezing water and generating snow around you.
+
+potion.iron_skin.postfix=Potion of Iron Skin
+potion.iron_skin=Iron Skin
+potion.iron_skin.description=Gives you resistance against fire and other damage sources.
+
+potion.obsidian_skin.postfix=Potion of Obsidian Skin
+potion.obsidian_skin=Obsidian Skin
+potion.obsidian_skin.description=Gives you resistance against fire, lava and other damage sources.
+
+potion.double_life.postfix=Potion of Double Life
+potion.double_life=Double Life
+potion.double_life.description=Lasts forever, resurrects you once.
+
+potion.explosiveness.postfix=Potion of Explosion
+potion.explosiveness=Explosion
+potion.explosiveness.description=Makes you explode every 2 seconds.
+
+potion.random.postfix=Random Potion
+potion.random=Random Effect
+potion.random.description=Gives you a random effect
+
+potion.thorns.postfix=Thorns Potion
+potion.thorns=Thorns
+potion.thorns.description=Damages entitys hitting you.
+
+potion.green_thumb.postfix=Green Thumb Potion
+potion.green_thumb=Green Thumb
+potion.green_thumb.description=Plants grow when right-clicking.
+
+potion.projectile.postfix=Projectile Potion
+potion.projectile=Projectile Shooting
+potion.projectile.description=Shoots a projectile.
+
+cauldron.addwater=Filled with water.
+
+cauldron.effects.amplifiers.increase=Effect amplifiers increased.
+cauldron.effects.amplifiers.decrease=Effect amplifiers decreased.
+cauldron.effects.durations.increase=Effect durations increased.
+cauldron.effects.durations.decrease=Effects diluted.
+cauldron.effects.invert=Effects inverted.
+
+cauldron.effects.add=%1$s added.
+cauldron.effects.add.base=Potion base set to %1$s.
+
+cauldron.effects.failed.existing=Unable to add effect, the effect is already existent.
+cauldron.effects.failed.wrongbase=Unable to add effect, required base potion %1$s is not existent.
+
+doublelife.save=§bYour life has just been saved by a magical power. Be careful next time, it wont help you again.

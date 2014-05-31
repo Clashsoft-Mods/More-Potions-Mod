@@ -1,0 +1,91 @@
+tile.mixer.name=Mischer
+tile.unbrewing_stand.name=Entbraustand
+
+item.dust.coal.name=Kohlestaub
+item.dust.charcoal.name=Holzkohlestaub
+item.dust.iron.name=Eisenstaub
+item.dust.gold.name=Goldstaub
+item.dust.diamond.name=Diamantstaub
+item.dust.emerald.name=Smaragdstaub
+item.dust.obsidian.name=Obsidianstaub
+item.dust.quartz.name=Netherquarzstaub
+item.dust.wither.name=Witherstaub
+item.dust.enderpearl.name=Enderperlenstaub
+item.dust.clay.name=Lehmstaub
+item.dust.brick.name=Ziegelstaub
+item.dust.flint.name=Feuersteinstaub
+item.dust.glass.name=Glasstaub
+item.dust.oak_wood.name=Eichenholzstaub
+item.dust.birch_wood.name=Birkenholzstaub
+item.dust.spruce_wood.name=Fichtenholzstaub
+item.dust.jungle_wood.name=Tropenholzstaub
+item.dust.nether_star.name=Sternenstaub
+item.dust.nether_brick.name=Netherziegelstaub
+
+item.mortar.name=Mörser
+
+potion.fire.postfix=Trank des Feuers
+potion.fire=Feuer
+potion.fire.description=Lässt dich brennen.
+
+potion.effect_removing.postfix=Trank der Effektentfernung
+potion.effect_removing=Effektentfernung
+potion.effect_removing.description=Verhindert alle Effekte.
+
+potion.water_walking.postfix=Trank des Überwasserlaufens
+potion.water_walking=Überwasserlaufen
+potion.water_walking.description=Lässt dich über Wasser laufen.
+
+potion.coldness.postfix=Trank der Kälte
+potion.coldness=Kälte
+potion.coldness.description=Macht dich sehr kalt, gefriert Wasser und generiert Schnee in deiner Nähe.
+
+potion.iron_skin.postfix=Trank der Eisenhaut
+potion.iron_skin=Eisenhaut
+potion.iron_skin.description=Bietet Resistenz gegen Feuer und andere Schadensquellen.
+
+potion.obsidian_skin.postfix=Trank der Obsidianhaut
+potion.obsidian_skin=Obsidianhaut
+potion.obsidian_skin.description=Bietet Resistenz gegen Feuer, Lava und andere Schadesquellen.
+
+potion.double_life.postfix=Trank des Doppellebens
+potion.double_life=Doppelleben
+potion.double_life.description=Hält für immer, wiederbelebt dich beim Tod ein Mal.
+
+potion.explosiveness.postfix=Trank der Explosion
+potion.explosiveness=Explosion
+potion.explosiveness.description=Lässt dich alle 2 Sekunden explodieren.
+
+potion.random.postfix=Zufallstrank
+potion.random=Zufälliger Effekt
+potion.random.description=Gibt dir einen zufälligen Trankeffekt.
+
+potion.thorns.postfix=Stacheltrank
+potion.thorns=Stacheln
+potion.thorns.description=Schädigt Lebewesen, die dich angreifen.
+
+potion.green_thumb.postfix=Trank des Grünen Daumens
+potion.green_thumb=Grüner Daumen
+potion.green_thumb.description=Planzen wachsen mit Rechts-Klick.
+
+potion.projectile.postfix=Projektiltrank
+potion.projectile=Projektilabschuss
+potion.projectile.description=Schiesst ein Projektil ab.
+
+potion.alleffects.postfix=Trank aller Effekte
+
+cauldron.addwater=Wasser aufgefüllt.
+
+cauldron.effects.amplifiers.increase=Effektlevel erhöht.
+cauldron.effects.amplifiers.decrease=Effektlevel gesenkt.
+cauldron.effects.durations.increase=Effekte verlängert.
+cauldron.effects.durations.decrease=Effekte verdünnt.
+cauldron.effects.invert=Effekte invertiert.
+
+cauldron.effects.add=%1$s hinzugefügt.
+cauldron.effects.add.base=Basiseffekt auf %1$s gesetzt.
+
+cauldron.effects.failed.existing=Effekt konnte nicht hinzugefügt werden, weil er bereits vorhanden ist.
+cauldron.effects.failed.wrongbase=Effekt konnte nicht hinzugefügt werden, weil der benötigte Basiseffekt %1$s nicht vorhanden ist.
+
+doublelife.save=§bDein Leben wurde soeben von einer magischen Kraft wiederaufgefüllt
