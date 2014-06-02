@@ -29,7 +29,6 @@ import clashsoft.mods.morepotions.tileentity.TileEntityUnbrewingStand;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -56,8 +55,7 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 	@Instance(MODID)
 	public static MorePotionsMod			instance;
 	
-	@SidedProxy(clientSide = "clashsoft.mods.morepotions.client.MPMClientProxy", serverSide = "clashsoft.mods.morepotions.common.MPMProxy")
-	public static MPMProxy					proxy;
+	public static MPMProxy					proxy = createProxy("clashsoft.mods.morepotions.client.MPMClientProxy", "clashsoft.mods.morepotions.common.MPMProxy");
 	
 	public static MPMEffectHandler			effectHandler				= new MPMEffectHandler();
 	public static MPMIngredientHandler		ingredientHandler			= new MPMIngredientHandler();
