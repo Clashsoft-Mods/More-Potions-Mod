@@ -1,7 +1,7 @@
 package clashsoft.mods.morepotions.network;
 
-import clashsoft.cslib.minecraft.item.CSStacks;
 import clashsoft.cslib.minecraft.network.CSPacket;
+import clashsoft.cslib.minecraft.stack.CSStacks;
 import clashsoft.mods.morepotions.MorePotionsMod;
 
 import net.minecraft.entity.player.EntityPlayer;

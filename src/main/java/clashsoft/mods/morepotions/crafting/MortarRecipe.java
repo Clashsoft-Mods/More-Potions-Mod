@@ -1,6 +1,6 @@
 package clashsoft.mods.morepotions.crafting;
 
-import clashsoft.cslib.minecraft.item.CSStacks;
+import clashsoft.cslib.minecraft.stack.CSStacks;
 import clashsoft.mods.morepotions.MorePotionsMod;
 
 import net.minecraft.inventory.InventoryCrafting;

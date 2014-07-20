@@ -4,7 +4,7 @@ import java.util.List;
 
 import clashsoft.brewingapi.item.ItemPotion2;
 import clashsoft.brewingapi.potion.type.IPotionType;
-import clashsoft.cslib.minecraft.item.CSStacks;
+import clashsoft.cslib.minecraft.stack.CSStacks;
 import clashsoft.cslib.minecraft.tileentity.TileEntityInventory;
 
 import net.minecraft.entity.player.EntityPlayer;
