@@ -21,7 +21,6 @@ import clashsoft.mods.morepotions.crafting.MortarRecipe;
 import clashsoft.mods.morepotions.item.ItemMortar;
 import clashsoft.mods.morepotions.network.MPMNetHandler;
 import clashsoft.mods.morepotions.potion.MPMEffectHandler;
-import clashsoft.mods.morepotions.potion.MPMIngredientHandler;
 import clashsoft.mods.morepotions.potion.MPMPotionList;
 import clashsoft.mods.morepotions.tileentity.TileEntityCauldron;
 import clashsoft.mods.morepotions.tileentity.TileEntityMixer;
@@ -58,7 +57,6 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 	public static MPMProxy					proxy = createProxy("clashsoft.mods.morepotions.client.MPMClientProxy", "clashsoft.mods.morepotions.common.MPMProxy");
 	
 	public static MPMEffectHandler			effectHandler				= new MPMEffectHandler();
-	public static MPMIngredientHandler		ingredientHandler			= new MPMIngredientHandler();
 	
 	public static final ResourceLocation	customEffects				= new ResourceLocation("morepotions", "textures/gui/potions.png");
 	
@@ -162,7 +160,6 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 		super.init(event);
 		
 		BrewingAPI.registerEffectHandler(effectHandler);
-		BrewingAPI.registerIngredientHandler(ingredientHandler);
 		
 		GameRegistry.registerTileEntityWithAlternatives(TileEntityMixer.class, "Mixer", "Mixxer");
 		GameRegistry.registerTileEntity(TileEntityCauldron.class, "Cauldron2");
