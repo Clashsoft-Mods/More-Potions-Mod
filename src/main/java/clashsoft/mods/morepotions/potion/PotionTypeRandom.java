@@ -2,8 +2,8 @@ package clashsoft.mods.morepotions.potion;
 
 import java.util.Random;
 
+import clashsoft.brewingapi.potion.base.PotionBase;
 import clashsoft.brewingapi.potion.type.IPotionType;
-import clashsoft.brewingapi.potion.type.PotionBase;
 import clashsoft.brewingapi.potion.type.PotionType;
 import clashsoft.mods.morepotions.MorePotionsMod;
 

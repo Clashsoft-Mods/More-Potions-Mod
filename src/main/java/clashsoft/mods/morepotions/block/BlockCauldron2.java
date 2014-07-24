@@ -120,7 +120,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 					{
 						if (i1 > 0)
 						{
-							ItemStack itemstack1 = cauldron.output;
+							ItemStack itemstack1 = cauldron.output.copy();
 							itemstack1.stackSize = 1;
 							
 							if (player == null)
@@ -154,8 +154,7 @@ public class BlockCauldron2 extends BlockCauldron implements ITileEntityProvider
 						
 						if (i1 == 0)
 						{
-							cauldron.potionTypes.clear();
-							cauldron.updateOutput();
+							cauldron.clear();
 						}
 					}
 					else if (i1 > 0)
