@@ -4,8 +4,8 @@ import static clashsoft.brewingapi.potion.PotionList.*;
 import clashsoft.brewingapi.BrewingAPI;
 import clashsoft.brewingapi.potion.IPotionList;
 import clashsoft.brewingapi.potion.PotionList;
+import clashsoft.brewingapi.potion.base.PotionBase;
 import clashsoft.brewingapi.potion.type.IPotionType;
-import clashsoft.brewingapi.potion.type.PotionBase;
 import clashsoft.brewingapi.potion.type.PotionType;
 import clashsoft.mods.morepotions.MorePotionsMod;
 

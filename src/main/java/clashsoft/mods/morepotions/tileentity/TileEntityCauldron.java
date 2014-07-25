@@ -2,6 +2,7 @@ package clashsoft.mods.morepotions.tileentity;
 
 import clashsoft.brewingapi.BrewingAPI;
 import clashsoft.brewingapi.item.ItemPotion2;
+import clashsoft.brewingapi.potion.PotionTypeList;
 import clashsoft.brewingapi.potion.base.IPotionBase;
 import clashsoft.brewingapi.potion.recipe.*;
 import clashsoft.brewingapi.potion.type.IPotionType;
@@ -80,9 +81,10 @@ public class TileEntityCauldron extends TileEntity
 			}
 		}
 		
-		if (recipe.canApply(this.output))
+		PotionTypeList potionTypes = PotionTypeList.create(this.output);
+		if (recipe.canApply(potionTypes))
 		{
-			recipe.apply(this.output);
+			recipe.apply(potionTypes);
 		}
 		
 		this.updateOutput();
