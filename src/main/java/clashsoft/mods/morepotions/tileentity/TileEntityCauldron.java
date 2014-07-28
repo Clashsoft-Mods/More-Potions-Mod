@@ -81,11 +81,12 @@ public class TileEntityCauldron extends TileEntity
 			}
 		}
 		
-		PotionTypeList potionTypes = PotionTypeList.create(this.output);
+		PotionTypeList potionTypes = new PotionTypeList();
 		if (recipe.canApply(potionTypes))
 		{
 			recipe.apply(potionTypes);
 		}
+		potionTypes.save();
 		
 		this.updateOutput();
 		

@@ -5,6 +5,7 @@ import clashsoft.mods.morepotions.client.MPMClientProxy;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockCauldron;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -21,7 +22,7 @@ public class RenderBlockCauldron implements ISimpleBlockRenderingHandler
 	{
 		BlockCauldron2 cauldron = (BlockCauldron2) block;
 		IIcon icon = cauldron.getBlockTextureFromSide(2);
-		IIcon icon2 = BlockCauldron2.getCauldronIcon("inner");
+		IIcon icon2 = BlockCauldron.getCauldronIcon("inner");
 		
 		renderer.renderStandardBlock(cauldron, x, y, z);
 		renderer.renderFaceXPos(cauldron, x - 0.875F, y, z, icon);
