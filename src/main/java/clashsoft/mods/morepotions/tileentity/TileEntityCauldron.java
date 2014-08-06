@@ -43,11 +43,6 @@ public class TileEntityCauldron extends TileEntity
 	
 	public IChatComponent addIngredient(ItemStack ingredient)
 	{
-		if (ingredient.getItem() == Items.water_bucket)
-		{
-			return new ChatComponentTranslation("cauldron.addwater");
-		}
-		
 		IChatComponent out = null;
 		IPotionRecipe recipe = PotionRecipes.get(ingredient);
 		
@@ -81,7 +76,7 @@ public class TileEntityCauldron extends TileEntity
 			}
 		}
 		
-		PotionTypeList potionTypes = new PotionTypeList();
+		PotionTypeList potionTypes = new PotionTypeList(this.output);
 		if (recipe.canApply(ingredient, potionTypes))
 		{
 			recipe.apply(ingredient, potionTypes);
