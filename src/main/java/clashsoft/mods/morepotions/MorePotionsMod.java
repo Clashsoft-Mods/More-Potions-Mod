@@ -11,6 +11,8 @@ import clashsoft.cslib.minecraft.item.CustomItem;
 import clashsoft.cslib.minecraft.potion.CustomPotion;
 import clashsoft.cslib.minecraft.stack.CSStacks;
 import clashsoft.cslib.minecraft.update.CSUpdate;
+import clashsoft.cslib.minecraft.update.reader.SimpleUpdateReader;
+import clashsoft.cslib.minecraft.update.updater.ModUpdater;
 import clashsoft.cslib.util.CSString;
 import clashsoft.mods.morepotions.block.BlockCauldron2;
 import clashsoft.mods.morepotions.block.BlockMixer;
@@ -134,6 +136,13 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 		randomMode = CSConfig.getInt("potions", "RandomPotionMode", "Determines how the random potion works, if this is 0 the effect is instant and you get a random potion effect when you drink the potion, 1 will give you a new effect every 2 seconds.", 0);
 		cauldronInfo = CSConfig.getBool("cauldrons", "CauldronInfo", true);
 		random.setIsInstant(randomMode == 0);
+	}
+	
+	@Override
+	public void updateCheck()
+	{
+		final String url = "https://raw.githubusercontent.com/Clashsoft/More-Potions-Mod/master/version.txt";
+		CSUpdate.updateCheck(new ModUpdater(NAME, ACRONYM, VERSION, url, SimpleUpdateReader.instance));
 	}
 	
 	@Override
