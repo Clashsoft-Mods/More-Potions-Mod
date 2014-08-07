@@ -1,130 +1,137 @@
+1.7.10-1.0.2
+
+> Update to Minecraft 1.7.10.
+> Update to Clashsoft Lib 1.7.10-2.4.2.
+> Update to Brewing API 1.7.10-3.0.0.
+* Fixed UpdateChecker not working
+
 1.7.2-1.0.1
 
-* Update to Brewing API 1.7.2-1.0.1
-* Minor bugfixes
+> Update to Brewing API 1.7.2-1.0.1.
+* Minor bugfixes.
 
 1.7.2-1.0.0
 
-! Update to 1.7.2
-* Fixed MANY bugs
+> Update to Minecraft 1.7.2.
+* Fixed MANY bugs.
 
 1.6.4-5
 
-+ Added the Unbrewing Stand
++ Added the Unbrewing Stand.
 
 1.6.4-4
 
-+ Added cauldron brewing
++ Added cauldron brewing.
 
 1.6.4-3
 
-+ Added automatic updates
++ Added automatic updates.
 
 1.6.4-2
 
-+ Added update checking
++ Added update checking.
 
 1.6.4-1
 
-! Update to 1.6.4
+> Update to Minecraft 1.6.4.
 
 1.6.2-6.2
 
-* Fixed some bugs
-* Minor changes
+* Fixed some bugs.
+* Minor changes.
 
 1.6.2-6.1
 
-* Minor changes
+* Minor changes.
 
 1.6.2-5
 
-* Fixed some bugs
+* Fixed some bugs.
 
 1.6.2-4
 
-* Update to latest Clashsoft API
+* Update to latest Clashsoft API.
 
 1.6.2-3
 
-* Fixed exception when drinking potion
-* Fixed splash potions applying speed effect
+* Fixed exception when drinking potion.
+* Fixed splash potions applying speed effect.
 
 1.6.2-2
 
-* Fixed NoClassDefFoundError
+* Fixed NoClassDefFoundError.
 
 1.6.2-1
 
-! Update to 1.6.2
-* Fixed server crash
+> Update to Minecraft 1.6.2.
+* Fixed server crash.
 
 1.6.2-1
 
-! Update to 1.6.1
-* Changed Potion IDs
+> Update to Minecraft 1.6.1.
+* Changed Potion IDs.
 
 1.5.2-2
 
-+ Added Potion descriptions
-+ Added 6 new potions
-+ Added dusts and mortat
++ Added Potion descriptions.
++ Added 6 new potions.
++ Added dusts and mortar.
 
 1.5.2-1
 
-! Update to 1.5.2
+> Update to Minecraft 1.5.2.
 
 1.5.1-2
 
-* Fixed acrid brewing
-* Improved fermented spider eye brewing
+* Fixed acrid brewing.
+* Improved fermented spider eye brewing.
 
 1.5.1-1
 
-+ Added Potion conversion
-+ Brewing Stand spawns EXP
-+ Added config file
-+ Added advanced tooltip
-+ Added multi-effect potions in creative inventory
-+ Added 32 new base potions
-+ Added Potion of Water Walking and Potion of Coldness
-* Fixed server crash
-* Fixed Brewing Stand conversion
-* Fixed Brewing Stands dropping wrong items
-* Fixed splash-particles
-* Improved fermented spider eye brewing
-* Improved splash potions
-* Improved max amplifier and max duration
-* Some potions require special base potions
-* Fixed some bugs
++ Added Potion conversion.
++ Brewing Stand spawns EXP.
++ Added config file.
++ Added advanced tooltip.
++ Added multi-effect potions in creative inventory.
++ Added 32 new base potions.
++ Added Potion of Water Walking and Potion of Coldness.
+* Fixed server crash.
+* Fixed Brewing Stand conversion.
+* Fixed Brewing Stands dropping wrong items.
+* Fixed splash-particles.
+* Improved fermented spider eye brewing.
+* Improved splash potions.
+* Improved max amplifier and max duration.
+* Some potions require special base potions.
+* Fixed some bugs.
 
 1.5.0-2
 
-* Fixed gunpowder brewing
-* Re-enabled effects
+* Fixed gunpowder brewing.
+* Re-enabled effects.
 
 1.5.0-1
 
-! Update to 1.5
-+ Added 2 new potions
-+ Added Potion of good Effects
-+ Added Potion of bad Effects
-* Improved tooltip and item names
-* Fixed some brewing bugs
-* Improved Potion of all Effects
+> Update to Minecraft 1.5.
++ Added 2 new potions.
++ Added Potion of good Effects.
++ Added Potion of bad Effects.
+* Improved tooltip and item names.
+* Fixed some brewing bugs.
+* Improved Potion of all Effects.
 
 1.4.7-1
 
-+ Added new NBT System
-+ Added an easy-to-use API
-* Potions work with gunpowder, redstone, glowstone and fermented spider eyes
++ Added new NBT System.
++ Added an easy-to-use API.
+* Potions work with gunpowder, redstone, glowstone and fermented spider eyes.
 
 1.4.5-2
 
-+ Added splash potions
-* Potions can be brewed in a Brewing Stand
-- Removed 2 potions
++ Added splash potions.
+* Potions can be brewed in a Brewing Stand.
+- Removed 2 potions.
 
 1.4.5-1
 
-+ Added 8 potions
++ Added 8 potions.
