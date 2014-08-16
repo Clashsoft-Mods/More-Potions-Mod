@@ -1,7 +1,6 @@
-version=1.7.10-1.0.2
-url=https://github.com/Clashsoft/More-Potions-Mod/releases/download/1.7.10-1.0.2/MorePotionsMod-1.7.10-1.0.2.jar
+version=1.7.10-1.0.3
+url=https://github.com/Clashsoft/More-Potions-Mod/releases/download/1.7.10-1.0.3/MorePotionsMod-1.7.10-1.0.3.jar
 
-> Update to Minecraft 1.7.10.
-> Update to Clashsoft Lib 1.7.10-2.4.2.
-> Update to Brewing API 1.7.10-3.0.0.
-* Fixed UpdateChecker not working
+> Update to Forge 1.7.10-10.13.0.1207.
+> Update to Clashsoft Lib 1.7.10-2.5.0.
+> Update to Brewing API 1.7.10-3.0.1.

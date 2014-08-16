@@ -1,3 +1,9 @@
+1.7.10-1.0.3
+
+> Update to Forge 1.7.10-10.13.0.1207.
+> Update to Clashsoft Lib 1.7.10-2.5.0.
+> Update to Brewing API 1.7.10-3.0.1.
+
 1.7.10-1.0.2
 
 > Update to Minecraft 1.7.10.
