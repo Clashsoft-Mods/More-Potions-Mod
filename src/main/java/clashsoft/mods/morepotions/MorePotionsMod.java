@@ -19,7 +19,6 @@ import clashsoft.mods.morepotions.block.BlockMixer;
 import clashsoft.mods.morepotions.block.BlockUnbrewingStand;
 import clashsoft.mods.morepotions.common.MPMEventHandler;
 import clashsoft.mods.morepotions.common.MPMProxy;
-import clashsoft.mods.morepotions.crafting.MortarRecipe;
 import clashsoft.mods.morepotions.item.ItemMortar;
 import clashsoft.mods.morepotions.network.MPMNetHandler;
 import clashsoft.mods.morepotions.potion.MPMEffectHandler;
@@ -43,6 +42,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemReed;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.oredict.OreDictionary;
 
 @Mod(modid = MorePotionsMod.MODID, name = MorePotionsMod.NAME, version = MorePotionsMod.VERSION, dependencies = MorePotionsMod.DEPENDENCIES)
 public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
@@ -56,7 +56,7 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 	@Instance(MODID)
 	public static MorePotionsMod			instance;
 	
-	public static MPMProxy					proxy = createProxy("clashsoft.mods.morepotions.client.MPMClientProxy", "clashsoft.mods.morepotions.common.MPMProxy");
+	public static MPMProxy					proxy						= createProxy("clashsoft.mods.morepotions.client.MPMClientProxy", "clashsoft.mods.morepotions.common.MPMProxy");
 	
 	public static MPMEffectHandler			effectHandler				= new MPMEffectHandler();
 	
@@ -211,26 +211,26 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 		dustNetherstar = CSCrafting.registerOre("dustNetherstar", dustNetherstar);
 		dustNetherbrick = CSCrafting.registerOre("dustNetherbrick", dustNetherbrick);
 		
-		addMortarRecipe(dustCoal, CSStacks.coal);
-		addMortarRecipe(dustIron, CSStacks.iron_ingot);
-		addMortarRecipe(dustGold, CSStacks.gold_ingot);
-		addMortarRecipe(dustDiamond, CSStacks.diamond);
-		addMortarRecipe(dustEmerald, CSStacks.emerald);
-		addMortarRecipe(dustObsidian, CSStacks.obsidian);
-		addMortarRecipe(dustQuartz, CSStacks.quartz);
-		addMortarRecipe(dustWither, CSStacks.wither_skull);
-		addMortarRecipe(dustEnderpearl, CSStacks.ender_pearl);
-		addMortarRecipe(dustClay, CSStacks.clay);
-		addMortarRecipe(dustBrick, CSStacks.brick);
-		addMortarRecipe(dustFlint, CSStacks.flint);
-		addMortarRecipe(dustGlass, CSStacks.glass_block);
-		addMortarRecipe(dustCharcoal, CSStacks.char_coal);
-		addMortarRecipe(dustWoodOak, CSStacks.oak_planks);
-		addMortarRecipe(dustWoodSpruce, CSStacks.spruce_planks);
-		addMortarRecipe(dustWoodBirch, CSStacks.birch_planks);
-		addMortarRecipe(dustWoodJungle, CSStacks.jungle_planks);
-		addMortarRecipe(dustNetherstar, CSStacks.nether_star);
-		addMortarRecipe(dustNetherbrick, CSStacks.nether_brick);
+		addMortarRecipe(CSStacks.coal, dustCoal);
+		addMortarRecipe(CSStacks.iron_ingot, dustIron);
+		addMortarRecipe(CSStacks.gold_ingot, dustGold);
+		addMortarRecipe(CSStacks.diamond, dustDiamond);
+		addMortarRecipe(CSStacks.emerald, dustEmerald);
+		addMortarRecipe(CSStacks.obsidian, dustObsidian);
+		addMortarRecipe(CSStacks.quartz, dustQuartz);
+		addMortarRecipe(CSStacks.wither_skull, dustWither);
+		addMortarRecipe(CSStacks.ender_pearl, dustEnderpearl);
+		addMortarRecipe(CSStacks.clay, dustClay);
+		addMortarRecipe(CSStacks.brick, dustBrick);
+		addMortarRecipe(CSStacks.flint, dustFlint);
+		addMortarRecipe(CSStacks.glass_block, dustGlass);
+		addMortarRecipe(CSStacks.char_coal, dustCharcoal);
+		addMortarRecipe(CSStacks.oak_planks, dustWoodOak);
+		addMortarRecipe(CSStacks.spruce_planks, dustWoodSpruce);
+		addMortarRecipe(CSStacks.birch_planks, dustWoodBirch);
+		addMortarRecipe(CSStacks.jungle_planks, dustWoodJungle);
+		addMortarRecipe(CSStacks.nether_star, dustNetherstar);
+		addMortarRecipe(CSStacks.nether_brick, dustNetherbrick);
 		
 		CSCrafting.addFurnaceRecipe(dustIron, CSStacks.iron_ingot, 0F);
 		CSCrafting.addFurnaceRecipe(dustGold, CSStacks.gold_ingot, 0F);
@@ -242,6 +242,6 @@ public class MorePotionsMod extends ClashsoftMod<MPMNetHandler>
 	
 	public static void addMortarRecipe(ItemStack input, ItemStack output)
 	{
-		CSCrafting.registerRecipe(new MortarRecipe(input, output));
+		CSCrafting.addShapelessRecipe(output, input, new ItemStack(mortar, 1, OreDictionary.WILDCARD_VALUE));
 	}
 }
