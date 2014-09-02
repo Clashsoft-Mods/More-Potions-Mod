@@ -1,3 +1,8 @@
+1.7.10-1.0.4
+
+> Update to Clashsoft Lib 1.7.10-2.6.0.
+* Fixed Mortars not working.
+
 1.7.10-1.0.3
 
 > Update to Forge 1.7.10-10.13.0.1207.
