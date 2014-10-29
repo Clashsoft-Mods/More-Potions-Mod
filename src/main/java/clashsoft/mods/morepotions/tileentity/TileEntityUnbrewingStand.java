@@ -88,6 +88,8 @@ public class TileEntityUnbrewingStand extends TileEntityInventory implements ISi
 				ItemStack stack = pt.getIngredient();
 				if (stack != null)
 				{
+					stack = stack.copy();
+					stack.stackSize = 1;
 					CSStacks.mergeItemStack(this.itemStacks, 5, stack);
 				}
 			}
